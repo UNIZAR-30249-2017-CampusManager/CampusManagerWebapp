@@ -2,7 +2,6 @@ module.exports = function() {
     var client = './src/main/resources/static/';
     //var server = './src/server/';
     var clientApp = client + 'app/';
-    var simpleApp = 'app/';
     //var report = './report/';
     var root = './';
     //var specRunnerFile = 'specs.html';
