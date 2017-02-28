@@ -11,7 +11,7 @@ module.exports = function() {
     var bower = {
         json: require('./bower.json'),
         directory: './src/main/resources/static/bower_components/',
-        ignorePath: '..'
+        ignorePath: ''
     };
     var nodeModules = 'node_modules';
 
@@ -24,11 +24,11 @@ module.exports = function() {
             './src/**/*.js',
             './*.js'
         ],
-        build: './target/',
+        build: './target/classes/static/',
         client: client,
-        clientApp: 'app/',
         css: temp + 'styles.css',
         fonts: bower.directory + 'font-awesome/fonts/**/*.*',
+        glyphicon: bower.directory + 'bootstrap/fonts/**/*.*',
         html: client + '**/*.html',
         htmltemplates: clientApp + '**/*.html',
         images: client + 'images/**/*.*',

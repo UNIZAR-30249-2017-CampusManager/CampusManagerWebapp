@@ -80,7 +80,7 @@ gulp.task('fonts', ['clean-fonts'], function() {
     log('Copying fonts');
 
     return gulp
-        .src(config.fonts)
+        .src([].concat(config.fonts,config.glyphicon))
         .pipe(gulp.dest(config.build + 'fonts'));
 });
 
@@ -214,7 +214,7 @@ gulp.task('build', ['optimize', 'images', 'fonts'], function() {
 gulp.task('optimize', ['inject'], function() {
     log('Optimizing the js, css, and html');
 
-    var assets = $.useref.assets({ searchPath: './' });
+    var assets = $.useref.assets({ searchPath: './src/main/resources/static/' });
     // Filters are named for the gulp-useref path
     var cssFilter = $.filter('**/*.css');
     var jsAppFilter = $.filter('**/' + config.optimized.app);
