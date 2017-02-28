@@ -1,5 +1,4 @@
 var args = require('yargs').argv;
-var browserSync = require('browser-sync');
 var config = require('./gulp.config')();
 var del = require('del');
 var glob = require('glob');
@@ -9,9 +8,6 @@ var _ = require('lodash');
 var $ = require('gulp-load-plugins')({ lazy: true });
 var replace = require('gulp-replace-path');
 
-var colors = $.util.colors;
-var envenv = $.util.env;
-var port = process.env.PORT || config.defaultPort;
 
 /**
  * yargs variables can be passed in to alter the behavior, when present.
@@ -29,32 +25,6 @@ var port = process.env.PORT || config.defaultPort;
  */
 gulp.task('help', $.taskListing);
 gulp.task('default', ['build']);
-
-/**
- * vet the code and create coverage report
- * @return {Stream}
- */
-gulp.task('vet', function() {
-    log('Analyzing source with JSHint and JSCS');
-
-    return gulp
-        .src(config.alljs)
-        .pipe($.if(args.verbose, $.print()))
-        .pipe($.jshint())
-        .pipe($.jshint.reporter('jshint-stylish', { verbose: true }))
-        .pipe($.jshint.reporter('fail'))
-        .pipe($.jscs());
-});
-
-/**
- * Create a visualizer report
- */
-gulp.task('plato', function(done) {
-    log('Analyzing source with Plato');
-    log('Browse to /report/plato/index.html to see Plato results');
-
-    startPlatoVisualizer(done);
-});
 
 /**
  * Compile less to css
@@ -151,44 +121,6 @@ gulp.task('inject', ['wiredep', 'styles', 'templatecache'], function() {
 });
 
 /**
- * Run the spec runner
- * @return {Stream}
- */
-gulp.task('serve-specs', ['build-specs'], function(done) {
-    log('run the spec runner');
-    serve(true /* isDev */, true /* specRunner */);
-    done();
-});
-
-/**
- * Inject all the spec files into the specs.html
- * @return {Stream}
- */
-gulp.task('build-specs', ['templatecache'], function(done) {
-    log('building the spec runner');
-
-    var wiredep = require('wiredep').stream;
-    var templateCache = config.temp + config.templateCache.file;
-    var options = config.getWiredepDefaultOptions();
-    var specs = config.specs;
-
-    if (args.startServers) {
-        specs = [].concat(specs, config.serverIntegrationSpecs);
-    }
-    options.devDependencies = true;
-
-    return gulp
-        .src(config.specRunner)
-        .pipe(wiredep(options))
-        .pipe(inject(config.js, '', config.jsOrder))
-        .pipe(inject(config.testlibraries, 'testlibraries'))
-        .pipe(inject(config.specHelpers, 'spechelpers'))
-        .pipe(inject(specs, 'specs', ['**/*']))
-        .pipe(inject(templateCache, 'templates'))
-        .pipe(gulp.dest(config.client));
-});
-
-/**
  * Build everything
  * This is separate so we can run tests on
  * optimize before handling image or fonts
@@ -252,16 +184,6 @@ gulp.task('optimize', ['inject'], function() {
 });
 
 /**
- * Remove all files from the build, temp, and reports folders
- * @param  {Function} done - callback when complete
- */
-gulp.task('clean', function(done) {
-    var delconfig = [].concat(config.build, config.temp, config.report);
-    log('Cleaning: ' + $.util.colors.blue(delconfig));
-    del(delconfig, done);
-});
-
-/**
  * Remove all fonts from the build folder
  * @param  {Function} done - callback when complete
  */
@@ -303,24 +225,6 @@ gulp.task('clean-code', function(done) {
 });
 
 /**
- * serve the dev environment
- * --debug-brk or --debug
- * --nosync
- */
-gulp.task('serve-dev', ['inject'], function() {
-    serve(true /*isDev*/);
-});
-
-/**
- * serve the build environment
- * --debug-brk or --debug
- * --nosync
- */
-gulp.task('serve-build', ['build'], function() {
-    serve(false /*isDev*/);
-});
-
-/**
  * Bump the version
  * --type=pre will bump the prerelease version *.*.*-x
  * --type=patch or no flag will bump the patch version *.*.x
@@ -349,21 +253,7 @@ gulp.task('bump', function() {
         .pipe(gulp.dest(config.root));
 });
 
-/**
- * Optimize the code and re-load browserSync
- */
-gulp.task('browserSyncReload', ['optimize'], browserSync.reload);
-
 ////////////////
-
-/**
- * When files change, log it
- * @param  {Object} event - event that fired
- */
-function changeEvent(event) {
-    var srcPattern = new RegExp('/.*(?=/' + config.source + ')/');
-    log('File ' + event.path.replace(srcPattern, '') + ' ' + event.type);
-}
 
 /**
  * Delete all files in a given path
@@ -404,138 +294,6 @@ function orderSrc(src, order) {
         .pipe($.if(order, $.order(order)));
 }
 
-/**
- * serve the code
- * --debug-brk or --debug
- * --nosync
- * @param  {Boolean} isDev - dev or build mode
- * @param  {Boolean} specRunner - server spec runner html
- */
-function serve(isDev, specRunner) {
-    var debugMode = '--debug';
-    var nodeOptions = getNodeOptions(isDev);
-
-    nodeOptions.nodeArgs = [debugMode + '=5858'];
-
-    if (args.verbose) {
-        console.log(nodeOptions);
-    }
-
-    return $.nodemon(nodeOptions)
-        .on('restart', ['vet'], function(ev) {
-            log('*** nodemon restarted');
-            log('files changed:\n' + ev);
-            setTimeout(function() {
-                browserSync.notify('reloading now ...');
-                browserSync.reload({ stream: false });
-            }, config.browserReloadDelay);
-        })
-        .on('start', function() {
-            log('*** nodemon started');
-            startBrowserSync(isDev, specRunner);
-        })
-        .on('crash', function() {
-            log('*** nodemon crashed: script crashed for some reason');
-        })
-        .on('exit', function() {
-            log('*** nodemon exited cleanly');
-        });
-}
-
-function getNodeOptions(isDev) {
-    return {
-        script: config.nodeServer,
-        delayTime: 1,
-        env: {
-            'PORT': port,
-            'NODE_ENV': isDev ? 'dev' : 'build'
-        },
-        watch: [config.server]
-    };
-}
-
-//function runNodeInspector() {
-//    log('Running node-inspector.');
-//    log('Browse to http://localhost:8080/debug?port=5858');
-//    var exec = require('child_process').exec;
-//    exec('node-inspector');
-//}
-
-/**
- * Start BrowserSync
- * --nosync will avoid browserSync
- */
-function startBrowserSync(isDev, specRunner) {
-    if (args.nosync || browserSync.active) {
-        return;
-    }
-
-    log('Starting BrowserSync on port ' + port);
-
-    // If build: watches the files, builds, and restarts browser-sync.
-    // If dev: watches less, compiles it to css, browser-sync handles reload
-    if (isDev) {
-        gulp.watch([config.less], ['styles'])
-            .on('change', changeEvent);
-    } else {
-        gulp.watch([config.less, config.js, config.html], ['browserSyncReload'])
-            .on('change', changeEvent);
-    }
-
-    var options = {
-        proxy: 'localhost:' + port,
-        port: 3000,
-        files: isDev ? [
-                config.client + '**/*.*',
-                '!' + config.less,
-                config.temp + '**/*.css'
-            ] : [],
-        ghostMode: { // these are the defaults t,f,t,t
-            clicks: true,
-            location: false,
-            forms: true,
-            scroll: true
-        },
-        injectChanges: true,
-        logFileChanges: true,
-        logLevel: 'info',
-        logPrefix: 'hottowel',
-        notify: true,
-        reloadDelay: 0 //1000
-    };
-    if (specRunner) {
-        options.startPath = config.specRunnerFile;
-    }
-
-    browserSync(options);
-}
-
-/**
- * Start Plato inspector and visualizer
- */
-function startPlatoVisualizer(done) {
-    log('Running Plato');
-
-    var files = glob.sync(config.plato.js);
-    var excludeFiles = /.*\.spec\.js/;
-    var plato = require('plato');
-
-    var options = {
-        title: 'Plato Inspections Report',
-        exclude: excludeFiles
-    };
-    var outputDir = config.report + '/plato';
-
-    plato.inspect(files, outputDir, options, platoCompleted);
-
-    function platoCompleted(report) {
-        var overview = plato.getOverviewReport(report);
-        if (args.verbose) {
-            log(overview.summary);
-        }
-        if (done) { done(); }
-    }
-}
 
 /**
  * Formatter for bytediff to display the size changes after processing
@@ -549,16 +307,6 @@ function bytediffFormatter(data) {
         (data.endSize / 1000).toFixed(2) + ' kB and is ' +
         formatPercent(1 - data.percent, 2) + '%' + difference;
 }
-
-/**
- * Log an error message and emit the end of a task
- */
-//function errorLogger(error) {
-//    log('*** Start of Error ***');
-//    log(error);
-//    log('*** End of Error ***');
-//    this.emit('end');
-//}
 
 /**
  * Format a number as a percentage
