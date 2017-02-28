@@ -74,8 +74,7 @@
     "yargs": "^3.15.0"
   },
   "scripts": {
-    "prebuild": "npm install",
-    "install": "bower install",
-    "build": "gulp build"
+    "compile": "npm install && bower install",
+    "build": "gulp wiredep"
   }
 }
