@@ -1,5 +1,8 @@
 target/
 .mvn
+node/
+node_modules/
+etc
 
 ### STS ###
 .apt_generated
@@ -19,6 +22,6 @@ target/
 nbproject/private/
 build/
 nbbuild/
-dist/
 nbdist/
 .nb-gradle/
+
