@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="bower_components/angular-swagger-ui/dist/css/swagger-ui.min.css" />
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="bower_components/toastr/toastr.css" />
+    <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
     <!-- endbower -->
     <!-- endbuild -->
 </head>
@@ -30,6 +31,14 @@
     <!-- Inyeccion del layout base de la aplicacion con navbar y contenido -->
     <div ng-include="'app/layout/layout.html'"></div>
 </div>
+<br>
+<br>
+<br>
+<br>
+<div>
+    <div ng-include="'app/map/map.html'"></div>
+</div>
+
 
 <!-- build:js js/lib.js -->
 <!-- bower:js -->
@@ -46,6 +55,7 @@
 <script src="bower_components/extras.angular.plus/ngplus-overlay.js"></script>
 <script src="bower_components/moment/moment.js"></script>
 <script src="bower_components/toastr/toastr.js"></script>
+<script src="bower_components/leaflet/dist/leaflet-src.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 
@@ -57,8 +67,11 @@
 <script src="app/account/login/login.module.js"></script>
 <script src="app/layout/layout.module.js"></script>
 <script src="app/layout/navbar/navbar.module.js"></script>
+<script src="app/map/map.module.js"></script>
 <script src="app/layout/layout.controller.js"></script>
 <script src="app/layout/navbar/navbar.directive.js"></script>
+<script src="app/map/angular-leaflet-directive.js"></script>
+<script src="app/map/map.controller.js"></script>
 <!-- endinject -->
 
 </body>
