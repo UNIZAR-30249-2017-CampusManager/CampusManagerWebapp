@@ -1,5 +1,6 @@
 target/
 node/
+.mvn
 node_modules/
 etc
 
