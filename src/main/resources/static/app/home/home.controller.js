@@ -3,37 +3,14 @@
 
     angular
         .module('app.home')
-        .config(['$routeProvider',
-            function ($routeProvider) {
-                $routeProvider.
-                when('/', {
-                    templateUrl: 'app/map/map.html',
-                    controller: 'HomeController'
-                }).
-                when('/ada', {
-                    templateUrl: 'app/account/login/login.html',
-                    controller: 'AdaController'
-                }).
-                otherwise('/');
-            }
-        ]);
+        .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['$scope'];
-
-    function HomeController($scope) {
+    function HomeController() {
+        console.log("HOME CONTROLLER CALLED!");
         var vm = this;
-        $scope.vm.home = {
+        vm.home = {
             title: 'Vista general',
             subtitle: 'Campus Escuela de Ingeniería y Arquitectura'
         };
     }
-
-    function AdaController(){
-        var vm = this;
-        vm.home = {
-            title: 'Vista específica',
-            subtitle: 'Edificio Ada Byron'
-        };
-    }
-
 })();

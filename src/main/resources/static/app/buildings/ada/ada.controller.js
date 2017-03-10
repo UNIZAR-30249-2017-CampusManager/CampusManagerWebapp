@@ -2,15 +2,21 @@
     'use strict';
 
     angular
-        .module('app.map')
-        .controller('MapController', MapController);
+        .module('app.buildings.ada')
+        .controller('AdaController', AdaController);
 
-    function MapController($scope) {
+    function AdaController($scope) {
+        console.log("ADA CONTROLLER CALLED!");
+        var vm = this;
+        vm.home = {
+            title: 'Vista general',
+            subtitle: 'Campus Escuela de Ingeniería y Arquitectura'
+        };
         angular.extend($scope, {
-            cps: {
+            ada: {
                 lat: 41.683499,
                 lng: -0.886272,
-                zoom: 18
+                zoom: 10
             },
             kappaIcon: {
                 iconUrl: 'http://res.cloudinary.com/urbandictionary/image/upload/a_exif,c_fit,h_200,w_200/v1395991705/gjn81wvxqsq6yzcwubok.png',
@@ -57,7 +63,7 @@
             $scope.markers.push({
                 lat: leafEvent.latlng.lat,
                 lng: leafEvent.latlng.lng,
-                message: "EY",
+                message: "OY",
                 focus: true,
                 draggable: false,
                 icon: $scope.kappaIcon
