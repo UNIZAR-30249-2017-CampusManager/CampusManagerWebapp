@@ -1,7 +1,7 @@
-(function(){
+(function () {
     'use strict';
 
-    angular.module('app.account.login',[
-
-    ]);
+    angular
+        .module('app.account.login', [
+        ]);
 })();

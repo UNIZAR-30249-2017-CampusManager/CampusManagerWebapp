@@ -1,4 +1,4 @@
-<nav class="navbar navbar-fixed-top navbar-inverse">
+<nav class="navbar navbar-static-top navbar-inverse">
     <div class="navbar-header">
         <a href="/" class="navbar-brand"><span class="brand-title">{{vm.navline.title}}</span></a>
         <a class="btn navbar-btn navbar-toggle" ng-click="isCollapsed = !isCollapsed">
@@ -10,19 +10,14 @@
     <div class="navbar-collapse collapse" uib-collapse="isCollapsed">
         <div class="pull-right navbar-logo">
             <ul class="nav navbar-nav pull-right">
-                <li>
-                    <a ng-href="{{vm.navline.link}}" target="_blank">
-                        {{vm.navline.text}}
-                    </a>
-                </li>
                 <li uib-dropdown>
                     <a href="#" uib-dropdown-toggle>Información <b class="caret"></b></a>
                     <ul uib-dropdown-menu role="menu" aria-labelledby="single-button">
                         <li role="menuitem">
-                            <a href="#">Vista general</a>
+                            <a ui-sref="home">Vista general</a>
                         </li>
                         <li role="menuitem">
-                            <a>Edificio Ada Byron</a>
+                            <a ui-sref="ada">Edificio Ada Byron</a>
                         </li>
                         <li role="menuitem">
                             <a>Edificio Betancourt</a>
