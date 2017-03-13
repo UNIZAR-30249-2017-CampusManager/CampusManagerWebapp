@@ -1,4 +1,4 @@
-package es.unizar;
+package es.unizar.campusManager;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
