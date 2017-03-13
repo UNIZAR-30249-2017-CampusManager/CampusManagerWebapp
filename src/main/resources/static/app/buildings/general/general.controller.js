@@ -25,6 +25,28 @@
                 popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
             },
             events: {},
+            layers: {
+                baselayers: {
+                    xyz: {
+                        name: 'OpenStreetMap (XYZ)',
+                        url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                        type: 'xyz'
+                    }
+                },
+                overlays: {
+                    wms: {
+                        name: 'Geoserver',
+                        type: 'wms',
+                        visible: true,
+                        url: 'http://88.1.118.1:8080/geoserver/labis/wms',
+                        layerParams: {
+                            layers: 'labis:todos',
+                            format: 'image/png',
+                            transparent: true
+                        }
+                    }
+                }
+            },
             markers: {}
         });
 
