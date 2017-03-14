@@ -1,14 +1,11 @@
 package es.unizar.campusManager;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
-import es.unizar.campusManager.model.User;
-import es.unizar.campusManager.repository.UserRepository;
+import es.unizar.campusManager.model.CampusUser;
+import es.unizar.campusManager.model.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 @SpringBootApplication
 public class CampusManagerWebappApplication  implements CommandLineRunner {
@@ -22,7 +19,6 @@ public class CampusManagerWebappApplication  implements CommandLineRunner {
 
 	@Override
 	public void run(String... args){
-		
 
 	}
 }
