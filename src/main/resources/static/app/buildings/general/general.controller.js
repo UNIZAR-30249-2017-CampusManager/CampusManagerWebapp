@@ -32,19 +32,6 @@
                         url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                         type: 'xyz'
                     }
-                },
-                overlays: {
-                    wms: {
-                        name: 'Geoserver',
-                        type: 'wms',
-                        visible: true,
-                        url: 'http://88.1.118.1:8080/geoserver/labis/wms',
-                        layerParams: {
-                            layers: 'labis:todos',
-                            format: 'image/png',
-                            transparent: true
-                        }
-                    }
                 }
             },
             markers: {}
