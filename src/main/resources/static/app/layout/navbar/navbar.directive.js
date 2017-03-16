@@ -17,11 +17,18 @@
             templateUrl: 'app/layout/navbar/navbar.html'
         };
 
-        NavbarController.$inject = ['$scope'];
+        NavbarController.$inject = ['$scope','LoginService'];
 
-        function NavbarController($scope) {
+        function NavbarController($scope,LoginService) {
+            console.log("Navbar controller called!");
             var vm = this;
             $scope.isCollapsed = true;
+
+            vm.login = login;
+
+            function login() {
+                LoginService.open();
+            }
         }
 
         return directive;
