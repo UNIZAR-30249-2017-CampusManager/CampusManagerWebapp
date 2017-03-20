@@ -2,16 +2,16 @@
     'use strict';
 
     angular
-        .module('app.buildings.ada')
-        .controller('AdaController', AdaController);
+        .module('app.buildings.betan')
+        .controller('BetanController', BetanController);
 
-    function AdaController($scope,leafletData,$compile,MapService) {
-        //console.log("Invocado controlador del Ada");
+    function BetanController($scope,leafletData,$compile,MapService) {
+        //console.log("Invocado controlador del Betan");
         var currentFloor = 0;
 
         //Actualizando titulos del html
         $scope.vista={
-            nombre : 'Edificio Ada Byron'
+            nombre : 'Edificio Betancourt'
         };
         $scope.edificio={
             nombre : 'Planta ' + currentFloor
@@ -19,18 +19,17 @@
 
         //Arrays de capas
         $scope.definedLayers = {
-            wms0 : MapService.crearCapa('Planta 0','labis:adaP00'),
-            wms1 : MapService.crearCapa('Planta 1','labis:adaP01'),
-            wms2 : MapService.crearCapa('Planta 2','labis:adaP02'),
-            wms3 : MapService.crearCapa('Planta 3','labis:adaP03'),
-            wms4 : MapService.crearCapa('Planta 4','labis:adaP04')
+            wms0 : MapService.crearCapa('Planta 0','labis:betanP00'),
+            wms1 : MapService.crearCapa('Planta 1','labis:betanP01'),
+            wms2 : MapService.crearCapa('Planta 2','labis:betanP02'),
+            wms3 : MapService.crearCapa('Planta 3','labis:betanP03')
         };
 
         angular.extend($scope, {
-            ada: {
-                lat: 41.683579,
-                lng: -0.888713,
-                zoom: 19
+            betan: {
+                lat: 41.683422,
+                lng: -0.884168,
+                zoom: 18
             },
             events: {},
             layers: {
@@ -73,10 +72,10 @@
         });
 
         $scope.subirPlanta = function(){
-            if(currentFloor == 4){
-                //console.log("Llegado al limite superior del Ada Byron");
+            if(currentFloor == 3){
+                //console.log("Llegado al limite superior del Betancourt");
             } else{
-                //console.log("Subiendo planta del Ada Byron (Planta actual: " + parseInt(currentFloor+1) + ")");
+                //console.log("Subiendo planta del Betancourt (Planta actual: " + parseInt(currentFloor+1) + ")");
 
                 var baselayers = $scope.layers.baselayers;
                 delete baselayers['wms' + currentFloor];
@@ -91,9 +90,9 @@
 
         $scope.bajarPlanta = function(){
             if(currentFloor == 0){
-                //console.log("Llegado al limite inferior del Ada Byron");
+                //console.log("Llegado al limite inferior del Betancourt");
             } else{
-                //console.log("Bajando planta del Ada Byron (Planta actual: " + parseInt(currentFloor-1) + ")");
+                //console.log("Bajando planta del Betancourt (Planta actual: " + parseInt(currentFloor-1) + ")");
 
                 var baselayers = $scope.layers.baselayers;
                 delete baselayers['wms' + currentFloor];

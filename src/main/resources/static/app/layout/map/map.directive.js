@@ -325,7 +325,7 @@
                 },
 
                 createControl: function(params) {
-                    console.log("Invocada directiva angular (subir planta)");
+                    //console.log("Invocada directiva angular (subir planta)");
 
                     return new L.Control.SubirPlanta();
                 },
@@ -344,7 +344,7 @@
                 },
 
                 createControl: function(params) {
-                    console.log("Invocada directiva angular (bajar planta)");
+                    //console.log("Invocada directiva angular (bajar planta)");
 
                     return new L.Control.BajarPlanta();
                 },
