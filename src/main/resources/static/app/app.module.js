@@ -9,8 +9,9 @@
             'app.home',
             'app.layout',
             'app.buildings'])
-        .config(function ($logProvider) {
+        .config(function ($logProvider,$locationProvider) {
             $logProvider.debugEnabled(false);
+            $locationProvider.html5Mode(true);
         });
 
 })();
