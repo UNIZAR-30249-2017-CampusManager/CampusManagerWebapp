@@ -5,40 +5,44 @@
         .module('app.buildings.general')
         .controller('GeneralController', GeneralController);
 
-    function GeneralController($scope) {
-        console.log("GENERAL CONTROLLER CALLED!");
-        var vm = this;
-        vm.home = {
-            title: 'Vista general',
-            subtitle: 'Campus Escuela de Ingeniería y Arquitectura'
+    function GeneralController($scope,leafletData) {
+        console.log("Invocado controlador general");
+        $scope.vista={
+            nombre : 'Vista general'
+        };
+        $scope.edificio={
+            nombre : 'Campus Escuela de Ingeniería y Arquitectura'
+        };
+        $scope.basicLayer = {
+            xyz: {
+                name: 'OpenStreetMap (XYZ)',
+                url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                type: 'xyz'
+            }
         };
         angular.extend($scope, {
             cps: {
                 lat: 41.683499,
                 lng: -0.886272,
-                zoom: 18
+                zoom: 17
             },
-            kappaIcon: {
-                iconUrl: 'http://res.cloudinary.com/urbandictionary/image/upload/a_exif,c_fit,h_200,w_200/v1395991705/gjn81wvxqsq6yzcwubok.png',
+            markerIcon: {
+                iconUrl: 'http://www.clker.com/cliparts/b/7/6/5/1308001441853739087google%20maps%20pin.svg',
                 iconSize:     [38, 50], // size of the icon
-                iconAnchor:   [22, 50], // point of the icon which will correspond to marker's location
-                popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+                iconAnchor:   [15, 50], // point of the icon which will correspond to marker's location
+                popupAnchor:  [0, -40] // point from which the popup should open relative to the iconAnchor
             },
             events: {},
             layers: {
                 baselayers: {
-                    xyz: {
-                        name: 'OpenStreetMap (XYZ)',
-                        url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                        type: 'xyz'
-                    }
+                    xyz: $scope.basicLayer['xyz']
                 }
             },
             markers: {}
         });
 
         $scope.addStaticMarkers = function() {
-            $scope.markers = new Array();
+            $scope.markers = [];
 
             $scope.markers.push({
                 lat: 41.683679,
@@ -72,11 +76,17 @@
             $scope.markers.push({
                 lat: leafEvent.latlng.lat,
                 lng: leafEvent.latlng.lng,
-                message: "EY",
+                message: "¡Estás aquí!",
                 focus: true,
                 draggable: false,
-                icon: $scope.kappaIcon
+                icon: $scope.markerIcon
             });
         });
+
+        // $scope.$on('$destroy', function () {
+        //     leafletData.getMap().then(function(map) {
+        //         map.remove();
+        //     });
+        // });
     }
 })();

@@ -8,6 +8,9 @@
             'app.account',
             'app.home',
             'app.layout',
-            'app.buildings']);
+            'app.buildings'])
+        .config(function ($logProvider) {
+            $logProvider.debugEnabled(false);
+        });
 
 })();
