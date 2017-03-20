@@ -20,14 +20,24 @@
         NavbarController.$inject = ['$scope','LoginService'];
 
         function NavbarController($scope,LoginService) {
-            console.log("Navbar controller called!");
+            //console.log("Navbar controller called!");
             var vm = this;
             $scope.isCollapsed = true;
 
             vm.login = login;
+            vm.logout = logout;
+            vm.isLogged = isLogged;
 
             function login() {
                 LoginService.open();
+            }
+
+            function isLogged(){
+                return LoginService.isLogged();
+            }
+
+            function logout(){
+                LoginService.logout();
             }
         }
 

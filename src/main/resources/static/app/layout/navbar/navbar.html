@@ -27,10 +27,14 @@
                         </li>
                     </ul>
                 </li>
-                <li>
-                    <a href="" ng-click="vm.login()" id="login">
+                <li ng-switch on="vm.isLogged()">
+                    <a href="" ng-switch-when="false" ng-click="vm.login()" id="login">
                         <span class="glyphicon glyphicon-log-in"></span>&nbsp;
                         <span>Acceso</span>
+                    </a>
+                    <a href="" ng-switch-default ng-click="vm.logout()" id="logout">
+                        <span class="glyphicon glyphicon-log-out"></span>&nbsp;
+                        <span>Cerrar sesión</span>
                     </a>
                 </li>
             </ul>
