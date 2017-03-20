@@ -21,7 +21,7 @@
                 },
                 layerOptions: {
                     attribution: "",
-                    minZoom: 19,
+                    minZoom: 16,
                     maxZoom: 23
                 }
             };

@@ -5,8 +5,8 @@
         .module('app.buildings.general')
         .controller('GeneralController', GeneralController);
 
-    function GeneralController($scope,leafletData) {
-        console.log("Invocado controlador general");
+    function GeneralController($scope,leafletData,MapService) {
+        //console.log("Invocado controlador general");
         $scope.vista={
             nombre : 'Vista general'
         };
@@ -17,7 +17,12 @@
             xyz: {
                 name: 'OpenStreetMap (XYZ)',
                 url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                type: 'xyz'
+                type: 'xyz',
+                layerOptions: {
+                    attribution: "",
+                    minZoom: 16,
+                    maxZoom: 19
+                }
             }
         };
         angular.extend($scope, {
@@ -36,6 +41,9 @@
             layers: {
                 baselayers: {
                     xyz: $scope.basicLayer['xyz']
+                },
+                overlays: {
+                    eina: MapService.crearCapa('EINA','labis:todos')
                 }
             },
             markers: {}
