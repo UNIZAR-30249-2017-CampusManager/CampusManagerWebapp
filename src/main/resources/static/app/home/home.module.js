@@ -4,6 +4,9 @@
     angular
         .module('app.home', [
             'app.layout',
-            'app.buildings'
+            'app.buildings',
+            'ui.bootstrap',
+            'ngAnimate',
+            'ngSanitize'
         ]);
 })();

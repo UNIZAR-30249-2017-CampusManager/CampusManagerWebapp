@@ -6,6 +6,6 @@
         .controller('HomeController', HomeController);
 
     function HomeController() {
-        console.log("Invocado controlador de Home!");
+        //console.log("Invocado controlador de Home!");
     }
 })();

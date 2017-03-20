@@ -1,4 +1,6 @@
-<div>
+<div ng-controller="HomeController">
+    <div uib-alert dismiss-on-timeout="5000" ng-repeat="alert in alerts"
+         ng-class="'alert-' + (alert.type || 'warning')" close="alert.close()">{{alert.msg}}</div>
     <ui-view>
         <div ng-include="'app/buildings/general/general.html'"></div>
     </ui-view>
