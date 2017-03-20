@@ -6,7 +6,8 @@
         .controller('LoginController', LoginController);
 
     LoginController.inject = ['$uibModalInstance'];
-    function LoginController($uibModalInstance) {
+
+    function LoginController($uibModalInstance,LoginService) {
         console.log("Login controller called!");
         var vm = this;
 
@@ -27,6 +28,15 @@
 
         function login(event) {
             event.preventDefault();
+            console.log(vm.username);
+            console.log(vm.password);
+
+            //Comprobar mediante peticion a API RESTful que son correctos los campos
+            //..........
+
+            LoginService.login();
+
+            $uibModalInstance.dismiss('success');
         }
     }
 })();
