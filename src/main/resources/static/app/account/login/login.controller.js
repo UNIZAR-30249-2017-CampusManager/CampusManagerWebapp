@@ -16,7 +16,7 @@
         vm.cancel = cancel;
         vm.login = login;
 
-        function cancel () {
+        function cancel() {
             vm.credentials = {
                 username: null,
                 password: null
@@ -25,7 +25,7 @@
             $uibModalInstance.dismiss('cancel');
         }
 
-        function login (event) {
+        function login(event) {
             event.preventDefault();
         }
     }

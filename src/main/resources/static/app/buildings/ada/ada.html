@@ -1,3 +1,8 @@
-<div ng-app="buildings.ada" ng-controller="AdaController">
-    <leaflet lf-center="ada" markers="markers" layers="layers" width="100%" height="480px"></leaflet>
+<div ng-app="buildings.ada">
+    <div class="page-header">
+        <h1>{{vista.nombre}}
+            <small>{{edificio.nombre}}</small>
+        </h1>
+    </div>
+    <leaflet lf-center="ada" controls="controls" markers="markers" layers="layers" width="100%" height="480px"></leaflet>
 </div>
