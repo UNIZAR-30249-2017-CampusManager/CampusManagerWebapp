@@ -17,9 +17,9 @@
             templateUrl: 'app/layout/navbar/navbar.html'
         };
 
-        NavbarController.$inject = ['$scope','LoginService','AlertService'];
+        NavbarController.$inject = ['$scope','$state','LoginService','AlertService'];
 
-        function NavbarController($scope,LoginService,AlertService) {
+        function NavbarController($scope,$state,LoginService,AlertService) {
             //console.log("Navbar controller called!");
             var vm = this;
             $scope.isCollapsed = true;
@@ -41,6 +41,7 @@
                 $scope.isCollapsed = true;
                 AlertService.addAlert('info','Sesión cerrada satisfactoriamente');
                 LoginService.logout();
+                $state.go('home');
             }
         }
 
