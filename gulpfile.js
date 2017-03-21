@@ -62,7 +62,7 @@ gulp.task('images', ['clean-images'], function() {
     log('Compressing and copying images');
 
     return gulp
-        .src(config.images)
+        .src([].concat(config.images,config.bowerImages))
         .pipe($.imagemin({ optimizationLevel: 4 }))
         .pipe(gulp.dest(config.build + 'images'));
 });
