@@ -29,6 +29,7 @@
             vm.isLogged = isLogged;
 
             function login() {
+                $scope.isCollapsed = true;
                 LoginService.open();
             }
 
@@ -37,6 +38,7 @@
             }
 
             function logout(){
+                $scope.isCollapsed = true;
                 AlertService.addAlert('info','Sesión cerrada satisfactoriamente');
                 LoginService.logout();
             }
