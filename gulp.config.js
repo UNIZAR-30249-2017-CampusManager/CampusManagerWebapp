@@ -31,6 +31,7 @@ module.exports = function() {
         html: client + '**/*.html',
         htmltemplates: clientApp + '**/*.html',
         images: client + 'images/**/*.*',
+        leafletImages: bower.directory + '*/dist/images/*.*',
         index: client + 'index.html',
         // app js, with no specs
         js: [

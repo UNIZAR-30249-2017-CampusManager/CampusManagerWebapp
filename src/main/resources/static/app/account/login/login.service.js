@@ -41,7 +41,10 @@
         }
 
         function login(){
-            vm.session.logged = true;
+            vm.session.logged = {
+                username: 'Test',
+                role: 'role'
+            };
         }
 
         function logout() {

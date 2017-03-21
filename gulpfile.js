@@ -7,6 +7,7 @@ var path = require('path');
 var _ = require('lodash');
 var $ = require('gulp-load-plugins')({ lazy: true });
 var replace = require('gulp-replace-path');
+var rename = require('gulp-rename');
 
 
 /**
@@ -62,9 +63,10 @@ gulp.task('images', ['clean-images'], function() {
     log('Compressing and copying images');
 
     return gulp
-        .src(config.images)
+        .src([].concat(config.images,config.leafletImages))
+        .pipe(rename({dirname: ''}))
         .pipe($.imagemin({ optimizationLevel: 4 }))
-        .pipe(gulp.dest(config.build + 'images'));
+        .pipe(gulp.dest(config.build + 'styles/images'));
 });
 
 gulp.task('less-watcher', function() {

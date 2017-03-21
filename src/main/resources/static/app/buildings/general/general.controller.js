@@ -31,12 +31,6 @@
                 lng: -0.886272,
                 zoom: 17
             },
-            markerIcon: {
-                iconUrl: 'http://www.clker.com/cliparts/b/7/6/5/1308001441853739087google%20maps%20pin.svg',
-                iconSize:     [38, 50], // size of the icon
-                iconAnchor:   [15, 50], // point of the icon which will correspond to marker's location
-                popupAnchor:  [0, -40] // point from which the popup should open relative to the iconAnchor
-            },
             events: {},
             layers: {
                 baselayers: {
@@ -86,8 +80,7 @@
                 lng: leafEvent.latlng.lng,
                 message: "¡Estás aquí!",
                 focus: true,
-                draggable: false,
-                icon: $scope.markerIcon
+                draggable: false
             });
         });
 
