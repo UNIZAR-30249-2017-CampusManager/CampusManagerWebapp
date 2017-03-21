@@ -39,6 +39,12 @@
                     templateUrl: 'app/buildings/torres/torres.html',
                     controller: 'TorresController as vm'
 
+                })
+                .state('crearUsuario', {
+                    url: '/crearUsuario',
+                    templateUrl: 'app/account/create/create.html',
+                    controller: 'CreateController as vm'
+
                 });
         });
 
