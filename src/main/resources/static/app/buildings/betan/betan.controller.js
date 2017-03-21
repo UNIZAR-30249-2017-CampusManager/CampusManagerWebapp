@@ -19,6 +19,7 @@
 
         //Arrays de capas
         $scope.definedLayers = {
+            wmsSotano: MapService.crearCapa('Sótano', 'labis:betanS01'),
             wms0 : MapService.crearCapa('Planta 0','labis:betanP00'),
             wms1 : MapService.crearCapa('Planta 1','labis:betanP01'),
             wms2 : MapService.crearCapa('Planta 2','labis:betanP02'),
@@ -78,7 +79,10 @@
                 //console.log("Subiendo planta del Betancourt (Planta actual: " + parseInt(currentFloor+1) + ")");
 
                 var baselayers = $scope.layers.baselayers;
-                delete baselayers['wms' + currentFloor];
+
+                if(currentFloor == -1){
+                    delete baselayers['wmsSotano'];
+                } else delete baselayers['wms' + currentFloor];
 
                 currentFloor++;
                 baselayers['wms' + currentFloor] = $scope.definedLayers['wms' + currentFloor];
@@ -89,7 +93,7 @@
         };
 
         $scope.bajarPlanta = function(){
-            if(currentFloor == 0){
+            if(currentFloor == -1){
                 //console.log("Llegado al limite inferior del Betancourt");
             } else{
                 //console.log("Bajando planta del Betancourt (Planta actual: " + parseInt(currentFloor-1) + ")");
@@ -98,10 +102,18 @@
                 delete baselayers['wms' + currentFloor];
 
                 currentFloor--;
-                baselayers['wms' + currentFloor] = $scope.definedLayers['wms' + currentFloor];
-                $scope.edificio={
-                    nombre : 'Planta ' + currentFloor
-                };
+
+                if(currentFloor == -1){
+                    baselayers['wmsSotano'] = $scope.definedLayers['wmsSotano'];
+                    $scope.edificio = {
+                        nombre: 'Sótano'
+                    };
+                } else{
+                    baselayers['wms' + currentFloor] = $scope.definedLayers['wms' + currentFloor];
+                    $scope.edificio = {
+                        nombre: 'Planta ' + currentFloor
+                    };
+                }
             }
         };
     }

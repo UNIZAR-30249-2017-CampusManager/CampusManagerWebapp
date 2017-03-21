@@ -19,10 +19,11 @@
 
         //Arrays de capas
         $scope.definedLayers = {
-            wms0 : MapService.crearCapa('Planta 0','labis:torresP00',17),
-            wms1 : MapService.crearCapa('Planta 1','labis:torresP01',17),
-            wms2 : MapService.crearCapa('Planta 2','labis:torresP02',17),
-            wms3 : MapService.crearCapa('Planta 3','labis:torresP03',17)
+            wmsSotano: MapService.crearCapa('Sótano', 'labis:torresS01'),
+            wms0 : MapService.crearCapa('Planta 0','labis:torresP00'),
+            wms1 : MapService.crearCapa('Planta 1','labis:torresP01'),
+            wms2 : MapService.crearCapa('Planta 2','labis:torresP02'),
+            wms3 : MapService.crearCapa('Planta 3','labis:torresP03')
         };
 
         angular.extend($scope, {
@@ -78,7 +79,10 @@
                 //console.log("Subiendo planta del Torres (Planta actual: " + parseInt(currentFloor+1) + ")");
 
                 var baselayers = $scope.layers.baselayers;
-                delete baselayers['wms' + currentFloor];
+
+                if(currentFloor == -1){
+                    delete baselayers['wmsSotano'];
+                } else delete baselayers['wms' + currentFloor];
 
                 currentFloor++;
                 baselayers['wms' + currentFloor] = $scope.definedLayers['wms' + currentFloor];
@@ -89,7 +93,7 @@
         };
 
         $scope.bajarPlanta = function(){
-            if(currentFloor == 0){
+            if(currentFloor == -1){
                 //console.log("Llegado al limite inferior del Torres");
             } else{
                 //console.log("Bajando planta del Torres (Planta actual: " + parseInt(currentFloor-1) + ")");
@@ -98,10 +102,18 @@
                 delete baselayers['wms' + currentFloor];
 
                 currentFloor--;
-                baselayers['wms' + currentFloor] = $scope.definedLayers['wms' + currentFloor];
-                $scope.edificio={
-                    nombre : 'Planta ' + currentFloor
-                };
+
+                if(currentFloor == -1){
+                    baselayers['wmsSotano'] = $scope.definedLayers['wmsSotano'];
+                    $scope.edificio = {
+                        nombre: 'Sótano'
+                    };
+                } else{
+                    baselayers['wms' + currentFloor] = $scope.definedLayers['wms' + currentFloor];
+                    $scope.edificio = {
+                        nombre: 'Planta ' + currentFloor
+                    };
+                }
             }
         };
     }
