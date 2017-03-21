@@ -1,65 +1,121 @@
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('app.buildings.ada')
         .controller('AdaController', AdaController);
 
-    function AdaController($scope) {
-        console.log("ADA CONTROLLER CALLED!");
-        var vm = this;
-        vm.home = {
-            title: 'Vista general',
-            subtitle: 'Campus Escuela de Ingeniería y Arquitectura'
+    function AdaController($scope, leafletData, $compile, MapService) {
+        //console.log("Invocado controlador del Ada");
+        var currentFloor = 0;
+
+        //Actualizando titulos del html
+        $scope.vista = {
+            nombre: 'Edificio Ada Byron'
         };
+        $scope.edificio = {
+            nombre: 'Planta ' + currentFloor
+        };
+
+        //Arrays de capas
+        $scope.definedLayers = {
+            wmsSotano: MapService.crearCapa('Sótano', 'labis:adaS01'),
+            wms0: MapService.crearCapa('Planta 0', 'labis:adaP00'),
+            wms1: MapService.crearCapa('Planta 1', 'labis:adaP01'),
+            wms2: MapService.crearCapa('Planta 2', 'labis:adaP02'),
+            wms3: MapService.crearCapa('Planta 3', 'labis:adaP03'),
+            wms4: MapService.crearCapa('Planta 4', 'labis:adaP04')
+        };
+
         angular.extend($scope, {
             ada: {
-                lat: 41.683679,
-                lng: -0.888513,
-                zoom: 10
-            },
-            kappaIcon: {
-                iconUrl: 'http://res.cloudinary.com/urbandictionary/image/upload/a_exif,c_fit,h_200,w_200/v1395991705/gjn81wvxqsq6yzcwubok.png',
-                iconSize:     [38, 50], // size of the icon
-                iconAnchor:   [22, 50], // point of the icon which will correspond to marker's location
-                popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+                lat: 41.683579,
+                lng: -0.888713,
+                zoom: 19
             },
             events: {},
             layers: {
                 baselayers: {
-                    wms: {
-                        name: 'Geoserver',
-                        type: 'wms',
-                        visible: true,
-                        url: 'http://88.1.118.1:8080/geoserver/labis/wms',
-                        layerParams: {
-                            layers: 'labis:adaP00',
-                            format: 'image/png',
-                            transparent: true
-                        },
-                        layerOptions: {
-                            attribution: "",
-                            minZoom: 18,
-                            maxZoom: 23
-                        }
-                    }
+                    wms0: $scope.definedLayers['wms0']
                 }
             },
-            markers: {}
+            markers: [],
+            controls: {
+                bajarNivel: {
+                    type: 'bajarPlanta'
+                },
+                subirNivel: {
+                    type: 'subirPlanta'
+                }
+            }
         });
 
-        $scope.$on('leafletDirectiveMap.click', function(event, args){
-            $scope.addStaticMarkers();
+        leafletData.getMap().then(function () {
+            var element = document.getElementById('botonSubir');
+            var element2 = document.getElementById('botonBajar');
+            $compile(element)($scope);
+            $compile(element2)($scope);
+        });
+
+        $scope.$on('leafletDirectiveMap.click', function (event, args) {
             var leafEvent = args.leafletEvent;
 
+            var latitude = leafEvent.latlng.lat;
+            var longitude = leafEvent.latlng.lng;
+
+            $scope.markers = [];
             $scope.markers.push({
-                lat: leafEvent.latlng.lat,
-                lng: leafEvent.latlng.lng,
-                message: "OY",
+                lat: latitude,
+                lng: longitude,
+                message: "¡Estás aquí! </br> Lat: " + latitude.toString() + "</br> Long: " + longitude.toString(),
                 focus: true,
-                draggable: false,
-                icon: $scope.kappaIcon
+                draggable: false
             });
         });
+
+        $scope.subirPlanta = function () {
+            if (currentFloor == 4) {
+                //console.log("Llegado al limite superior del Ada Byron");
+            } else {
+                //console.log("Subiendo planta del Ada Byron (Planta actual: " + parseInt(currentFloor+1) + ")");
+
+                var baselayers = $scope.layers.baselayers;
+
+                if(currentFloor == -1){
+                    delete baselayers['wmsSotano'];
+                } else delete baselayers['wms' + currentFloor];
+
+                currentFloor++;
+                baselayers['wms' + currentFloor] = $scope.definedLayers['wms' + currentFloor];
+                $scope.edificio = {
+                    nombre: 'Planta ' + currentFloor
+                };
+            }
+        };
+
+        $scope.bajarPlanta = function () {
+            if (currentFloor == -1) {
+                //console.log("Llegado al limite inferior del Ada Byron");
+            } else {
+                //console.log("Bajando planta del Ada Byron (Planta actual: " + parseInt(currentFloor-1) + ")");
+
+                var baselayers = $scope.layers.baselayers;
+                delete baselayers['wms' + currentFloor];
+
+                currentFloor--;
+
+                if(currentFloor == -1){
+                    baselayers['wmsSotano'] = $scope.definedLayers['wmsSotano'];
+                    $scope.edificio = {
+                        nombre: 'Sótano'
+                    };
+                } else{
+                    baselayers['wms' + currentFloor] = $scope.definedLayers['wms' + currentFloor];
+                    $scope.edificio = {
+                        nombre: 'Planta ' + currentFloor
+                    };
+                }
+            }
+        };
     }
 })();

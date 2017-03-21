@@ -4,6 +4,7 @@
     angular
         .module('app.buildings.ada',[
             'leaflet-directive',
+            //'app',
             'ui.router'
         ])
         .config(function ($stateProvider, $urlRouterProvider) {

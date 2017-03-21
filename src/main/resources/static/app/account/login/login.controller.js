@@ -6,8 +6,9 @@
         .controller('LoginController', LoginController);
 
     LoginController.inject = ['$uibModalInstance'];
-    function LoginController($uibModalInstance) {
-        console.log("Login controller called!");
+
+    function LoginController($uibModalInstance,LoginService,AlertService) {
+        //console.log("Login controller called!");
         var vm = this;
 
         vm.authenticationError = false;
@@ -16,7 +17,7 @@
         vm.cancel = cancel;
         vm.login = login;
 
-        function cancel () {
+        function cancel() {
             vm.credentials = {
                 username: null,
                 password: null
@@ -25,8 +26,18 @@
             $uibModalInstance.dismiss('cancel');
         }
 
-        function login (event) {
+        function login(event) {
             event.preventDefault();
+            // console.log(vm.username);
+            // console.log(vm.password);
+
+            //Comprobar mediante peticion a API RESTful que son correctos los campos
+            //..........
+
+            AlertService.addAlert('info','¡Bienvenid@ de vuelta ' + vm.username + '!');
+            LoginService.login();
+
+            $uibModalInstance.dismiss('success');
         }
     }
 })();

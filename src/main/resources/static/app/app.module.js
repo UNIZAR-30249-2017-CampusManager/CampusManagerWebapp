@@ -8,6 +8,10 @@
             'app.account',
             'app.home',
             'app.layout',
-            'app.buildings']);
+            'app.buildings'])
+        .config(function ($logProvider,$locationProvider) {
+            $logProvider.debugEnabled(false);
+            $locationProvider.html5Mode(true);
+        });
 
 })();

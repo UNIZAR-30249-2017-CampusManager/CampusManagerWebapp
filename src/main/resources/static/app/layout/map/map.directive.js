@@ -254,7 +254,7 @@
         };
     }]);
 
-    angular.module('leaflet-directive').factory('leafletControlHelpers', ["$rootScope", "$log", "leafletHelpers", "leafletLayerHelpers", "leafletMapDefaults", function($rootScope, $log, leafletHelpers, leafletLayerHelpers, leafletMapDefaults) {
+    angular.module('leaflet-directive').factory('leafletControlHelpers', ["$rootScope", "$compile", "$log", "leafletHelpers", "leafletLayerHelpers", "leafletMapDefaults", function($rootScope,$compile, $log, leafletHelpers, leafletLayerHelpers, leafletMapDefaults) {
         var isDefined = leafletHelpers.isDefined;
         var isObject = leafletHelpers.isObject;
         var createLayer = leafletLayerHelpers.createLayer;
@@ -311,6 +311,44 @@
         };
 
         var controlTypes = {
+            subirPlanta:{
+                isPluginLoaded: function() {
+                    if (!angular.isDefined(L.Control.SubirPlanta)) {
+                        $log.error(errorHeader + ' Subir planta plugin is not loaded.');
+                        return false;
+                    }
+
+                    return true;
+                },
+                checkValidParams: function(/* params */) {
+                    return true;
+                },
+
+                createControl: function(params) {
+                    //console.log("Invocada directiva angular (subir planta)");
+
+                    return new L.Control.SubirPlanta();
+                },
+            },
+            bajarPlanta:{
+                isPluginLoaded: function() {
+                    if (!angular.isDefined(L.Control.BajarPlanta)) {
+                        $log.error(errorHeader + ' Bajar planta plugin is not loaded.');
+                        return false;
+                    }
+
+                    return true;
+                },
+                checkValidParams: function(/* params */) {
+                    return true;
+                },
+
+                createControl: function(params) {
+                    //console.log("Invocada directiva angular (bajar planta)");
+
+                    return new L.Control.BajarPlanta();
+                },
+            },
             draw: {
                 isPluginLoaded: function() {
                     if (!angular.isDefined(L.Control.Draw)) {
