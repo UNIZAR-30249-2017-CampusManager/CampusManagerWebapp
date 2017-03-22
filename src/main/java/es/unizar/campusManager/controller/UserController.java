@@ -7,13 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+//import org.springframework.security.core.Authentication;
+//import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.NoSuchAlgorithmException;
+import java.security.Principal;
 import java.security.spec.InvalidKeySpecException;
+
+
 
 @RestController
 public class UserController {
@@ -26,75 +31,75 @@ public class UserController {
     /**
      * Obtiene un usuario del formulario html e intenta registrarlo
      * @param email,password,name,surname,role usuario a registrar
-     * @return codigo 200 si el registro es correcto
+     * @return codigo 200 junto con los datos del usuario si el registro es correcto
      */
-    @RequestMapping(value = "/signIn", method = RequestMethod.POST)
-    public ResponseEntity<?> signIn(@RequestParam("email") String email, @RequestParam("password") String password,
+    @RequestMapping(value = "/user", method = RequestMethod.POST)
+    public ResponseEntity<?> create(@RequestParam("email") String email, @RequestParam("password") String password,
                                     @RequestParam("name") String name, @RequestParam("surname") String surname,
-                                    @RequestParam("role") String role, HttpServletRequest request){
+                                    @RequestParam("role") String role){
 
-        CampusUser admin = (CampusUser) request.getSession().getAttribute("user");
+        System.out.println("Detectada peticion para crear el usuario " + email);
 
-        if(admin != null && admin.isAdmin()){
-            Password pw = new Password();
+        Password pw = new Password();
 
-            //ciframos la password del usuario
-            try {
+        //ciframos la password del usuario
+        try {
 
-                CampusUser user = new CampusUser(email, pw.generatePassword(password), name, surname, role);
-                userRepo.save(user);
-                return new ResponseEntity<String>(HttpStatus.OK);
+            CampusUser user = new CampusUser(email, pw.generatePassword(password), name, surname, role);
+            userRepo.save(user);
+            return new ResponseEntity<>(user,HttpStatus.OK);
 
-            } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-                return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
-            } catch (IllegalArgumentException e){
-                return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
-            }
-
-
-        }else{
-            return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
 
+
+
+    /**
+     * Devulve la informacion de todos los usuarios
+     * @param
+     * @return codigo 200 junto con los datos de los usuarios si el registro es correcto
+     */
+    @RequestMapping(value = "/user", method = RequestMethod.GET)
+    public ResponseEntity<?> getAll(){
+        System.out.println("Detectada peticion para obtener los datos de los usuarios");
+
+        return new ResponseEntity<>(userRepo.findAll(),HttpStatus.OK);
     }
 
 
     /**
-     * Autentica un usuario si existe e ingresa la password adecuada
-     * @param email email con el que se quiere hacer login
-     * @param password password con el que se quiere hacer login
-     * @param request objeto request del usuario
-     * @return codigo 200 si la autenticacion es correcta
+     * Devuelve la información de un usuario
+     * @param email usuario a devolver
+     * @return codigo 200 si el registro es correcto
      */
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<?> login(@RequestParam("email") String email,
-                                   @RequestParam("password") String password,
-                                   HttpServletRequest request){
-        System.out.println("Detectada peticion para que el usuario " + email + " haga login");
-
-        Password pw = new Password();
+    @RequestMapping(value = "/user/{email:.*}", method = RequestMethod.GET)
+    public ResponseEntity<?> get(@PathVariable String email){
+        System.out.println("Detectada peticion para obtener los datos del usuario " + email);
 
         CampusUser user = userRepo.findByEmail(email);
 
+        return new ResponseEntity<>(user,HttpStatus.OK);
 
-        if(user != null){
-            try {
-                if(pw.isPasswordValid(password,user.getPassword())){
-                    System.out.println("Password valida");
-                    request.getSession().setAttribute("user", user);
-                    return new ResponseEntity<String>(HttpStatus.OK);
-                } else{
-                    System.out.println("Password no valida");
-                    return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
-                }
-            } catch (Exception e) {
-                System.err.println("Error al comprobar la password del usuario " + user.getEmail());
-                return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        } else{
-            System.err.println("Error al obtener el usuario cuyo email es " + email);
+    }
 
-            return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+
+
+    /**
+     * Borra un usuario de la base de datos
+     * @param email  email del usuario a borrar
+     * @return codigo 200 si la eliminación es correcta
+     */
+    @RequestMapping(value = "/user/{email:.*}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> delete(@PathVariable String email){
+
+        System.out.println("Detectada peticion para borrar los datos del usuario " + email);
+        try{
+            userRepo.delete(email);
+            return new ResponseEntity<>("{\"message\":\"User deleted\"}",HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>("Usuario no encontrado",HttpStatus.BAD_REQUEST);
         }
 
     }
@@ -104,65 +109,42 @@ public class UserController {
      * Obtiene los datos del usuario al cual modificar sus datos personales
      * y lo cambia en la base de datos
      * @param password,name,surname  datos a cambiar
-     * @return codigo 200 si la modificacion es correcta
+     * @return codigo 200, junto con los nuevos datos del usuario si la modificacion es correcta
      */
-    @RequestMapping(value = "/updateUser", method = RequestMethod.POST)
-    public ResponseEntity<?> updateUser(@RequestParam("password") String password,
+    @RequestMapping(value = "/user/{email:.*}", method = RequestMethod.PUT)
+    public ResponseEntity<?> update(@RequestParam("password") String password,
                                         @RequestParam("name") String name, @RequestParam("surname") String surname,
-                                         HttpServletRequest request){
-        CampusUser logueado = (CampusUser) request.getSession().getAttribute("user");
-        if(logueado != null) {
-            System.out.println("Detectada peticion para modificar datos del usuario " + logueado.getEmail());
-            CampusUser user = userRepo.findByEmail(logueado.getEmail());
+                                    @PathVariable String email){
 
-            if (user != null) {  //Obtenemos el usuario correctamente de la bbdd
-                // Comprueba si ha cambiado la contraseña
-                Password pw = new Password();
-                try {
-                    //String password = user.getPassword();
-                    if (!password.equals("") && !pw.isPasswordValid(password, user.getPassword())) {
-                        // La contraseña ha cambiado
-                        user.setPassword(pw.generatePassword(user.getPassword()));
-                    } else if (password.equals("")) {
-                        // La contraseña no se quiere modificar
-                        user.setPassword(password);
-                    }
+        System.out.println("Detectada peticion para modificar datos del usuario " + email);
+        CampusUser user = userRepo.findByEmail(email);
 
-                    user.setName(name);
-                    user.setSurname(surname);
-                    userRepo.save(user);
-
-                    //Actualizamos el usuario de la sesion con los nuevos datos
-                    request.getSession().setAttribute("user", userRepo);
-
-                    return new ResponseEntity<String>(HttpStatus.OK);
-                } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-                    System.err.println("Error al generar password cifrada del usuario " + user.getEmail());
-                    return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+        if(user!=null){
+            Password pw = new Password();
+            try {
+                //String password = user.getPassword();
+                if (!password.equals("") && !pw.isPasswordValid(password, user.getPassword())) {
+                    // La contraseña ha cambiado
+                    user.setPassword(pw.generatePassword(user.getPassword()));
+                } else if (password.equals("")) {
+                    // La contraseña no se quiere modificar
+                    user.setPassword(password);
                 }
-            } else {
-                System.err.println("No se han podido obtener los datos del usuario " + logueado.getEmail());
-                request.getSession().invalidate();
-                return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+
+                user.setName(name);
+                user.setSurname(surname);
+                userRepo.save(user);
+                return new ResponseEntity<>(user,HttpStatus.OK);
+            } catch (Exception e) {
+                //e.printStackTrace();
+                System.err.println("Error al generar password cifrada del usuario " + email);
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }else{
-            return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-    }
 
-    /**
-     * Tratamiento para cuando se pide hacer un logout
-     * @param request request del usuario que hace la peticion
-     * @return codigo 200 si se ha cerrado la sesion
-     */
-    @RequestMapping(value="/logout")
-    public ResponseEntity<?> logout(HttpServletRequest request){
-        System.out.println("Me ha llegado peticion para logout");
-
-        request.getSession().invalidate();
-
-        return new ResponseEntity<String>(HttpStatus.OK);
     }
 
 }
