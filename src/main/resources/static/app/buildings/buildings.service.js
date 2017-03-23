@@ -12,7 +12,7 @@
                 name: nombreLeyenda,
                 type: 'wms',
                 visible: true,
-                url: 'http://ec2-54-70-192-195.us-west-2.compute.amazonaws.com:8080/geoserver/labis/wms',
+                url: 'https://ec2-54-70-192-195.us-west-2.compute.amazonaws.com:8080/geoserver/labis/wms',
                 tiled: true,
                 layerParams: {
                     layers: nombreCapa,
