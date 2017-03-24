@@ -30,28 +30,32 @@ public class UserController {
 
     /**
      * Obtiene un usuario del formulario html e intenta registrarlo
-     * @param email,password,name,surname,role usuario a registrar
+     * @param user usuario a registrar (En JSON)
      * @return codigo 200 junto con los datos del usuario si el registro es correcto
      */
     @RequestMapping(value = "/user", method = RequestMethod.POST)
-    public ResponseEntity<?> create(@RequestParam("email") String email, @RequestParam("password") String password,
-                                    @RequestParam("name") String name, @RequestParam("surname") String surname,
-                                    @RequestParam("role") String role){
+    public ResponseEntity<?> create(@RequestBody CampusUser user){
 
-        System.out.println("Detectada peticion para crear el usuario " + email);
+        System.out.println("Detectada peticion para crear el usuario " + user.getEmail());
 
-        Password pw = new Password();
+        if(userRepo.findByEmail(user.getEmail())==null){
+            Password pw = new Password();
 
-        //ciframos la password del usuario
-        try {
+            //ciframos la password del usuario
+            try {
 
-            CampusUser user = new CampusUser(email, pw.generatePassword(password), name, surname, role);
-            userRepo.save(user);
-            return new ResponseEntity<>(user,HttpStatus.OK);
+                CampusUser newUser = new CampusUser(user.getEmail(), pw.generatePassword(user.getPassword()),
+                        user.getName(), user.getSurname(), user.getRole());
+                userRepo.save(newUser);
+                return new ResponseEntity<>(newUser,HttpStatus.OK);
 
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            } catch (Exception e) {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }else{
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+
     }
 
 
@@ -108,42 +112,36 @@ public class UserController {
     /**
      * Obtiene los datos del usuario al cual modificar sus datos personales
      * y lo cambia en la base de datos
-     * @param password,name,surname  datos a cambiar
+     * @param user  datos a cambiar (En JSON)
      * @return codigo 200, junto con los nuevos datos del usuario si la modificacion es correcta
      */
     @RequestMapping(value = "/user/{email:.*}", method = RequestMethod.PUT)
-    public ResponseEntity<?> update(@RequestParam("password") String password,
-                                        @RequestParam("name") String name, @RequestParam("surname") String surname,
-                                    @PathVariable String email){
+    public ResponseEntity<?> update(@RequestBody CampusUser user){
 
-        System.out.println("Detectada peticion para modificar datos del usuario " + email);
-        CampusUser user = userRepo.findByEmail(email);
+        System.out.println("Detectada peticion para modificar datos del usuario " + user.getEmail());
+        CampusUser newUser = userRepo.findByEmail(user.getEmail());
 
-        if(user!=null){
+        if(newUser!=null){
             Password pw = new Password();
             try {
                 //String password = user.getPassword();
-                if (!password.equals("") && !pw.isPasswordValid(password, user.getPassword())) {
+                if (!user.getPassword().equals("") && !pw.isPasswordValid(user.getPassword(), newUser.getPassword())) {
                     // La contraseña ha cambiado
-                    user.setPassword(pw.generatePassword(user.getPassword()));
-                } else if (password.equals("")) {
-                    // La contraseña no se quiere modificar
-                    user.setPassword(password);
+                    newUser.setPassword(pw.generatePassword(user.getPassword()));
                 }
 
-                user.setName(name);
-                user.setSurname(surname);
-                userRepo.save(user);
-                return new ResponseEntity<>(user,HttpStatus.OK);
+                newUser.setName(user.getName());
+                newUser.setSurname(user.getSurname());
+                userRepo.save(newUser);
+                return new ResponseEntity<>(newUser,HttpStatus.OK);
             } catch (Exception e) {
                 //e.printStackTrace();
-                System.err.println("Error al generar password cifrada del usuario " + email);
+                System.err.println("Error al generar password cifrada del usuario " + user.getPassword());
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }else{
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
 
     }
 
