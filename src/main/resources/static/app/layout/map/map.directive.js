@@ -2263,7 +2263,7 @@
                     },
                 },
                 nominatim: {
-                    server: ' http://nominatim.openstreetmap.org/search',
+                    server: ' https://nominatim.openstreetmap.org/search',
                 },
                 crs: L.CRS.EPSG3857,
                 tileLayer: '//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
