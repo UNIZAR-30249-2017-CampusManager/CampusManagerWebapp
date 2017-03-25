@@ -10,6 +10,9 @@
     <div class="navbar-collapse collapse" uib-collapse="isCollapsed">
         <div class="pull-right navbar-logo">
             <ul class="nav navbar-nav pull-right" ng-switch on="vm.isLogged()">
+                <li ng-switch-default>
+                    <a href="" ui-sref="crearUsuario">Crear usuario</a>
+                </li>
                 <li uib-dropdown>
                     <a href="#" uib-dropdown-toggle>Información <b class="caret"></b></a>
                     <ul uib-dropdown-menu role="menu" aria-labelledby="single-button">
@@ -26,9 +29,6 @@
                             <a ui-sref="torres" ng-click="isCollapsed=true">Edificio Torres Quevedo</a>
                         </li>
                     </ul>
-                </li>
-                <li ng-switch-default>
-                    <a href="" ui-sref="crearUsuario">Crear usuario</a>
                 </li>
                 <li>
                     <a href="" ng-switch-when="false" ng-click="vm.login()" id="login">
