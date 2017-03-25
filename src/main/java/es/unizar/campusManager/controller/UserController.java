@@ -68,17 +68,32 @@ public class UserController {
     @PostMapping(value = "/user")
     public ResponseEntity<?> create(@RequestBody CampusUser user) {
 
-        System.out.println("Detectada peticion para crear el usuario " + user.getEmail());
 
-        if (userRepo.findByEmail(user.getEmail()) == null) {
+        //Comprobacion de valores
+        if (user.getEmail() == null || user.getEmail().equals("") |
+                user.getPassword() == null || user.getPassword().equals("") |
+                user.getName() == null || user.getName().equals("") |
+                user.getSurname() == null || user.getSurname().equals("") |
+                user.getRole() == null ||
+                !(user.getRole().toUpperCase().equals("ADMIN") |
+                        user.getRole().toUpperCase().equals("WORKER") |
+                        user.getRole().toUpperCase().equals("PROFFESOR"))) {
 
-            CampusUser newUser = new CampusUser(user.getEmail(), user.getPassword(),
-                    user.getName(), user.getSurname(), user.getRole());
-            userRepo.save(newUser);
+            return new ResponseEntity<>("Datos incorrectos",HttpStatus.BAD_REQUEST);
 
-            return new ResponseEntity<>(HttpStatus.CREATED);
+        } else {
+            System.out.println("Detectada peticion para crear el usuario " + user.getEmail());
 
-            //Descomentar cuando pasemos a utilizar Spring Security
+
+            if (userRepo.findByEmail(user.getEmail()) == null) {
+
+                CampusUser newUser = new CampusUser(user.getEmail(), user.getPassword(),
+                        user.getName(), user.getSurname(), user.getRole());
+                userRepo.save(newUser);
+
+                return new ResponseEntity<>(HttpStatus.CREATED);
+
+                //Descomentar cuando pasemos a utilizar Spring Security
 //            Password pw = new Password();
 //
 //            //ciframos la password del usuario
@@ -92,9 +107,12 @@ public class UserController {
 //            } catch (Exception e) {
 //                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 //            }
-        } else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            } else {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+
         }
+
     }
 
     /**
@@ -125,29 +143,42 @@ public class UserController {
     @PutMapping(value = "/user/{email:.*}")
     public ResponseEntity<?> update(@RequestBody CampusUser user) {
 
-        System.out.println("Detectada peticion para modificar datos del usuario " + user.getEmail());
-        CampusUser newUser = userRepo.findByEmail(user.getEmail());
 
-        if (newUser != null) {
-            Password pw = new Password();
-            try {
-                //String password = user.getPassword();
-                if (!user.getPassword().equals("") && !pw.isPasswordValid(user.getPassword(), newUser.getPassword())) {
-                    // La contraseña ha cambiado
-                    newUser.setPassword(pw.generatePassword(user.getPassword()));
-                }
+        //Comprobacion de valores
+        if (user.getPassword() == null ||
+                user.getName() == null || user.getName().equals("") |
+                user.getSurname() == null || user.getSurname().equals("")) {
 
-                newUser.setName(user.getName());
-                newUser.setSurname(user.getSurname());
-                userRepo.save(newUser);
-                return new ResponseEntity<>(newUser, HttpStatus.OK);
-            } catch (Exception e) {
-                //e.printStackTrace();
-                System.err.println("Error al generar password cifrada del usuario " + user.getPassword());
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+            return new ResponseEntity<>("Datos incorrectos",HttpStatus.BAD_REQUEST);
+
         } else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+            System.out.println("Detectada peticion para modificar datos del usuario " + user.getEmail());
+
+            CampusUser newUser = userRepo.findByEmail(user.getEmail());
+
+
+            if (newUser != null) {
+                Password pw = new Password();
+                try {
+                    //String password = user.getPassword();
+                    if (!user.getPassword().equals("") && !pw.isPasswordValid(user.getPassword(), newUser.getPassword())) {
+                        // La contraseña ha cambiado
+                        newUser.setPassword(pw.generatePassword(user.getPassword()));
+                    }
+
+                    newUser.setName(user.getName());
+                    newUser.setSurname(user.getSurname());
+                    userRepo.save(newUser);
+                    return new ResponseEntity<>(newUser, HttpStatus.OK);
+                } catch (Exception e) {
+                    //e.printStackTrace();
+                    System.err.println("Error al generar password cifrada del usuario " + user.getPassword());
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            } else {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
         }
     }
 }
