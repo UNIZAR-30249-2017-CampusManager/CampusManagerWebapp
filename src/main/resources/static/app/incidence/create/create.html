@@ -1,0 +1,43 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3" id="panelMod">
+            <h1>
+                Crear una nueva incidencia
+            </h1>
+            <br/>
+            <div class="panel panel-modify">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="alert alert-danger" ng-show="vm.crearError">
+                                <a href="#" class="close" aria-label="close" ng-click="vm.toggleCrear()">&times;</a>
+                                <strong>¡Error al crear incidencia!</strong> Algo raro ha pasado en el servidor.
+                            </div>
+                            <form class="form" role="form" name="formCrear" ng-submit="vm.create($event)">
+                                <div class="form-group">
+                                    <label for="nombre">Nombre:</label>
+                                    <input type="text" name="nombre" id="nombre" class="form-control"
+                                           placeholder="Nombre" required="required" ng-model="vm.name"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lugar">Lugar:</label>
+                                    <input type="text" name="lugar" id="lugar" class="form-control"
+                                           placeholder="Lugar" required="required" ng-model="vm.place"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="description">Descripción:</label>
+                                    <textarea name="description" id="description" class="form-control"
+                                           placeholder="Descripción" required="required" ng-model="vm.description">
+                                    </textarea>
+                                </div>
+                                <div>
+                                    <input type="submit" class="form-control btn btn-primary" value="Crear"/>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

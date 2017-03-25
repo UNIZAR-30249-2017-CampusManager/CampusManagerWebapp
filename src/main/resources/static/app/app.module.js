@@ -11,6 +11,7 @@
             'app.account',
             'app.home',
             'app.layout',
+            'app.incidence',
             'app.buildings'])
         .config(function ($stateProvider, $urlRouterProvider,$logProvider,$locationProvider) {
             $logProvider.debugEnabled(false);
@@ -28,25 +29,26 @@
                     url: '/ada',
                     templateUrl: 'app/buildings/ada/ada.html',
                     controller: 'AdaController as vm'
-
                 })
                 .state('betan', {
                     url: '/betan',
                     templateUrl: 'app/buildings/betan/betan.html',
                     controller: 'BetanController as vm'
-
                 })
                 .state('torres', {
                     url: '/torres',
                     templateUrl: 'app/buildings/torres/torres.html',
                     controller: 'TorresController as vm'
-
                 })
                 .state('crearUsuario', {
                     url: '/crearUsuario',
                     templateUrl: 'app/account/create/create.html',
                     controller: 'CreateController as vm'
-
+                })
+                .state('crearIncidencia', {
+                    url: '/crearIncidencia',
+                    templateUrl: 'app/incidence/create/create.html',
+                    controller: 'CreateIncidenceController as vm'
                 });
         });
 
