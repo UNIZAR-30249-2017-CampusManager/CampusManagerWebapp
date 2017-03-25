@@ -6415,14 +6415,17 @@
 
         _getIconUrl: function (name) {
 
-            L.Icon.Default.imagePath = this._detectIconPath(name);
+            //L.Icon.Default.imagePath = this._detectIconPath(name);
+            L.Icon.Default.imagePath = '/bower_components/leaflet/dist/images/marker-' + name + '.png';
 
             // @option imagePath: String
             // `L.Icon.Default` will try to auto-detect the absolute location of the
             // blue icon images. If you are placing these images in a non-standard
             // way, set this option to point to the right absolute path.
             var path = this.options.imagePath || L.Icon.Default.imagePath;
-            return path.indexOf("data:") === 0 ? path : path + L.Icon.prototype._getIconUrl.call(this, name);
+            //return path.indexOf("data:") === 0 ? path : path + L.Icon.prototype._getIconUrl.call(this, name);
+
+            return L.Icon.Default.imagePath;
         },
 
         _detectIconPath: function (name) {

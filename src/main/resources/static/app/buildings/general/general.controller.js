@@ -16,7 +16,7 @@
         $scope.basicLayer = {
             xyz: {
                 name: 'OpenStreetMap (XYZ)',
-                url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                 type: 'xyz',
                 layerOptions: {
                     attribution: "",

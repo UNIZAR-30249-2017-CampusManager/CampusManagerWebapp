@@ -16,7 +16,8 @@
             open: open,
             login: login,
             logout: logout,
-            isLogged: isLogged
+            isLogged: isLogged,
+            currentLoggedUser: currentLoggedUser
         };
 
         var modalInstance = null;
@@ -40,10 +41,9 @@
             );
         }
 
-        function login(){
+        function login(usuario){
             vm.session.logged = {
-                username: 'Test',
-                role: 'role'
+                usuario: usuario
             };
         }
 
@@ -53,6 +53,12 @@
 
         function isLogged(){
             return vm.session.logged != undefined;
+        }
+
+        function currentLoggedUser(){
+            if(isLogged()){
+                return vm.session.logged.usuario;
+            } else return undefined;
         }
     }
 })();

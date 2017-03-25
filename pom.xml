@@ -108,9 +108,10 @@
                         <configuration>
                             <arguments>install</arguments>
                         </configuration>
+                        <phase>generate-resources</phase>
                     </execution>
                     <execution>
-                        <id>gulp build</id>
+                        <id>gulp default</id>
                         <goals>
                             <goal>gulp</goal>
                         </goals>

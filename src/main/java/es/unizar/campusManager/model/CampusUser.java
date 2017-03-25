@@ -69,12 +69,12 @@ public class CampusUser {
     }
 
     public String toString() {
-        return "Usuario{" +
-                "nombre='" + name + '\'' +
-                ", apellidos='" + surname + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", Tipo='" + getRole() + '\'' +
+        return "{" +
+                "\"name\":\"" + name + '\"' +
+                ", \"surname\":\"" + surname + '\"' +
+                ", \"email\":\"" + email + '\"' +
+                ", \"password\":\"" + password + '\"' +
+                ", \"role\":\"" + getRole() + '\"' +
                 '}';
     }
 

@@ -5,21 +5,26 @@
         .module('app.account.login')
         .controller('LoginController', LoginController);
 
-    LoginController.inject = ['$uibModalInstance'];
+    LoginController.inject = ['$uibModalInstance','$http','LoginService','AlertService'];
 
-    function LoginController($uibModalInstance,LoginService,AlertService) {
+    function LoginController($uibModalInstance,$http,LoginService,AlertService) {
         //console.log("Login controller called!");
         var vm = this;
 
         vm.authenticationError = false;
         vm.password = null;
-        vm.username = null;
+        vm.email = null;
         vm.cancel = cancel;
         vm.login = login;
+        vm.toggleLogin = toggleLogin;
+
+        function toggleLogin(){
+            vm.loginError = false;
+        }
 
         function cancel() {
-            vm.credentials = {
-                username: null,
+            vm = {
+                email: null,
                 password: null
             };
             vm.authenticationError = false;
@@ -32,12 +37,28 @@
             // console.log(vm.password);
 
             //Comprobar mediante peticion a API RESTful que son correctos los campos
-            //..........
+            $http.get("/api/user/" + vm.email).then(
+                function (response) { //success
+                    var usuario = response.data;
 
-            AlertService.addAlert('info','¡Bienvenid@ de vuelta ' + vm.username + '!');
-            LoginService.login();
+                    if(usuario.password == vm.password){
+                        //Exito
+                        vm.loginError = false;
 
-            $uibModalInstance.dismiss('success');
+                        AlertService.addAlert('info','¡Bienvenid@ de vuelta ' + usuario.name + '!');
+                        LoginService.login(usuario);
+
+                        $uibModalInstance.dismiss('success');
+                    } else{
+                        //Password incorrecto
+                        //console.log("Password introducida: " + vm.password + ", password valida: " + usuario.password);
+                        vm.loginError = true;
+                    }
+                },
+                function (response) { //error
+                    vm.loginError = true;
+                }
+            );
         }
     }
 })();

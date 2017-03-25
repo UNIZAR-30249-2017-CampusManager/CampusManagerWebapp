@@ -9,7 +9,10 @@
     </div>
     <div class="navbar-collapse collapse" uib-collapse="isCollapsed">
         <div class="pull-right navbar-logo">
-            <ul class="nav navbar-nav pull-right" ng-switch on="vm.isLogged()">
+            <ul class="nav navbar-nav pull-right" ng-switch on="vm.currentRole()">
+                <li ng-switch-when="ADMIN">
+                    <a href="" ui-sref="crearUsuario">Crear usuario</a>
+                </li>
                 <li uib-dropdown>
                     <a href="#" uib-dropdown-toggle>Información <b class="caret"></b></a>
                     <ul uib-dropdown-menu role="menu" aria-labelledby="single-button">
@@ -27,10 +30,7 @@
                         </li>
                     </ul>
                 </li>
-                <li ng-switch-default>
-                    <a href="" ui-sref="crearUsuario">Crear usuario</a>
-                </li>
-                <li>
+                <li ng-switch on="vm.isLogged()">
                     <a href="" ng-switch-when="false" ng-click="vm.login()" id="login">
                         <span class="glyphicon glyphicon-log-in"></span>&nbsp;
                         <span>Acceso</span>

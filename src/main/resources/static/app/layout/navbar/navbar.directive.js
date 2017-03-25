@@ -27,6 +27,7 @@
             vm.login = login;
             vm.logout = logout;
             vm.isLogged = isLogged;
+            vm.currentRole = currentRole;
 
             function login() {
                 $scope.isCollapsed = true;
@@ -35,6 +36,12 @@
 
             function isLogged(){
                 return LoginService.isLogged();
+            }
+
+            function currentRole(){
+                if(isLogged()){
+                    return LoginService.currentLoggedUser().role;
+                } else return undefined;
             }
 
             function logout(){
