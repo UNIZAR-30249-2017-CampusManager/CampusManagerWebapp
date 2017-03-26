@@ -25,7 +25,7 @@ public class IncidenceController {
     /**
      * Servicio REST que devuelve todas las incidencias de la base de datos
      */
-    @GetMapping(value = "/incidencia")
+    @GetMapping(value = "/incidencia",produces = "application/json")
     public @ResponseBody String getAllIncidencias() {
         log.info("Consultando todas las incidencias.");
 
@@ -35,7 +35,7 @@ public class IncidenceController {
     /**
      * Servicio REST que devuelve la incidencia con id el especificado en el parámetro.
      */
-    @GetMapping(value = "/incidencia/{id:.*}")
+    @GetMapping(value = "/incidencia/{id:.*}",produces = "application/json")
     public @ResponseBody String getIncidencia(@PathVariable String id) {
         log.info("Consultando incidencia.");
 
@@ -45,7 +45,7 @@ public class IncidenceController {
     /**
      * Servicio REST que devuelve todas las incidencias del worker especificado en el parámetro.
      */
-    @GetMapping(value = "/incidencia/worker/{workerEmail:.*}")
+    @GetMapping(value = "/incidencia/worker/{workerEmail:.*}",produces = "application/json")
     public @ResponseBody String getWorkerIncidencias(@PathVariable String workerEmail) {
         log.info("Consultando las incidencias del trabajador " + workerEmail +".");
         if (userRepository.findByEmail(workerEmail) == null) {
@@ -59,7 +59,7 @@ public class IncidenceController {
     /**
      * Servicio REST que devuelve todas las incidencias con estado especificado en el parámetro.
      */
-    @GetMapping(value = "/incidencia/estado/{status:.*}")
+    @GetMapping(value = "/incidencia/estado/{status:.*}",produces = "application/json")
     public @ResponseBody String getStatusIncidencias(@PathVariable String status) {
         log.info("Consultando las incidencias con estado " + status +".");
 

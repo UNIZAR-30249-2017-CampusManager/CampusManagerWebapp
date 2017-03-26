@@ -32,7 +32,7 @@ public class UserController {
      * @param
      * @return codigo 200 junto con los datos de los usuarios si el registro es correcto
      */
-    @GetMapping(value = "/user")
+    @GetMapping(value = "/user",produces = "application/json")
     public @ResponseBody String getAll() {
         System.out.println("Detectada peticion para obtener los datos de los usuarios");
 
@@ -45,7 +45,7 @@ public class UserController {
      * @param email usuario a devolver
      * @return codigo 200 si el registro es correcto
      */
-    @GetMapping(value = "/user/{email:.*}")
+    @GetMapping(value = "/user/{email:.*}",produces = "application/json")
     public @ResponseBody String get(@PathVariable String email) {
         System.out.println("Detectada peticion para obtener los datos del usuario " + email);
 
