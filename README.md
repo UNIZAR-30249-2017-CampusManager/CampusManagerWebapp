@@ -1,4 +1,5 @@
-# [Campus Manager](https://campusmanagerunizar.herokuapp.com/) [![Estado actual](https://travis-ci.org/UNIZAR-30249-2017-CampusManager/CampusManagerWebapp.svg?branch=master)](https://travis-ci.org/UNIZAR-30249-2017-CampusManager/CampusManagerWebapp)
+# [Campus Manager](https://campusmanagerunizar.herokuapp.com/) [![Estado actual](https://travis-ci.org/UNIZAR-30249-2017-CampusManager/CampusManagerWebapp.svg?branch=master)](https://travis-ci.org/UNIZAR-30249-2017-CampusManager/CampusManagerWebapp) [![Cobertura de código](https://codecov.io/gh/UNIZAR-30249-2017-CampusManager/CampusManagerWebapp/branch/master/graph/badge.svg)](https://codecov.io/gh/UNIZAR-30249-2017-CampusManager/CampusManagerWebapp)
+
 
 
 ## ¿Dudas?
