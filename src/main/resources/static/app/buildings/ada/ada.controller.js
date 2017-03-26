@@ -5,9 +5,18 @@
         .module('app.buildings.ada')
         .controller('AdaController', AdaController);
 
-    function AdaController($scope, leafletData, $compile, MapService) {
+    AdaController.inject=['$scope','leafletData','$compile','MapService','ModalService']
+
+    function AdaController($scope, leafletData, $compile, MapService, ModalService) {
         //console.log("Invocado controlador del Ada");
+        var vm = this;
         var currentFloor = 0;
+
+        vm.report = report;
+
+        function report(ubicacion){
+            ModalService.open(ubicacion);
+        }
 
         //Actualizando titulos del html
         $scope.vista = {
@@ -63,14 +72,36 @@
             var latitude = leafEvent.latlng.lat;
             var longitude = leafEvent.latlng.lng;
 
+            //Lat: latitude.toString(), Long: longitude.toString()
+
             $scope.markers = [];
-            $scope.markers.push({
-                lat: latitude,
-                lng: longitude,
-                message: "¡Estás aquí! </br> Lat: " + latitude.toString() + "</br> Long: " + longitude.toString(),
-                focus: true,
-                draggable: false
-            });
+
+            //Encontrar ubicacion (enganchar a API)
+            var ubicacion = 'Aula A.01';
+
+            //Si no ha encontrado ubicacion, no le dejamos crear incidencias
+
+            if(ubicacion == undefined){
+                $scope.markers.push({
+                    lat: latitude,
+                    lng: longitude,
+                    message: "¡Estás aquí!",
+                    focus: true,
+                    draggable: false
+                });
+            } else{
+                $scope.markers.push({
+                    lat: latitude,
+                    lng: longitude,
+                    message: "<div style='text-align: center;'>" + ubicacion + ":</br> ¿Tienes alguna incidencia que reportar? </br> "
+                    + "<a href=\"\" ng-click=\"vm.report('" + ubicacion + "')\">"
+                    + "<span>Reportar</span>"
+                    + "</a></div>",
+                    getMessageScope: function() { return $scope; },
+                    focus: true,
+                    draggable: false
+                });
+            }
         });
 
         $scope.subirPlanta = function () {
