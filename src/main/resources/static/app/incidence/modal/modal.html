@@ -1,0 +1,32 @@
+<div class="modal-header">
+    <button type="button" class="close" aria-hidden="true" data-dismiss="modal" ng-click="vm.cancel()">&times;</button>
+    <h4 class="modal-title" >Crear incidencia en {{vm.place}}</h4>
+</div>
+<div class="modal-body" id="modal-body">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="alert alert-danger" ng-show="vm.crearError">
+                <a href="#" class="close" aria-label="close" ng-click="vm.toggleCrear()">&times;</a>
+                <strong>¡Error al crear incidencia!</strong> Algo raro ha pasado en el servidor.
+            </div>
+        </div>
+        <div class="col-md-8 col-md-offset-2">
+            <form class="form" role="form" ng-submit="vm.create($event)">
+                <div class="form-group">
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" name="nombre" id="nombre" class="form-control"
+                           placeholder="Nombre" required="required" ng-model="vm.name"/>
+                </div>
+                <div class="form-group">
+                    <label for="description">Descripción:</label>
+                    <textarea name="description" id="description" class="form-control"
+                              placeholder="Descripción" required="required" ng-model="vm.description">
+                                    </textarea>
+                </div>
+                <div>
+                    <input type="submit" class="form-control btn btn-primary" value="Crear"/>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
