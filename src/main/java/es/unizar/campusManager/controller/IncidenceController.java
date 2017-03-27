@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 @RestController
@@ -26,10 +27,10 @@ public class IncidenceController {
      * Servicio REST que devuelve todas las incidencias de la base de datos
      */
     @GetMapping(value = "/incidencia",produces = "application/json")
-    public @ResponseBody String getAllIncidencias() {
+    public @ResponseBody List<CampusIncidence> getAllIncidencias() {
         log.info("Consultando todas las incidencias.");
 
-        return incidenceRepository.findAll().toString();
+        return incidenceRepository.findAll();
     }
 
     /**
@@ -39,31 +40,36 @@ public class IncidenceController {
     public @ResponseBody String getIncidencia(@PathVariable String id) {
         log.info("Consultando incidencia.");
 
-        return incidenceRepository.findById(Integer.parseInt(id)).toString();
+        CampusIncidence incidencia = incidenceRepository.findById(Integer.parseInt(id));
+        if (incidencia == null) {
+            return "{}";
+        } else {
+            return incidencia.toString();
+        }
     }
 
     /**
      * Servicio REST que devuelve todas las incidencias del worker especificado en el parámetro.
      */
     @GetMapping(value = "/incidencia/worker/{workerEmail:.*}",produces = "application/json")
-    public @ResponseBody String getWorkerIncidencias(@PathVariable String workerEmail) {
+    public @ResponseBody List<CampusIncidence> getWorkerIncidencias(@PathVariable String workerEmail) {
         log.info("Consultando las incidencias del trabajador " + workerEmail +".");
         if (userRepository.findByEmail(workerEmail) == null) {
             log.info("Error, no existe el trabajador " + workerEmail +".");
-            return "{}";
+        } else {
+            log.info("Devueltas las incidencias del trabajador " + workerEmail +".");
         }
-        log.info("Devueltas las incidencias del trabajador " + workerEmail +".");
-        return incidenceRepository.findByWorkerEmail(workerEmail).toString();
+        return incidenceRepository.findByWorkerEmail(workerEmail);
     }
 
     /**
      * Servicio REST que devuelve todas las incidencias con estado especificado en el parámetro.
      */
     @GetMapping(value = "/incidencia/estado/{status:.*}",produces = "application/json")
-    public @ResponseBody String getStatusIncidencias(@PathVariable String status) {
+    public @ResponseBody List<CampusIncidence> getStatusIncidencias(@PathVariable String status) {
         log.info("Consultando las incidencias con estado " + status +".");
 
-        return incidenceRepository.findByStatus(status).toString();
+        return incidenceRepository.findByStatus(status);
     }
 
     /**
@@ -75,7 +81,7 @@ public class IncidenceController {
         log.info("Añadiendo nueva incidencia");
 
         CampusIncidence campusIncidence = new CampusIncidence(incidence.getName(), incidence.getDescription(),
-                incidence.getPlace());
+                incidence.getPlace(), incidence.getBuilding());
         incidenceRepository.save(campusIncidence);
 
         log.info("Incidencia \"" + campusIncidence.getName() + "\" en \"" + campusIncidence.getPlace() +

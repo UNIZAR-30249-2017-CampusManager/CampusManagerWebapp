@@ -16,6 +16,7 @@ public class CampusIncidence {
     private String name;
     private String description;
     private String place;
+    private String building;
     private String status;
     private String workerEmail;
     private Date fecha;
@@ -30,10 +31,11 @@ public class CampusIncidence {
 
     }
 
-    public CampusIncidence(String name, String description, String place) {
+    public CampusIncidence(String name, String description, String place, String building) {
         this.name = name;
         this.description = description;
         this.place = place;
+        this.building = building;
         status = UNASSIGNED;
         fecha = new Date();
     }
@@ -86,7 +88,6 @@ public class CampusIncidence {
         this.workerEmail = workerEmail;
     }
 
-
     public Date getFecha() {
         return fecha;
     }
@@ -95,16 +96,25 @@ public class CampusIncidence {
         this.fecha = fecha;
     }
 
+    public String getBuilding() {
+        return building;
+    }
+
+    public void setBuilding(String building) {
+        this.building = building;
+    }
+
     @Override
     public String toString() {
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/yyyy");
-        return "{" +
-                "\"name\":\"" + name + '\"' +
-                ", \"description\":\"" + description + '\"' +
-                ", \"place\":\"" + place + '\"' +
-                ", \"status\":\"" + status + '\"' +
-                ", \"workerEmail\":\"" + workerEmail + '\"' +
-                ", \"fecha\":\"" + sdf.format(fecha) + '\"' +
-                '}';
+        return "{\"_class\":\"CampusIncidence\", " +
+                "\"id\":\"" + id + "\"" + ", " +
+                "\"name\":" + (name == null ? "null" : "\"" + name + "\"") + ", " +
+                "\"description\":" + (description == null ? "null" : "\"" + description + "\"") + ", " +
+                "\"place\":" + (place == null ? "null" : "\"" + place + "\"") + ", " +
+                "\"building\":" + (building == null ? "null" : "\"" + building + "\"") + ", " +
+                "\"status\":" + (status == null ? "null" : "\"" + status + "\"") + ", " +
+                "\"workerEmail\":" + (workerEmail == null ? "null" : "\"" + workerEmail + "\"") + ", " +
+                "\"fecha\":" + (fecha == null ? "null" : fecha) +
+                "}";
     }
 }

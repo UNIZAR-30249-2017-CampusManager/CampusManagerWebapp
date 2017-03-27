@@ -41,12 +41,12 @@ public class UserTest {
         //Peticion a user que devuelve OK
 
 
-        String content = userCont.getAll();
+        String content = userCont.getAll().toString();
         JSONArray users = new JSONArray(content);
 
 
         //Peticion a user que devuelve OK
-        content = userCont.getAll();
+        content = userCont.getAll().toString();
         JSONArray users2 = new JSONArray(content);
 
 
