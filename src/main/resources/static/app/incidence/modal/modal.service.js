@@ -21,7 +21,7 @@
 
         return service;
 
-        function open(ubicacion) {
+        function open(ubicacion, building) {
             if (modalInstance !== null) return;
             modalInstance = $uibModal.open({
                 animation: true,
@@ -30,7 +30,8 @@
                 controllerAs: 'vm',
                 resolve:{
                     param: function () {
-                        return {'ubicacion':ubicacion };
+                        return {'ubicacion':ubicacion,
+                                'building' : building};
                     }
                 }
             });

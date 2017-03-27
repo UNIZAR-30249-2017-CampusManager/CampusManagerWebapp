@@ -15,7 +15,7 @@
         vm.report = report;
 
         function report(ubicacion){
-            ModalService.open(ubicacion);
+            ModalService.open(ubicacion, "Ada Byron");
         }
 
         //Actualizando titulos del html
@@ -76,32 +76,34 @@
 
             $scope.markers = [];
 
-            //Encontrar ubicacion (enganchar a API)
-            var ubicacion = 'Aula A.01';
+            var ubicacion = MapService.obtenerInfo($scope.layers.baselayers['wms'+currentFloor].layerParams.layers,
+                latitude, longitude);
 
-            //Si no ha encontrado ubicacion, no le dejamos crear incidencias
+            ubicacion.then(function (result) {
+                //Si no ha encontrado ubicacion, no le dejamos crear incidencias
 
-            if(ubicacion == undefined){
-                $scope.markers.push({
-                    lat: latitude,
-                    lng: longitude,
-                    message: "¡Estás aquí!",
-                    focus: true,
-                    draggable: false
-                });
-            } else{
-                $scope.markers.push({
-                    lat: latitude,
-                    lng: longitude,
-                    message: "<div style='text-align: center;'>" + ubicacion + ":</br> ¿Tienes alguna incidencia que reportar? </br> "
-                    + "<a href=\"\" ng-click=\"vm.report('" + ubicacion + "')\">"
-                    + "<span>Reportar</span>"
-                    + "</a></div>",
-                    getMessageScope: function() { return $scope; },
-                    focus: true,
-                    draggable: false
-                });
-            }
+                if(result == undefined){
+                    $scope.markers.push({
+                        lat: latitude,
+                        lng: longitude,
+                        message: "¡Estás aquí!",
+                        focus: true,
+                        draggable: false
+                    });
+                } else{
+                    $scope.markers.push({
+                        lat: latitude,
+                        lng: longitude,
+                        message: "<div style='text-align: center;'>" + result + ":</br> ¿Tienes alguna incidencia que reportar? </br> "
+                        + "<a href=\"\" ng-click=\"vm.report('" + result + "')\">"
+                        + "<span>Reportar</span>"
+                        + "</a></div>",
+                        getMessageScope: function() { return $scope; },
+                        focus: true,
+                        draggable: false
+                    });
+                }
+            });
         });
 
         $scope.subirPlanta = function () {
@@ -109,6 +111,7 @@
                 //console.log("Llegado al limite superior del Ada Byron");
             } else {
                 //console.log("Subiendo planta del Ada Byron (Planta actual: " + parseInt(currentFloor+1) + ")");
+                $scope.markers = [];
 
                 var baselayers = $scope.layers.baselayers;
 
@@ -129,6 +132,7 @@
                 //console.log("Llegado al limite inferior del Ada Byron");
             } else {
                 //console.log("Bajando planta del Ada Byron (Planta actual: " + parseInt(currentFloor-1) + ")");
+                $scope.markers = [];
 
                 var baselayers = $scope.layers.baselayers;
                 delete baselayers['wms' + currentFloor];

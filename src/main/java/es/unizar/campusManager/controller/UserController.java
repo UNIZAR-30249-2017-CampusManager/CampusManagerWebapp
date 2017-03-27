@@ -17,6 +17,7 @@ import java.net.URISyntaxException;
 import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
 import java.security.spec.InvalidKeySpecException;
+import java.util.List;
 
 
 @RestController
@@ -33,10 +34,10 @@ public class UserController {
      * @return codigo 200 junto con los datos de los usuarios si el registro es correcto
      */
     @GetMapping(value = "/user",produces = "application/json")
-    public @ResponseBody String getAll() {
+    public @ResponseBody List<CampusUser> getAll() {
         System.out.println("Detectada peticion para obtener los datos de los usuarios");
 
-        return userRepo.findAll().toString();
+        return userRepo.findAll();
     }
 
     /**
