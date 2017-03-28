@@ -75,7 +75,13 @@
 
             $scope.markers = [];
 
-            var ubicacion = MapService.obtenerInfo($scope.layers.baselayers['wms'+currentFloor].layerParams.layers,
+            if (currentFloor == - 1) {
+                var wmsFloor = 'wmsSotano';
+            } else {
+                var wmsFloor = 'wms'+currentFloor;
+            }
+
+            var ubicacion = MapService.obtenerInfo($scope.layers.baselayers[wmsFloor].layerParams.layers,
                 latitude, longitude);
 
             ubicacion.then(function (result) {
