@@ -106,6 +106,7 @@ public class CampusIncidence {
 
     @Override
     public String toString() {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/yyyy");
         return "{\"_class\":\"CampusIncidence\", " +
                 "\"id\":\"" + id + "\"" + ", " +
                 "\"name\":" + (name == null ? "null" : "\"" + name + "\"") + ", " +
@@ -114,7 +115,7 @@ public class CampusIncidence {
                 "\"building\":" + (building == null ? "null" : "\"" + building + "\"") + ", " +
                 "\"status\":" + (status == null ? "null" : "\"" + status + "\"") + ", " +
                 "\"workerEmail\":" + (workerEmail == null ? "null" : "\"" + workerEmail + "\"") + ", " +
-                "\"fecha\":" + (fecha == null ? "null" : fecha) +
+                "\"fecha\":" + (fecha == null ? "null" : "\"" + sdf.format(fecha) + "\"") +
                 "}";
     }
 }

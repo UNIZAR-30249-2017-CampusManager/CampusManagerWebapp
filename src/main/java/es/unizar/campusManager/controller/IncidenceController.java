@@ -80,13 +80,24 @@ public class IncidenceController {
     public ResponseEntity<?> addIncidencia(@RequestBody CampusIncidence incidence) {
         log.info("Añadiendo nueva incidencia");
 
-        CampusIncidence campusIncidence = new CampusIncidence(incidence.getName(), incidence.getDescription(),
-                incidence.getPlace(), incidence.getBuilding());
-        incidenceRepository.save(campusIncidence);
+        String name = incidence.getName();
+        String description = incidence.getDescription();
+        String place = incidence.getPlace();
+        String building = incidence.getBuilding();
 
-        log.info("Incidencia \"" + campusIncidence.getName() + "\" en \"" + campusIncidence.getPlace() +
-                "\" añadida correctamente");
+        if (name == null || name.trim().equals("") || description == null || description.trim().equals("")
+                || place == null || place.trim().equals("") || building == null || building.trim().equals("")) {
+            log.info("Error al añadir la nueva incidencia: parámetro erróneo.");
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            CampusIncidence campusIncidence = new CampusIncidence(name, description, place, building);
+            incidenceRepository.save(campusIncidence);
+
+            log.info("Incidencia \"" + name + "\" en \"" + place + " " + building +
+                    "\" añadida correctamente");
+
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }
     }
 }
