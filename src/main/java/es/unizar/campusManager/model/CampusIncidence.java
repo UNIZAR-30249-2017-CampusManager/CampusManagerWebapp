@@ -40,6 +40,15 @@ public class CampusIncidence {
         fecha = new Date();
     }
 
+    public CampusIncidence(String name, String description, String place, String building, String status, String workerEmail) {
+        this.name = name;
+        this.description = description;
+        this.place = place;
+        this.building = building;
+        this.status = status;
+        this.workerEmail = workerEmail;
+    }
+
     public int getId() {
         return id;
     }

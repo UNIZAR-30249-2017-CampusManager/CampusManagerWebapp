@@ -2,7 +2,9 @@ package es.unizar.campusManager;
 
 import es.unizar.campusManager.controller.IncidenceController;
 import es.unizar.campusManager.model.CampusIncidence;
+import es.unizar.campusManager.model.CampusUser;
 import es.unizar.campusManager.model.repository.IncidenceRepository;
+import es.unizar.campusManager.model.repository.UserRepository;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
@@ -27,11 +29,14 @@ public class IncidenceTest {
     @Autowired
     private IncidenceRepository incidenceRepository;
     @Autowired
+    private UserRepository userRepository;
+    @Autowired
     private IncidenceController controller;
 
     @Before
     public void before () {
         incidenceRepository.deleteAll();
+
     }
 
     @Test
@@ -72,7 +77,7 @@ public class IncidenceTest {
     }
 
     @Test
-    public void getIncidenceByIdTest () throws JSONException {
+    public void getIncidenciaByIdTest () throws JSONException {
         CampusIncidence incidence = new CampusIncidence("inciTest4", "Esto es una incidencia test4",
                 "Aula 1.14", "Ada Byron");
         incidenceRepository.save(incidence);
@@ -85,7 +90,7 @@ public class IncidenceTest {
     }
 
     @Test
-    public void getIncidencesByWorkerTest () throws JSONException {
+    public void getIncidenciasByWorkerTest () throws JSONException {
         CampusIncidence incidence = new CampusIncidence("inciTest5", "Esto es una incidencia test5",
                 "Aula 1.14", "Ada Byron");
         CampusIncidence incidence1 = new CampusIncidence("inciTest5.1", "Esto es una incidencia test5",
@@ -102,7 +107,7 @@ public class IncidenceTest {
     }
 
     @Test
-    public void getIncidencesByStatusTest () throws JSONException {
+    public void getIncidenciasByStatusTest () throws JSONException {
         CampusIncidence incidence = new CampusIncidence("inciTest6", "Esto es una incidencia test6",
                 "Aula 1.14", "Ada Byron");
         CampusIncidence incidence1 = new CampusIncidence("inciTest6.1", "Esto es una incidencia test6",
@@ -116,5 +121,80 @@ public class IncidenceTest {
         incidenceRepository.save(incidence2);
 
         assertEquals("inciTest6.1", controller.getStatusIncidencias("FINALIZED").get(0).getName());
+    }
+
+    @Test
+    public void modIncidencia() {
+        userRepository.save(new CampusUser("worker@test.com", "1234", "Worker", "test",
+                "WORKER"));
+        CampusIncidence incidence = new CampusIncidence("inciTest7", "Esto es una incidencia test7",
+                "Aula 1.14", "Ada Byron");
+
+        incidenceRepository.save(incidence);
+
+        CampusIncidence incidence2 = new CampusIncidence(null, null, null, null,
+                "ASSIGNED", "worker@test.com");
+
+        assertEquals(HttpStatus.OK, controller.modEstadoIncidencia("" + incidence.getId(),
+                incidence2).getStatusCode());
+
+        incidence = incidenceRepository.findById(incidence.getId());
+        assertEquals("ASSIGNED", incidence.getStatus());
+        assertEquals("worker@test.com", incidence.getWorkerEmail());
+    }
+
+    @Test
+    public void modIncidenciaParamErr() {
+        userRepository.save(new CampusUser("worker@test.com", "1234", "Worker", "test",
+                "WORKER"));
+        CampusIncidence incidence = new CampusIncidence("inciTest8", "Esto es una incidencia test8",
+                "Aula 1.14", "Ada Byron");
+
+        incidenceRepository.save(incidence);
+
+        CampusIncidence incidence2 = new CampusIncidence(null, null, null, null,
+                "NOEXISTEROL", "worker@test.com");
+
+        assertEquals(HttpStatus.BAD_REQUEST, controller.modEstadoIncidencia("" + incidence.getId(),
+                incidence2).getStatusCode());
+    }
+
+    @Test
+    public void modIncidenciaErr() {
+        userRepository.save(new CampusUser("worker@test.com", "1234", "Worker", "test",
+                "WORKER"));
+        CampusIncidence incidence = new CampusIncidence("inciTest9", "Esto es una incidencia test9",
+                "Aula 1.14", "Ada Byron");
+
+        incidenceRepository.save(incidence);
+
+        CampusIncidence incidence2 = new CampusIncidence(null, null, null, null,
+                "ASSIGNED", "error@test.com");
+
+        assertEquals(HttpStatus.NOT_FOUND, controller.modEstadoIncidencia("" + incidence.getId(),
+                incidence2).getStatusCode());
+    }
+
+    @Test
+    public void deleteIncidencia() {
+        int cantidad = incidenceRepository.findAll().size();
+        CampusIncidence incidence = new CampusIncidence("inciTest10", "Esto es una incidencia test10",
+                "Aula 1.14", "Ada Byron");
+
+        incidenceRepository.save(incidence);
+        cantidad++;
+        assertEquals(cantidad, incidenceRepository.findAll().size());
+
+        assertEquals(new ResponseEntity<>(HttpStatus.OK), controller.deleteIncidence("" + incidence.getId()));
+        assertEquals(cantidad - 1, incidenceRepository.findAll().size());
+    }
+
+    @Test
+    public void deleteIncidenciaErr() {
+        CampusIncidence incidence = new CampusIncidence("inciTest11", "Esto es una incidencia test11",
+                "Aula 1.14", "Ada Byron");
+        incidenceRepository.save(incidence);
+
+        assertEquals(new ResponseEntity<>(HttpStatus.NOT_FOUND), controller.deleteIncidence("" + incidence.getId() + 1));
     }
 }
