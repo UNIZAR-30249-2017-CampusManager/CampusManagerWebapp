@@ -2,6 +2,7 @@ package es.unizar.campusManager.controller;
 
 
 import es.unizar.campusManager.model.CampusIncidence;
+import es.unizar.campusManager.model.CampusUser;
 import es.unizar.campusManager.model.repository.IncidenceRepository;
 import es.unizar.campusManager.model.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,6 +99,64 @@ public class IncidenceController {
                     "\" añadida correctamente");
 
             return new ResponseEntity<>(HttpStatus.CREATED);
+        }
+    }
+
+    /**
+     * Modifica el estado y workerEmail de la incidencia con id pasado en la url.
+     */
+    @PutMapping(value = "/incidencia/{id:.*}")
+    public ResponseEntity<?> modEstadoIncidencia(@PathVariable String id, @RequestBody CampusIncidence incidence) {
+
+        log.info("Modificando incidencia");
+
+        String status = incidence.getStatus();
+        String workerEmail = incidence.getWorkerEmail();
+
+        if (!status.equals("UNASSIGNED") && !status.equals("ASSIGNED") && !status.equals("INPROGRESS") &&
+                !status.equals("INVALID") && !status.equals("FINALIZED")) {
+            log.info("Error al añadir la nueva incidencia: parámetro erróneo.");
+
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            incidence = incidenceRepository.findById(Integer.parseInt(id));
+            CampusUser user = userRepository.findByEmail(workerEmail);
+
+            if (incidence == null || user == null) {
+                log.info("Error al añadir la nueva incidencia: no existe worker o incidencia.");
+
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            } else {
+                incidence.setStatus(status);
+                incidence.setWorkerEmail(workerEmail);
+
+                incidenceRepository.save(incidence);
+                log.info("Incidencia actualizada correctamente");
+
+                return new ResponseEntity<>(incidence, HttpStatus.OK);
+            }
+        }
+    }
+
+    /**
+     * Servicio REST que elimina la incidencia con id pasado como parámetro. Devuelve OK en ese caso.
+     * NOT_FOUND si no existe incidencia con ese id.
+     */
+    @DeleteMapping(value = "/incidencia/{id:.*}")
+    public ResponseEntity<?> deleteIncidence (@PathVariable String id) {
+        log.info("Eliminando incidencia");
+
+        CampusIncidence incidence = incidenceRepository.findById(Integer.parseInt(id));
+
+        if (incidence == null) {
+            log.info("Error al eliminar la incidencia: no existe incidencia con ese id.");
+
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            incidenceRepository.delete(incidence);
+            log.info("Incidencia con id: " + id + " eliminada correctamente.");
+
+            return new ResponseEntity<>(HttpStatus.OK);
         }
     }
 }
