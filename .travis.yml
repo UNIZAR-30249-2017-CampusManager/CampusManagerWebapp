@@ -1,11 +1,18 @@
 language: java
+
 jdk:
 - oraclejdk8
-sudo: false
 
-script: "mvn cobertura:cobertura"
+install: true
 
+script:
+  - mvn -q install -PreducedMemory
+  - mvn cobertura:cobertura
 dist: trusty
+
+cache:
+  directories:
+    - $HOME/.m2
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
