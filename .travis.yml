@@ -7,5 +7,9 @@ script: "mvn cobertura:cobertura"
 
 dist: trusty
 
+cache:
+  directories:
+    - $HOME/.m2
+
 after_success:
   - bash <(curl -s https://codecov.io/bash)
