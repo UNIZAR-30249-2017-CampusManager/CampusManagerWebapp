@@ -1,0 +1,36 @@
+<style>
+    .row {
+        margin-bottom: 20px;
+    }
+
+    h1,h2 {
+        margin-bottom: 20px;
+    }
+</style>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8">
+            <div class="row">
+                <h1>
+                    Listado de incidencias para usuario {{vm.usuario}}
+                </h1>
+                <table ng-table="vm.tabla" class="table table-bordered">
+                    <tr ng-repeat="row in $data" ng-form="rowForm" style="text-align: center">
+                        <td data-title="'Nombre'"  sortable="'nombreIncidencia'"
+                            filter="{nombreIncidencia: 'text'}">{{row.nombreIncidencia}} </td>
+                        <td data-title="'Lugar'"  sortable="'lugarIncidencia'"
+                            filter="{lugarIncidencia: 'text'}">{{row.lugarIncidencia}} </td>
+                        <td data-title="'Edificio'"  sortable="'edificioIncidencia'"
+                            filter="{edificioIncidencia: 'text'}">{{row.edificioIncidencia}} </td>
+                        <td data-title="'Descripción'"  sortable="'descripcionIncidencia'"
+                            filter="{descripcionIncidencia: 'text'}">{{row.descripcionIncidencia}} </td>
+                        <td data-title="'Estado'"  sortable="'estadoIncidencia'"
+                            filter="{estadoIncidencia: 'text'}">{{row.estadoIncidencia}} </td>
+                        <td data-title="'Fecha'" sortable="'fechaIncidencia'"
+                            filter="{fechaIncidencia: 'text'}">{{row.fechaIncidencia | date:'dd/MM/yyyy'}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

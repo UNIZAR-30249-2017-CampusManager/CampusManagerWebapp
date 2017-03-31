@@ -49,6 +49,11 @@
                     url: '/crearIncidencia',
                     templateUrl: 'app/incidence/create/create.html',
                     controller: 'CreateIncidenceController as vm'
+                })
+                .state('listarIncidencia', {
+                    url: '/listarIncidencia',
+                    templateUrl: 'app/incidence/list/list.html',
+                    controller: 'ListIncidenceController as vm'
                 });
         });
 
