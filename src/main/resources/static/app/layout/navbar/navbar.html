@@ -10,8 +10,18 @@
     <div class="navbar-collapse collapse" uib-collapse="isCollapsed">
         <div class="pull-right navbar-logo">
             <ul class="nav navbar-nav pull-right" ng-switch on="vm.currentRole()">
-                <li ng-switch-when="ADMIN">
-                    <a href="" ui-sref="crearUsuario">Crear usuario</a>
+                <li uib-dropdown ng-show="vm.isLogged()">
+                    <a href="#" uib-dropdown-toggle>Panel de control <b class="caret"></b></a>
+                    <ul uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                        <li role="menuitem">
+                            <a ui-sref="listarIncidencia" ng-click="isCollapsed=true"
+                               ng-switch-when="ADMIN|WORKER" ng-switch-when-separator="|">Listado incidencias</a>
+                        </li>
+                        <li role="menuitem">
+                            <a ui-sref="crearUsuario" ng-click="isCollapsed=true"
+                            ng-switch-when="ADMIN">Crear usuario</a>
+                        </li>
+                    </ul>
                 </li>
                 <li>
                     <a href="" ui-sref="crearIncidencia">Reportar incidencia</a>
