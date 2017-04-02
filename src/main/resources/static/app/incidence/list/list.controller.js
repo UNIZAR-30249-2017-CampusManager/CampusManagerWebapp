@@ -7,12 +7,14 @@
 
     ListIncidenceController.inject = ['$scope', '$http', '$filter', 'NgTableParams', 'LoginService', 'AlertService'];
 
-    function ListIncidenceController($scope, $http, $filter, NgTableParams, LoginService, AlertService) {
+    function ListIncidenceController($scope, $http, NgTableParams, LoginService, AlertService, MaintenanceModalService) {
         var vm = this;
         var usuario = LoginService.currentLoggedUser();
 
-        vm.usuario =usuario.email;
+        vm.usuario = usuario.email;
+        vm.role = usuario.role;
         vm.incidencias = [];
+        $scope.inciSeleccionadas = [];
 
         if(usuario.role == 'ADMIN'){
             //Obtenemos listado de incidencias
@@ -33,7 +35,7 @@
                         vm.incidencias.push({
                             nombreIncidencia: name, lugarIncidencia: place, edificioIncidencia: building,
                             descripcionIncidencia: description, estadoIncidencia: status,
-                            fechaIncidencia: fecha
+                            fechaIncidencia: fecha, idIncidencia: id
                         });
                     }
 
@@ -75,5 +77,31 @@
                 }
             );
         }
+
+        MaintenanceModalService.incidencias = vm.incidencias;
+
+        $scope.toggleSelection = function(row){
+            if (row.isRowSelected) {
+                $scope.inciSeleccionadas.splice($scope.inciSeleccionadas.indexOf(row), 1);
+                row.isRowSelected = false;
+            } else {
+                $scope.inciSeleccionadas.push(row);
+                row.isRowSelected = true;
+            }
+        }
+
+        $scope.crearIncidencia = function() {
+            if ($scope.inciSeleccionadas.length > 0) {
+                MaintenanceModalService.open($scope.inciSeleccionadas);
+            } else {
+                AlertService.addAlert('danger', 'Error al crear solicitud de mantenimiento: seleccione al menos una incidencia');
+            }
+        }
+
+        $scope.$watch(function (){
+           return MaintenanceModalService.incidencias;
+        }, function (value) {
+            vm.incidencias = value;
+        });
     }
 })();

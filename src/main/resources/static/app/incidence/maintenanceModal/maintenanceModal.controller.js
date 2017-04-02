@@ -1,0 +1,61 @@
+(function () {
+    'use strict';
+
+    angular
+        .module('app.incidence.maintenanceModal')
+        .controller('MaintenanceModalController', MaintenanceModalController);
+
+    MaintenanceModalController.inject = ['$uibModalInstance','$http','AlertService'];
+
+    function MaintenanceModalController($uibModalInstance, $http, AlertService, param, MaintenanceModalService) {
+        var vm = this;
+
+        vm.crearError = false;
+        vm.cancel = cancel;
+        vm.create = create;
+        vm.toggleCrear = toggleCrear;
+
+        function toggleCrear() {
+            vm.crearError = false;
+        }
+
+        function cancel() {
+            vm = {
+                worker: null
+            };
+            vm.crearError = false;
+            $uibModalInstance.dismiss('cancel');
+        }
+
+        function create(event) {
+            event.preventDefault();
+
+            var incidenciasArray = param.idArray;
+            for (var i = 0; i < incidenciasArray.length; i++) {
+                (function () {
+                    var data = {
+                        status: "ASSIGNED",
+                        workerEmail: vm.workerEmail
+                    };
+
+                    var idIncidencia = incidenciasArray[i].idIncidencia;
+                    var aux = MaintenanceModalService.incidencias.indexOf(incidenciasArray[i]);
+
+                    $http.put("/api/incidencia/" + idIncidencia, data).then(function (response) {
+                        vm.crearError = false;
+
+                        MaintenanceModalService.incidencias[aux].estadoIncidencia = "ASSIGNED";
+
+                        vm.status = null;
+                        vm.workerEmail = null;
+
+                        $uibModalInstance.dismiss('success');
+                        AlertService.addAlert('success', '¡Las solicitudes de mantenimiento han sido asignadas a ' + data.workerEmail + '!');
+                    }, function (response) {
+                        vm.crearError = true;
+                    });
+                })();
+            }
+        }
+    }
+})();
