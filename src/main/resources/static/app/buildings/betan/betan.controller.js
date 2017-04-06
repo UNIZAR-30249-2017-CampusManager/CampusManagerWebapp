@@ -5,12 +5,14 @@
         .module('app.buildings.betan')
         .controller('BetanController', BetanController);
 
-    BetanController.inject = ['$scope','leafletData','$compile','MapService','ModalService'];
+    BetanController.inject = ['$scope','leafletData','$compile','MapService','ModalService', 'AlertService'];
 
-    function BetanController($scope,leafletData,$compile,MapService,ModalService) {
+    function BetanController($scope,leafletData,$compile,MapService,ModalService, AlertService) {
         //console.log("Invocado controlador del Betan");
         var vm = this;
         var currentFloor = 0;
+
+        AlertService.addPermanentAlert();
 
         vm.report = report;
 

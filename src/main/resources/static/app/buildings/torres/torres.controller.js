@@ -5,12 +5,14 @@
         .module('app.buildings.torres')
         .controller('TorresController', TorresController);
 
-    TorresController.inject = ['$scope','leafletData','$compile','MapService','ModalService'];
+    TorresController.inject = ['$scope','leafletData','$compile','MapService','ModalService', 'AlertService'];
 
-    function TorresController($scope,leafletData,$compile,MapService,ModalService) {
+    function TorresController($scope,leafletData,$compile,MapService,ModalService, AlertService) {
         //console.log("Invocado controlador del Torres");
         var vm = this;
         var currentFloor = 0;
+
+        AlertService.addPermanentAlert();
 
         vm.report = report;
 

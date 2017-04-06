@@ -5,12 +5,14 @@
         .module('app.buildings.ada')
         .controller('AdaController', AdaController);
 
-    AdaController.inject=['$scope','leafletData','$compile','MapService','ModalService']
+    AdaController.inject=['$scope','leafletData','$compile','MapService','ModalService','AlertService'];
 
-    function AdaController($scope, leafletData, $compile, MapService, ModalService) {
+    function AdaController($scope, leafletData, $compile, MapService, ModalService, AlertService) {
         //console.log("Invocado controlador del Ada");
         var vm = this;
         var currentFloor = 0;
+
+        AlertService.addPermanentAlert();
 
         vm.report = report;
 
