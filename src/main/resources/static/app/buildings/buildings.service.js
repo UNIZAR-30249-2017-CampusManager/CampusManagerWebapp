@@ -25,7 +25,7 @@
                     maxZoom: 23
                 }
             };
-        }
+        };
 
         this.obtenerInfo = function (nombreCapa, lat, long) {
             var url = "https://ec2-54-71-10-146.us-west-2.compute.amazonaws.com:8443/geoserver/labis/ows?service" +
@@ -35,11 +35,11 @@
             return $http.get(url).then(function (response) {
                 var ubicacion = response.data.features;
 
-                if (ubicacion == undefined || ubicacion[0] == undefined) {
+                if (ubicacion === undefined || ubicacion[0] === undefined) {
                     return undefined;
                 } else {
                     ubicacion = ubicacion[0].properties.id_centro;
-                    if (ubicacion == "RELLANO" || ubicacion == "PASILLO" || ubicacion == "BAÑOS" || ubicacion == "AULA") {
+                    if (ubicacion === "RELLANO" || ubicacion === "PASILLO" || ubicacion === "BAÑOS" || ubicacion === "AULA") {
                         return undefined
                     } else {
                         return ubicacion;

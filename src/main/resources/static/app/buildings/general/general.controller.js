@@ -5,8 +5,13 @@
         .module('app.buildings.general')
         .controller('GeneralController', GeneralController);
 
-    function GeneralController($scope,leafletData,MapService) {
+    GeneralController.$inject=['$scope','MapService','AlertService'];
+
+    function GeneralController($scope,MapService, AlertService) {
         //console.log("Invocado controlador general");
+
+        AlertService.addPermanentAlert();
+
         $scope.vista={
             nombre : 'Vista general'
         };
@@ -15,7 +20,7 @@
         };
         $scope.basicLayer = {
             xyz: {
-                name: 'OpenStreetMap (XYZ)',
+                name: 'OpenStreetMap',
                 url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                 type: 'xyz',
                 layerOptions: {
@@ -83,11 +88,5 @@
                 draggable: false
             });
         });
-
-        // $scope.$on('$destroy', function () {
-        //     leafletData.getMap().then(function(map) {
-        //         map.remove();
-        //     });
-        // });
     }
 })();
