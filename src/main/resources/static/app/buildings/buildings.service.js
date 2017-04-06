@@ -39,7 +39,7 @@
                     return undefined;
                 } else {
                     ubicacion = ubicacion[0].properties.id_centro;
-                    if (ubicacion === "RELLANO" || ubicacion === "PASILLO" || ubicacion === "BAÑOS") {
+                    if (ubicacion == "RELLANO" || ubicacion == "PASILLO" || ubicacion == "BAÑOS" || ubicacion == "AULA") {
                         return undefined
                     } else {
                         return ubicacion;
