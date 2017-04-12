@@ -20,6 +20,7 @@ public class CampusIncidence {
     private String status;
     private String workerEmail;
     private Date fecha;
+    private int requestId;
 
     private static final String UNASSIGNED = "UNASSIGNED";
     private static final String ASSIGNED = "ASSIGNED";
@@ -113,6 +114,14 @@ public class CampusIncidence {
         this.building = building;
     }
 
+    public int getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(int requestId) {
+        this.requestId = requestId;
+    }
+
     @Override
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/yyyy");
@@ -124,7 +133,8 @@ public class CampusIncidence {
                 "\"building\":" + (building == null ? "null" : "\"" + building + "\"") + ", " +
                 "\"status\":" + (status == null ? "null" : "\"" + status + "\"") + ", " +
                 "\"workerEmail\":" + (workerEmail == null ? "null" : "\"" + workerEmail + "\"") + ", " +
-                "\"fecha\":" + (fecha == null ? "null" : "\"" + sdf.format(fecha) + "\"") +
+                "\"fecha\":" + (fecha == null ? "null" : "\"" + sdf.format(fecha) + "\"") + ", " +
+                "\"requestId\":\"" + requestId + "\"" +
                 "}";
     }
 }

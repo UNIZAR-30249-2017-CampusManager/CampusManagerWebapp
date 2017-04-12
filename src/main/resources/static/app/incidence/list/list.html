@@ -15,7 +15,7 @@
                     Listado de incidencias para usuario {{vm.usuario}}
                 </h1>
                 <table ng-table="vm.tabla" class="table table-bordered">
-                    <tr ng-repeat="row in $data" ng-form="rowForm" style="text-align: center">
+                    <tr ng-repeat="row in $data | unique: 'requestId'" ng-form="rowForm" style="text-align: center" >
                         <td data-title="'Nombre'"  sortable="'nombreIncidencia'"
                             filter="{nombreIncidencia: 'text'}">{{row.nombreIncidencia}} </td>
                         <td data-title="'Lugar'"  sortable="'lugarIncidencia'"
@@ -28,8 +28,15 @@
                             filter="{estadoIncidencia: 'text'}">{{row.estadoIncidencia}} </td>
                         <td data-title="'Fecha'" sortable="'fechaIncidencia'"
                             filter="{fechaIncidencia: 'text'}">{{row.fechaIncidencia | date:'dd/MM/yyyy'}}</td>
+                        <td data-title="'Seleccionar'">
+                            <input type="checkbox" ng-checked="row.isRowSelected" ng-click="vm.toggleSelection(row)" />
+                        </td>
                     </tr>
                 </table>
+            </div>
+            <div class="row" ng-switch on="vm.role">
+                <button type="button" class="btn btn-primary" ng-click="vm.crearIncidencia()"
+                        ng-switch-when="ADMIN">Crear solicitud mantenimiento</button>
             </div>
         </div>
     </div>

@@ -1,0 +1,26 @@
+<div class="modal-header">
+    <button type="button" class="close" aria-hidden="true" data-dismiss="modal" ng-click="vm.cancel()">&times;</button>
+    <h4 class="modal-title" >Crear solicitud de mantenimiento para las incidencias seleccionadas</h4>
+</div>
+<div class="modal-body" id="modal-body">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="alert alert-danger" ng-show="vm.crearError">
+                <a href="#" class="close" aria-label="close" ng-click="vm.toggleCrear()">&times;</a>
+                <strong>¡Error al crear solicitud de mantenimiento!</strong> No existe personal de mantenimiento con ese correo.
+            </div>
+        </div>
+        <div class="col-md-8 col-md-offset-2">
+            <form class="form" role="form" ng-submit="vm.create($event)">
+                <div class="form-group">
+                    <label for="workerEmail">Email del personal de mantenimieno al que asignar:</label>
+                    <input type="email" name="workerEmail" id="workerEmail" class="form-control"
+                           placeholder="Email" required="required" ng-model="vm.workerEmail"/>
+                </div>
+                <div>
+                    <input type="submit" class="form-control btn btn-primary" value="Crear"/>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
