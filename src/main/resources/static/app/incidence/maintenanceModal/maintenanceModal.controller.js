@@ -31,11 +31,13 @@
             event.preventDefault();
 
             var incidenciasArray = param.idArray;
+            var requestId = incidenciasArray[0].idIncidencia;
             for (var i = 0; i < incidenciasArray.length; i++) {
                 (function () {
                     var data = {
                         status: "ASSIGNED",
-                        workerEmail: vm.workerEmail
+                        workerEmail: vm.workerEmail,
+                        requestId: requestId
                     };
 
                     var idIncidencia = incidenciasArray[i].idIncidencia;
@@ -45,9 +47,11 @@
                         vm.crearError = false;
 
                         MaintenanceModalService.incidencias[aux].estadoIncidencia = "ASSIGNED";
+                        MaintenanceModalService.incidencias[aux].requestId = requestId;
 
                         vm.status = null;
                         vm.workerEmail = null;
+                        vm.requestId = null;
 
                         $uibModalInstance.dismiss('success');
                         AlertService.addAlert('success', '¡Las solicitudes de mantenimiento han sido asignadas a ' + data.workerEmail + '!');

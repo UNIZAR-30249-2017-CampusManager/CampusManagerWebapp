@@ -14,7 +14,7 @@
         vm.usuario = usuario.email;
         vm.role = usuario.role;
         vm.incidencias = [];
-        $scope.inciSeleccionadas = [];
+        vm.inciSeleccionadas = [];
 
         if(usuario.role == 'ADMIN'){
             //Obtenemos listado de incidencias
@@ -31,11 +31,16 @@
                         var status = objetoIncidencia[i].status;
                         var workerEmail = objetoIncidencia[i].workerEmail;
                         var fecha = objetoIncidencia[i].fecha;
+                        var requestId = objetoIncidencia[i].requestId;
+
+                        if (requestId === 0) {
+                            requestId = id;
+                        }
 
                         vm.incidencias.push({
                             nombreIncidencia: name, lugarIncidencia: place, edificioIncidencia: building,
                             descripcionIncidencia: description, estadoIncidencia: status,
-                            fechaIncidencia: fecha, idIncidencia: id
+                            fechaIncidencia: fecha, idIncidencia: id, requestId: requestId
                         });
                     }
 
@@ -61,11 +66,16 @@
                         var status = objetoIncidencia[i].status;
                         var workerEmail = objetoIncidencia[i].workerEmail;
                         var fecha = objetoIncidencia[i].fecha;
+                        var requestId = objetoIncidencia[i].requestId;
+
+                        if (requestId === 0) {
+                            requestId = id;
+                        }
 
                         vm.incidencias.push({
                             nombreIncidencia: name, lugarIncidencia: place, edificioIncidencia: building,
                             descripcionIncidencia: description, estadoIncidencia: status,
-                            fechaIncidencia: fecha
+                            fechaIncidencia: fecha, requestId: requestId
                         });
                     }
 
@@ -80,19 +90,19 @@
 
         MaintenanceModalService.incidencias = vm.incidencias;
 
-        $scope.toggleSelection = function(row){
+        vm.toggleSelection = function(row){
             if (row.isRowSelected) {
-                $scope.inciSeleccionadas.splice($scope.inciSeleccionadas.indexOf(row), 1);
+                vm.inciSeleccionadas.splice(vm.inciSeleccionadas.indexOf(row), 1);
                 row.isRowSelected = false;
             } else {
-                $scope.inciSeleccionadas.push(row);
+                vm.inciSeleccionadas.push(row);
                 row.isRowSelected = true;
             }
         }
 
-        $scope.crearIncidencia = function() {
-            if ($scope.inciSeleccionadas.length > 0) {
-                MaintenanceModalService.open($scope.inciSeleccionadas);
+        vm.crearIncidencia = function() {
+            if (vm.inciSeleccionadas.length > 0) {
+                MaintenanceModalService.open(vm.inciSeleccionadas);
             } else {
                 AlertService.addAlert('danger', 'Error al crear solicitud de mantenimiento: seleccione al menos una incidencia');
             }

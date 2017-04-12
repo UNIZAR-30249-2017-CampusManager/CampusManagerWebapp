@@ -112,6 +112,7 @@ public class IncidenceController {
 
         String status = incidence.getStatus();
         String workerEmail = incidence.getWorkerEmail();
+        int requestId = incidence.getRequestId();
 
         if (!status.equals("UNASSIGNED") && !status.equals("ASSIGNED") && !status.equals("INPROGRESS") &&
                 !status.equals("INVALID") && !status.equals("FINALIZED")) {
@@ -129,6 +130,7 @@ public class IncidenceController {
             } else {
                 incidence.setStatus(status);
                 incidence.setWorkerEmail(workerEmail);
+                incidence.setRequestId(requestId);
 
                 incidenceRepository.save(incidence);
                 log.info("Incidencia actualizada correctamente");
