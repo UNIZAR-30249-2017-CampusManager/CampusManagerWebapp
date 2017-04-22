@@ -11,6 +11,8 @@ public class NuevaIncidenciaDTO {
     private String nombre;
     private String descripcion;
 
+    public NuevaIncidenciaDTO(){}
+
     public NuevaIncidenciaDTO(String x, String y, String nombreEdificio, Integer planta, String idUtc, String nombreEspacio, String nombre, String descripcion) {
         this.x = x;
         this.y = y;

@@ -103,10 +103,10 @@ public class EndpointREST {
         ArrayList<Incidencia> incidencias = (ArrayList<Incidencia>) servicioIncidencia.obtenerTodasIncidencias();
         ArrayList<IncidenciaDTO> incidenciaDTOS = new ArrayList<>();
 
-        for(Incidencia incidencia : incidencias){
-            incidenciaDTOS.add(new IncidenciaDTO(incidencia.getId(),incidencia.getNombre(),incidencia.getDescripcion(),
-                    incidencia.getEspacio().getNombre(),incidencia.getEspacio().getUbicacion().getNombreEdificio(),
-                    incidencia.getEstado(),incidencia.getEmailTrabajador(),incidencia.getFecha()));
+        for (Incidencia incidencia : incidencias) {
+            incidenciaDTOS.add(new IncidenciaDTO(incidencia.getId(), incidencia.getNombre(), incidencia.getDescripcion(),
+                    incidencia.getEspacio().getNombre(), incidencia.getEspacio().getUbicacion().getNombreEdificio(),
+                    incidencia.getEstado(), incidencia.getEmailTrabajador(), incidencia.getFecha(), incidencia.getGrupo()));
         }
 
         return incidenciaDTOS;
@@ -114,25 +114,25 @@ public class EndpointREST {
 
     @GetMapping(value = "/incidencias/{email:.*}", produces = "application/json")
     public @ResponseBody
-    List<IncidenciaDTO> obtenerIncidenciasTrabajador(@PathVariable String emailTrabajador) {
-        logger.info("Detectada peticion para obtener las incidencias del trabajador con email " + emailTrabajador);
+    List<IncidenciaDTO> obtenerIncidenciasTrabajador(@PathVariable String email) {
+        logger.info("Detectada peticion para obtener las incidencias del trabajador con email " + email);
 
         ServicioIncidencia servicioIncidencia = new ServicioIncidencia(incidenciaRepositoryImp);
 
-        ArrayList<Incidencia> incidencias = (ArrayList<Incidencia>) servicioIncidencia.obtenerIncidenciasTrabajador(emailTrabajador);
+        ArrayList<Incidencia> incidencias = (ArrayList<Incidencia>) servicioIncidencia.obtenerIncidenciasTrabajador(email);
         ArrayList<IncidenciaDTO> incidenciaDTOS = new ArrayList<>();
 
-        for(Incidencia incidencia : incidencias){
-            incidenciaDTOS.add(new IncidenciaDTO(incidencia.getId(),incidencia.getNombre(),incidencia.getDescripcion(),
-                    incidencia.getEspacio().getNombre(),incidencia.getEspacio().getUbicacion().getNombreEdificio(),
-                    incidencia.getEstado(),incidencia.getEmailTrabajador(),incidencia.getFecha()));
+        for (Incidencia incidencia : incidencias) {
+            incidenciaDTOS.add(new IncidenciaDTO(incidencia.getId(), incidencia.getNombre(), incidencia.getDescripcion(),
+                    incidencia.getEspacio().getNombre(), incidencia.getEspacio().getUbicacion().getNombreEdificio(),
+                    incidencia.getEstado(), incidencia.getEmailTrabajador(), incidencia.getFecha(), incidencia.getGrupo()));
         }
 
         return incidenciaDTOS;
     }
 
     @PutMapping(value = "/incidencias")
-    public ResponseEntity crearNuevaIncidencia(@RequestBody NuevaIncidenciaDTO nuevaIncidenciaDTO){
+    public ResponseEntity crearNuevaIncidencia(@RequestBody NuevaIncidenciaDTO nuevaIncidenciaDTO) {
         logger.info("Detectada peticion para crear una nueva incidencia");
 
         ServicioIncidencia servicioIncidencia = new ServicioIncidencia(incidenciaRepositoryImp);
@@ -141,10 +141,10 @@ public class EndpointREST {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         String formattedDate = formatter.format(date);
 
-        if(servicioIncidencia.crearIncidencia(nuevaIncidenciaDTO.getNombre(),nuevaIncidenciaDTO.getDescripcion(),
-                formattedDate,nuevaIncidenciaDTO.getIdUtc(),nuevaIncidenciaDTO.getNombreEspacio(),
-                nuevaIncidenciaDTO.getPlanta(),nuevaIncidenciaDTO.getNombreEdificio(),
-                nuevaIncidenciaDTO.getX(),nuevaIncidenciaDTO.getY())){
+        if (servicioIncidencia.crearIncidencia(nuevaIncidenciaDTO.getNombre(), nuevaIncidenciaDTO.getDescripcion(),
+                formattedDate, nuevaIncidenciaDTO.getIdUtc(), nuevaIncidenciaDTO.getNombreEspacio(),
+                nuevaIncidenciaDTO.getPlanta(), nuevaIncidenciaDTO.getNombreEdificio(),
+                nuevaIncidenciaDTO.getX(), nuevaIncidenciaDTO.getY())) {
             //Creacion correcta
             logger.info("Incidencia con nombre " + nuevaIncidenciaDTO.getNombre() + " creada satisfactoriamente");
             return new ResponseEntity(HttpStatus.OK);
@@ -153,6 +153,49 @@ public class EndpointREST {
             logger.severe("Error al crear la incidencia con nombre " + nuevaIncidenciaDTO.getNombre());
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @PostMapping(value = "/incidencias")
+    public ResponseEntity asignarIncidencia(@RequestBody AsignarIncidenciasDTO asignarIncidenciasDTO) {
+        logger.info("Detectada peticion para asignar una incidencia a un trabajador");
+
+        ServicioIncidencia servicioIncidencia = new ServicioIncidencia(incidenciaRepositoryImp);
+
+        ArrayList<Incidencia> incidencias = new ArrayList<>();
+
+        for (String id : asignarIncidenciasDTO.getIdsIncidencias()) {
+            incidencias.add(servicioIncidencia.obtenerIncidenciaId(id));
+        }
+
+        if (servicioIncidencia.asignarIncidencias(asignarIncidenciasDTO.getEmailTrabajador(), incidencias, trabajadorRepositoryImp)) {
+            //Asignacion correcta
+            logger.info("Incidencias asignadas al trabajador " + asignarIncidenciasDTO.getEmailTrabajador() + " correctamente");
+            return new ResponseEntity(HttpStatus.OK);
+        } else {
+            //Asignacion incorrecta
+            logger.info("Error al asignar incidencias " + asignarIncidenciasDTO.getIdsIncidencias().toString() +
+                    " al trabajador " + asignarIncidenciasDTO.getEmailTrabajador());
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping(value = "/incidencias/{grupoIncidencia:.*}")
+    public ResponseEntity cambiarEstadoIncidencia(@PathVariable Integer grupoIncidencia,
+                                                  @RequestBody NuevoEstadoIncidenciaDTO nuevoEstadoIncidenciaDTO){
+        logger.info("Peticion para cambiar el estado de las incidencias del grupo " + grupoIncidencia + " a " + nuevoEstadoIncidenciaDTO.getEstado());
+
+        ServicioIncidencia servicioIncidencia = new ServicioIncidencia(incidenciaRepositoryImp);
+
+        if(servicioIncidencia.cambiarEstado(grupoIncidencia,nuevoEstadoIncidenciaDTO.getEstado())){
+            //Cambio de estado satisfactorio
+            logger.info("Incidencias actualizadas a " + nuevoEstadoIncidenciaDTO.getEstado() + " correctamente");
+            return new ResponseEntity(HttpStatus.OK);
+        } else {
+            //Cambio de estado erroneo
+            logger.severe("Ha habido algun problema al actualizar las incidencias del grupo " + grupoIncidencia + " al estado " + nuevoEstadoIncidenciaDTO.getEstado());
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
 }

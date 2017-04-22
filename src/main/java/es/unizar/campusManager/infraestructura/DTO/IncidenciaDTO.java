@@ -10,8 +10,12 @@ public class IncidenciaDTO {
     private String estado;
     private String emailTrabajador;
     private String fecha;
+    private Integer grupo;
 
-    public IncidenciaDTO(String id, String nombre, String descripcion, String nombreEspacio, String nombreEdificio, String estado, String emailTrabajador, String fecha) {
+    public IncidenciaDTO(){}
+
+    public IncidenciaDTO(String id, String nombre, String descripcion, String nombreEspacio, String nombreEdificio, String estado, String emailTrabajador, String fecha,
+                         Integer grupo) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -20,6 +24,7 @@ public class IncidenciaDTO {
         this.estado = estado;
         this.emailTrabajador = emailTrabajador;
         this.fecha = fecha;
+        this.grupo = grupo;
     }
 
     public String getId() {
@@ -54,6 +59,10 @@ public class IncidenciaDTO {
         return fecha;
     }
 
+    public Integer getGrupo(){
+        return grupo;
+    }
+
     @Override
     public String toString() {
         return "{\"_class\":\"IncidenciaDTO\", " +
@@ -64,7 +73,8 @@ public class IncidenciaDTO {
                 "\"nombreEdificio\":" + (nombreEdificio == null ? "null" : "\"" + nombreEdificio + "\"") + ", " +
                 "\"estado\":" + (estado == null ? "null" : "\"" + estado + "\"") + ", " +
                 "\"emailTrabajador\":" + (emailTrabajador == null ? "null" : "\"" + emailTrabajador + "\"") + ", " +
-                "\"fecha\":" + (fecha == null ? "null" : "\"" + fecha + "\"") +
+                "\"fecha\":" + (fecha == null ? "null" : "\"" + fecha + "\"") + ", " +
+                "\"grupo\":" + (grupo == null ? "null" : "\"" + grupo + "\"") +
                 "}";
     }
 }

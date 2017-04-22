@@ -18,7 +18,6 @@ public class IncidenciaRepositoryImp implements IncidenciaRepository {
     @Autowired
     private IncidenciaRepositorySpring incidenciaRepositorySpring;
 
-
     @Override
     public List<Incidencia> obtenerTodasIncidencias() {
 
@@ -55,6 +54,37 @@ public class IncidenciaRepositoryImp implements IncidenciaRepository {
     }
 
     @Override
+    public Incidencia obtenerIncidenciaId(String id) {
+        IncidenciaJPA incidenciaJPA = incidenciaRepositorySpring.findById(id);
+
+        if(incidenciaJPA == null) return null;
+
+        return new Incidencia(incidenciaJPA.getId(),incidenciaJPA.getNombre(),incidenciaJPA.getDescripcion(),
+                incidenciaJPA.getEmailTrabajador(),incidenciaJPA.getFecha(),incidenciaJPA.getEstado(),
+                incidenciaJPA.getGrupo(),new Espacio(incidenciaJPA.getIdUtc(),incidenciaJPA.getNombreEspacio(),
+                incidenciaJPA.getEsReservable(), new Ubicacion(incidenciaJPA.getPlanta(),
+                incidenciaJPA.getNombreEdificio(),new Coordenadas(incidenciaJPA.getX(),incidenciaJPA.getY(),
+                incidenciaJPA.getSistemaReferenciaCoordenadas()))));
+    }
+
+    @Override
+    public List<Incidencia> obtenerIncidenciasGrupo(Integer grupo) {
+        ArrayList<IncidenciaJPA> incidenciaJPAS = (ArrayList<IncidenciaJPA>) incidenciaRepositorySpring.findByGrupo(grupo);
+        List<Incidencia> devolver = new ArrayList<>();
+
+        for(IncidenciaJPA incidenciaJPA : incidenciaJPAS){
+            devolver.add(new Incidencia(incidenciaJPA.getId(),incidenciaJPA.getNombre(),incidenciaJPA.getDescripcion(),
+                    incidenciaJPA.getEmailTrabajador(),incidenciaJPA.getFecha(),incidenciaJPA.getEstado(),
+                    incidenciaJPA.getGrupo(),new Espacio(incidenciaJPA.getIdUtc(),incidenciaJPA.getNombreEspacio(),
+                    incidenciaJPA.getEsReservable(), new Ubicacion(incidenciaJPA.getPlanta(),
+                    incidenciaJPA.getNombreEdificio(),new Coordenadas(incidenciaJPA.getX(),incidenciaJPA.getY(),
+                    incidenciaJPA.getSistemaReferenciaCoordenadas())))));
+        }
+
+        return devolver;
+    }
+
+    @Override
     public boolean crearIncidencia(String nombre, String descripcion, String fecha, Espacio espacio) {
         Incidencia incidencia = new Incidencia(nombre,descripcion,fecha,espacio);
 
@@ -70,5 +100,19 @@ public class IncidenciaRepositoryImp implements IncidenciaRepository {
         incidenciaRepositorySpring.save(incidenciaJPA);
 
         return true;
+    }
+
+    @Override
+    public void actualizarIncidencia(Incidencia incidencia) {
+        IncidenciaJPA incidenciaJPA = new IncidenciaJPA(incidencia.getId(),incidencia.getNombre(),
+                incidencia.getDescripcion(),incidencia.getEmailTrabajador(),incidencia.getFecha(),incidencia.getEstado(),
+                incidencia.getGrupo(),incidencia.getEspacio().getIdUtc(),incidencia.getEspacio().getNombre(),
+                incidencia.getEspacio().isEsReservable(),incidencia.getEspacio().getUbicacion().getPlanta(),
+                incidencia.getEspacio().getUbicacion().getNombreEdificio(),
+                incidencia.getEspacio().getUbicacion().getCoordenadas().getX(),
+                incidencia.getEspacio().getUbicacion().getCoordenadas().getY(),
+                incidencia.getEspacio().getUbicacion().getCoordenadas().getSistemaReferenciaCoordenadas());
+
+        incidenciaRepositorySpring.save(incidenciaJPA);
     }
 }

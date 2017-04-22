@@ -12,6 +12,7 @@ public interface IncidenciaRepositorySpring extends CrudRepository<IncidenciaJPA
 
     List<IncidenciaJPA> findAll();
     List<IncidenciaJPA> findByEmailTrabajador(String emailTrabajador);
-
+    List<IncidenciaJPA> findByGrupo(Integer grupo);
+    IncidenciaJPA findById(String id);
 
 }
