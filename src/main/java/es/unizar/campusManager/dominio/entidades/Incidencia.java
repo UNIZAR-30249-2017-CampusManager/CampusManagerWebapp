@@ -32,6 +32,9 @@ public class Incidencia extends Entidad {
         this.descripcion = descripcion;
         this.fecha = fecha;
         this.espacio = espacio;
+        this.grupo = null;
+        this.emailTrabajador = null;
+        this.estado = "Sin asignar";
     }
 
     public String getId() {

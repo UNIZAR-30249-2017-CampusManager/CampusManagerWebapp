@@ -10,13 +10,14 @@
     function ListIncidenceController($scope, $http, $filter, NgTableParams, LoginService, AlertService) {
         var vm = this;
         var usuario = LoginService.currentLoggedUser();
+        var rol = LoginService.currentRole();
 
         vm.usuario =usuario.email;
         vm.incidencias = [];
 
-        if(usuario.role == 'ADMIN'){
+        if(rol === 'administrador'){
             //Obtenemos listado de incidencias
-            $http.get("/api/incidencia").then(
+            $http.get("/incidencias").then(
                 function (response) { //success
                     var objetoIncidencia = response.data;
 
@@ -44,9 +45,9 @@
                         'el usuario ' + usuario.email);
                 }
             );
-        } else if(usuario.role == 'WORKER'){
+        } else if(rol === 'trabajador'){
             //Obtenemos listado de incidencias
-            $http.get("/api/incidencia/worker/" + usuario.email).then(
+            $http.get("/incidencias/" + usuario.email).then(
                 function (response) { //success
                     var objetoIncidencia = response.data;
 

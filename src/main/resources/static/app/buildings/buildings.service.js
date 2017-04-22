@@ -42,7 +42,10 @@
                     if (ubicacion === "RELLANO" || ubicacion === "PASILLO" || ubicacion === "BAÑOS" || ubicacion === "AULA") {
                         return undefined
                     } else {
-                        return ubicacion;
+                        return {
+                            nombre: '',
+                            idUtc: ''
+                        };
                     }
                 }
             }, function () {
