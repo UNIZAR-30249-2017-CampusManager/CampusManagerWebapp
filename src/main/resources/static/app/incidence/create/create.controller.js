@@ -24,7 +24,8 @@
             var data = {
                 name: vm.name,
                 place: vm.place,
-                description: vm.description
+                description: vm.description,
+                building: vm.building
             };
 
             $http.post("/api/incidencia", data).then(
@@ -35,6 +36,7 @@
                     vm.name = null;
                     vm.place = null;
                     vm.description = null;
+                    vm.building = null;
 
                     AlertService.addAlert('success', '¡La incidencia en ' + data.place + ' ha sido registrada con éxito!')
                 },

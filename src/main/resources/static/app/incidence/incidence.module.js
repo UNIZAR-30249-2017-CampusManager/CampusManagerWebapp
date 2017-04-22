@@ -5,6 +5,7 @@
         .module('app.incidence',[
             'app.incidence.create',
             'app.incidence.list',
-            'app.incidence.modal'
+            'app.incidence.modal',
+            'app.incidence.maintenanceModal'
         ])
 })();

@@ -3,6 +3,7 @@
 
     angular.module('app.incidence.list', [
         'ui.bootstrap',
-        'ngTable'
+        'ngTable',
+        'angular.filter'
     ])
 })();

@@ -7,13 +7,15 @@
 
     ListIncidenceController.inject = ['$scope', '$http', '$filter', 'NgTableParams', 'LoginService', 'AlertService'];
 
-    function ListIncidenceController($scope, $http, $filter, NgTableParams, LoginService, AlertService) {
+    function ListIncidenceController($scope, $http, NgTableParams, LoginService, AlertService, MaintenanceModalService) {
         var vm = this;
         var usuario = LoginService.currentLoggedUser();
         var rol = LoginService.currentRole();
 
-        vm.usuario =usuario.email;
+        vm.usuario = usuario.email;
+        vm.role = usuario.role;
         vm.incidencias = [];
+        vm.inciSeleccionadas = [];
 
         if(rol === 'administrador'){
             //Obtenemos listado de incidencias
@@ -30,11 +32,16 @@
                         var status = objetoIncidencia[i].status;
                         var workerEmail = objetoIncidencia[i].workerEmail;
                         var fecha = objetoIncidencia[i].fecha;
+                        var requestId = objetoIncidencia[i].requestId;
+
+                        if (requestId === 0) {
+                            requestId = id;
+                        }
 
                         vm.incidencias.push({
                             nombreIncidencia: name, lugarIncidencia: place, edificioIncidencia: building,
                             descripcionIncidencia: description, estadoIncidencia: status,
-                            fechaIncidencia: fecha
+                            fechaIncidencia: fecha, idIncidencia: id, requestId: requestId
                         });
                     }
 
@@ -60,11 +67,16 @@
                         var status = objetoIncidencia[i].status;
                         var workerEmail = objetoIncidencia[i].workerEmail;
                         var fecha = objetoIncidencia[i].fecha;
+                        var requestId = objetoIncidencia[i].requestId;
+
+                        if (requestId === 0) {
+                            requestId = id;
+                        }
 
                         vm.incidencias.push({
                             nombreIncidencia: name, lugarIncidencia: place, edificioIncidencia: building,
                             descripcionIncidencia: description, estadoIncidencia: status,
-                            fechaIncidencia: fecha
+                            fechaIncidencia: fecha, requestId: requestId
                         });
                     }
 
@@ -76,5 +88,31 @@
                 }
             );
         }
+
+        MaintenanceModalService.incidencias = vm.incidencias;
+
+        vm.toggleSelection = function(row){
+            if (row.isRowSelected) {
+                vm.inciSeleccionadas.splice(vm.inciSeleccionadas.indexOf(row), 1);
+                row.isRowSelected = false;
+            } else {
+                vm.inciSeleccionadas.push(row);
+                row.isRowSelected = true;
+            }
+        }
+
+        vm.crearIncidencia = function() {
+            if (vm.inciSeleccionadas.length > 0) {
+                MaintenanceModalService.open(vm.inciSeleccionadas);
+            } else {
+                AlertService.addAlert('danger', 'Error al crear solicitud de mantenimiento: seleccione al menos una incidencia');
+            }
+        }
+
+        $scope.$watch(function (){
+           return MaintenanceModalService.incidencias;
+        }, function (value) {
+            vm.incidencias = value;
+        });
     }
 })();
