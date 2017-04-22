@@ -17,9 +17,9 @@
             templateUrl: 'app/layout/navbar/navbar.html'
         };
 
-        NavbarController.$inject = ['$scope','$state','LoginService','AlertService'];
+        NavbarController.$inject = ['$rootScope', '$scope','$state','$http', 'LoginService','AlertService'];
 
-        function NavbarController($scope,$state,LoginService,AlertService) {
+        function NavbarController($rootScope, $scope,$state,$http, LoginService,AlertService) {
             //console.log("Navbar controller called!");
             var vm = this;
             $scope.isCollapsed = true;
@@ -28,6 +28,8 @@
             vm.logout = logout;
             vm.isLogged = isLogged;
             vm.currentRole = currentRole;
+
+            LoginService.currentRole();
 
             function login() {
                 $scope.isCollapsed = true;
@@ -39,9 +41,7 @@
             }
 
             function currentRole(){
-                if(isLogged()){
-                    return LoginService.currentLoggedUser().role;
-                } else return undefined;
+                return $rootScope.rol;
             }
 
             function logout(){
