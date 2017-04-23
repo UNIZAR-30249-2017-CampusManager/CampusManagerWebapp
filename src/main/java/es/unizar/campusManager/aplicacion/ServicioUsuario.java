@@ -20,7 +20,7 @@ public class ServicioUsuario {
     }
     
     public boolean comprobarCredenciales(String adminEmail, String adminPass){
-        Administrador administrador = this.adminRepository.encontrarAdmin(adminEmail);
+        Administrador administrador = this.adminRepository.findByEmail(adminEmail);
         if(administrador == null){
             // No existe administrador
             logger.severe("No existe el administrador con email " + adminEmail);
@@ -41,10 +41,10 @@ public class ServicioUsuario {
     public boolean crearAdministrador(String email, String password){
         //Comprobamos antes de crear el trabajador que no hay ningun usuario ya sea admin o trabajador
         if(obtenerRol(email).equals("")){
-            if(this.adminRepository.encontrarAdmin(email) == null){
+            if(this.adminRepository.findByEmail(email) == null){
                 // No existe trabajador, creo uno nuevo
                 logger.info("Creando nuevo administrador, no existe uno con email " + email);
-                return this.adminRepository.crearAdmin(email,password);
+                return this.adminRepository.save(new Administrador(email,password));
             } else {
                 logger.severe("El administrador con email " + email + " ya existe");
                 return false;
@@ -58,10 +58,10 @@ public class ServicioUsuario {
     public boolean crearTrabajador(String email, String password){
         //Comprobamos antes de crear el trabajador que no hay ningun usuario ya sea admin o trabajador
         if(obtenerRol(email).equals("")){
-            if(this.trabajadorRepository.encontrarTrabajador(email) == null){
+            if(this.trabajadorRepository.findByEmail(email) == null){
                 // No existe trabajador, creo uno nuevo
                 logger.info("Creando nuevo trabajador, no existe uno con email " + email);
-                return this.trabajadorRepository.crearTrabajador(email,password);
+                return this.trabajadorRepository.save(new Trabajador(email,password));
             } else {
                 logger.severe("El trabajador con email " + email + " ya existe");
                 return false;
@@ -75,9 +75,9 @@ public class ServicioUsuario {
     public boolean comprobarUsuario(String email, String password){
         logger.info("Comprobando si existe algun usuario con email " + email);
 
-        Administrador administrador = adminRepository.encontrarAdmin(email);
+        Administrador administrador = adminRepository.findByEmail(email);
         if(administrador == null){
-            Trabajador trabajador = trabajadorRepository.encontrarTrabajador(email);
+            Trabajador trabajador = trabajadorRepository.findByEmail(email);
             if(trabajador == null){
                 logger.severe("No existe");
                 return false;
@@ -105,8 +105,8 @@ public class ServicioUsuario {
 
     public String obtenerRol(String email){
         logger.info("Comprobando el rol del usuario con email " + email);
-        if(adminRepository.encontrarAdmin(email) == null){
-            if(trabajadorRepository.encontrarTrabajador(email) == null){
+        if(adminRepository.findByEmail(email) == null){
+            if(trabajadorRepository.findByEmail(email) == null){
                 logger.severe("No existe el usuario");
                 return "";
             } else {

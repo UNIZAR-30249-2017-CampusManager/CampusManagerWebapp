@@ -34,28 +34,28 @@ public class ServicioIncidencia {
         ", en el espacio con nombre " + nombreEspacio + " ubicado en la planta " + plantaUbicacion +
         " del edificio " + nombreEdificio);
 
-        return incidenciaRepository.crearIncidencia(nombre,descripcion,fecha,espacio);
+        return incidenciaRepository.save(new Incidencia(nombre,descripcion,fecha,espacio));
     }
 
     public List<Incidencia> obtenerTodasIncidencias(){
         logger.info("Obteniendo todas las incidencias del sistema");
-        return incidenciaRepository.obtenerTodasIncidencias();
+        return incidenciaRepository.findAll();
     }
 
     public List<Incidencia> obtenerIncidenciasTrabajador(String emailTrabajador){
         logger.info("Obteniendo las incidencias asignadas al trabajador " + emailTrabajador);
-        return incidenciaRepository.obtenerIncidenciasTrabajador(emailTrabajador);
+        return incidenciaRepository.findByWorkerEmail(emailTrabajador);
     }
 
     public Incidencia obtenerIncidenciaId(String id){
         logger.info("Obteniendo la incidencia con id " + id);
-        return incidenciaRepository.obtenerIncidenciaId(id);
+        return incidenciaRepository.findById(id);
     }
 
     public boolean asignarIncidencias(String emailTrabajador, List<Incidencia> incidencias, TrabajadorRepository trabajadorRepository){
         logger.info("Asignando incidencias al trabajador " + emailTrabajador);
 
-        if(trabajadorRepository.encontrarTrabajador(emailTrabajador) != null){
+        if(trabajadorRepository.findByEmail(emailTrabajador) != null){
 
             boolean hayAlgunaYaAsignada = false;
             boolean hayAlgunaNull = false;
@@ -88,7 +88,7 @@ public class ServicioIncidencia {
                     incidencia.setEstado("Asignada");
                     incidencia.setGrupo(numeroGrupoAleatorio);
 
-                    incidenciaRepository.actualizarIncidencia(incidencia);
+                    incidenciaRepository.update(incidencia);
                 }
 
                 return true;
@@ -107,14 +107,14 @@ public class ServicioIncidencia {
             logger.severe("Error, el nuevo estado " + nuevoEstado + " no es valido");
             return false;
         } else {
-            List<Incidencia> incidencias = incidenciaRepository.obtenerIncidenciasGrupo(grupo);
+            List<Incidencia> incidencias = incidenciaRepository.findByGroup(grupo);
 
             boolean error = false;
 
             for(Incidencia incidencia : incidencias){
                 if(incidencia != null){
                     incidencia.setEstado(nuevoEstado);
-                    incidenciaRepository.actualizarIncidencia(incidencia);
+                    incidenciaRepository.update(incidencia);
                 } else {
                     error = true;
                     break;

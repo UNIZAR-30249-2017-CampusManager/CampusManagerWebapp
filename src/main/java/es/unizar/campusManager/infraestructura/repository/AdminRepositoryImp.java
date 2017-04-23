@@ -3,7 +3,6 @@ package es.unizar.campusManager.infraestructura.repository;
 import es.unizar.campusManager.dominio.entidades.Administrador;
 import es.unizar.campusManager.dominio.repository.AdminRepository;
 import es.unizar.campusManager.infraestructura.springData.AdminRepositorySpring;
-import es.unizar.campusManager.infraestructura.springDataEntities.UsuarioJPA;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class AdminRepositoryImp implements AdminRepository {
@@ -12,25 +11,23 @@ public class AdminRepositoryImp implements AdminRepository {
     private AdminRepositorySpring adminRepositorySpring;
 
     @Override
-    public Administrador encontrarAdmin(String email) {
+    public Administrador findByEmail(String email) {
 
-        UsuarioJPA usuarioJPA = adminRepositorySpring.findByEmail(email);
+        Administrador administrador = adminRepositorySpring.findByEmail(email);
 
-        if(usuarioJPA == null || usuarioJPA.getRol().equals("trabajador")){
+        if(administrador == null){
             return null;
         }
         else{
-            return new Administrador(usuarioJPA.getId(),usuarioJPA.getEmail(),usuarioJPA.getPassword());
+            return administrador;
         }
     }
 
     @Override
-    public boolean crearAdmin(String email, String password) {
-        Administrador administrador = new Administrador(email,password);
+    public boolean save(Administrador administrador) {
 
-        adminRepositorySpring.save(new UsuarioJPA(administrador.getId(),administrador.getEmail(),
-                administrador.getPassword(),"administrador"));
+        Administrador administradorResult = adminRepositorySpring.save(administrador);
 
-        return true;
+        return administradorResult != null;
     }
 }

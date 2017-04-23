@@ -23,7 +23,7 @@ Estos objetos incidencia contienen los siguientes atributos:
 
 Body de la petición:
 
-* *CampusIncidence* (required): objeto con el nombre, descripción, lugar y edificio de la incidencia a crear.
+* *CampusIncidence* (required): objeto con el nombreEspacio, descripción, lugar y edificio de la incidencia a crear.
 
 Petición POST para añadir una nueva incidencia. Si el objeto pasado en el body de la petición no cumple lo especificado,
 es devuelto un código HTTP de *BAD REQUEST*. En caso contrario, la incidencia es añadida a la BBDD y se devuelve un código

@@ -2,8 +2,13 @@ package es.unizar.campusManager.dominio.entidades;
 
 import es.unizar.campusManager.dominio.objetosValor.Espacio;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Incidencia extends Entidad {
 
+    @Id
     private String id;
     private String nombre;
     private String descripcion;
@@ -13,17 +18,7 @@ public class Incidencia extends Entidad {
     private Integer grupo;
     private Espacio espacio;
 
-    public Incidencia(String id, String nombre, String descripcion, String emailTrabajador, String fecha,
-                      String estado, Integer grupo, Espacio espacio) {
-        this.id = id;
-        this.nombre = nombre;
-        this.descripcion = descripcion;
-        this.emailTrabajador = emailTrabajador;
-        this.fecha = fecha;
-        this.estado = estado;
-        this.grupo = grupo;
-        this.espacio = espacio;
-    }
+    public Incidencia(){}
 
     public Incidencia(String nombre, String descripcion, String fecha, Espacio espacio) {
         super();

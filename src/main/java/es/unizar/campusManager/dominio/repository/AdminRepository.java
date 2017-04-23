@@ -5,8 +5,8 @@ import es.unizar.campusManager.dominio.entidades.Administrador;
 
 public interface AdminRepository {
 
-    Administrador encontrarAdmin(String email);
+    Administrador findByEmail(String email);
 
-    boolean crearAdmin(String email, String password);
+    boolean save(Administrador administrador);
 
 }

@@ -1,25 +1,24 @@
-package es.unizar.campusManager.infraestructura.springDataEntities;
+package es.unizar.campusManager.dominio.entidades;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class UsuarioJPA {
+public class Edificio extends Entidad {
 
     @Id
     private String id;
 
     private String email;
     private String password;
-    private String rol;
 
-    public UsuarioJPA(){}
+    public Edificio(){}
 
-    public UsuarioJPA(String id, String email, String password, String rol) {
-        this.id = id;
+    public Edificio(String email, String password){
+        super();
+        this.id = super.getId();
         this.email = email;
         this.password = password;
-        this.rol = rol;
     }
 
     public String getId() {
@@ -34,7 +33,4 @@ public class UsuarioJPA {
         return password;
     }
 
-    public String getRol() {
-        return rol;
-    }
 }

@@ -20,7 +20,7 @@ Estos usuarios contienen los siguientes atributos:
 
 Body de la petición:
 
-* *Usuario* (required): objeto con el email, contraseña, nombre, apellidos y  rol  del usuario a crear.
+* *Usuario* (required): objeto con el email, contraseña, nombreEspacio, apellidos y  rol  del usuario a crear.
 
 Petición POST para añadir un nuevo usuario. Si el objeto pasado en el body de la petición no cumple lo especificado, o si ya existe un usuario con ese email en el sistema se devuelve un código HTTP de *BAD REQUEST*, junto con un mensaje indicando la causa del error. En caso contrario, el usuario es añadido a la BBDD y se devuelve un código HTTP de CREATED.
 

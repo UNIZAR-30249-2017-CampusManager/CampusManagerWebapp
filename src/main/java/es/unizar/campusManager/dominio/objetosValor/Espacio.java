@@ -1,15 +1,25 @@
 package es.unizar.campusManager.dominio.objetosValor;
 
+import javax.persistence.Embeddable;
+
+@Embeddable
 public class Espacio {
 
     private final String idUtc;
-    private final String nombre;
+    private final String nombreEspacio;
     private final boolean esReservable;
     private final Ubicacion ubicacion;
 
-    public Espacio(String idUtc, String nombre, boolean esReservable, Ubicacion ubicacion) {
+    public Espacio(){
+        this.idUtc = "";
+        this.nombreEspacio = "";
+        this.esReservable = false;
+        this.ubicacion = new Ubicacion();
+    }
+
+    public Espacio(String idUtc, String nombreEspacio, boolean esReservable, Ubicacion ubicacion) {
         this.idUtc = idUtc;
-        this.nombre = nombre;
+        this.nombreEspacio = nombreEspacio;
         this.esReservable = esReservable;
         this.ubicacion = ubicacion;
     }
@@ -18,8 +28,8 @@ public class Espacio {
         return idUtc;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getNombreEspacio() {
+        return nombreEspacio;
     }
 
     public boolean isEsReservable() {
@@ -34,7 +44,7 @@ public class Espacio {
     public String toString() {
         return "{\"_class\":\"Espacio\", " +
                 "\"idUtc\":" + (idUtc == null ? "null" : "\"" + idUtc + "\"") + ", " +
-                "\"nombre\":" + (nombre == null ? "null" : "\"" + nombre + "\"") + ", " +
+                "\"nombreEspacio\":" + (nombreEspacio == null ? "null" : "\"" + nombreEspacio + "\"") + ", " +
                 "\"esReservable\":\"" + esReservable + "\"" + ", " +
                 "\"ubicacion\":" + (ubicacion == null ? "null" : ubicacion) +
                 "}";

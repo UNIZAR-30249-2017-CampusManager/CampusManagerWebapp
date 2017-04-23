@@ -105,7 +105,7 @@ public class EndpointREST {
 
         for (Incidencia incidencia : incidencias) {
             incidenciaDTOS.add(new IncidenciaDTO(incidencia.getId(), incidencia.getNombre(), incidencia.getDescripcion(),
-                    incidencia.getEspacio().getNombre(), incidencia.getEspacio().getUbicacion().getNombreEdificio(),
+                    incidencia.getEspacio().getNombreEspacio(), incidencia.getEspacio().getUbicacion().getNombreEdificio(),
                     incidencia.getEstado(), incidencia.getEmailTrabajador(), incidencia.getFecha(), incidencia.getGrupo()));
         }
 
@@ -124,7 +124,7 @@ public class EndpointREST {
 
         for (Incidencia incidencia : incidencias) {
             incidenciaDTOS.add(new IncidenciaDTO(incidencia.getId(), incidencia.getNombre(), incidencia.getDescripcion(),
-                    incidencia.getEspacio().getNombre(), incidencia.getEspacio().getUbicacion().getNombreEdificio(),
+                    incidencia.getEspacio().getNombreEspacio(), incidencia.getEspacio().getUbicacion().getNombreEdificio(),
                     incidencia.getEstado(), incidencia.getEmailTrabajador(), incidencia.getFecha(), incidencia.getGrupo()));
         }
 

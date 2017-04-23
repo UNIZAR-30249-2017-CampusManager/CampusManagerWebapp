@@ -1,22 +1,21 @@
 package es.unizar.campusManager.dominio.repository;
 
 import es.unizar.campusManager.dominio.entidades.Incidencia;
-import es.unizar.campusManager.dominio.objetosValor.Espacio;
 
 import java.util.List;
 
 public interface IncidenciaRepository {
 
-    List<Incidencia> obtenerTodasIncidencias();
+    List<Incidencia> findAll();
 
-    List<Incidencia> obtenerIncidenciasTrabajador(String emailTrabajador);
+    List<Incidencia> findByWorkerEmail(String emailTrabajador);
 
-    Incidencia obtenerIncidenciaId(String id);
+    List<Incidencia> findByGroup(Integer grupo);
 
-    List<Incidencia> obtenerIncidenciasGrupo(Integer grupo);
+    Incidencia findById(String id);
 
-    boolean crearIncidencia(String nombre, String descripcion, String fecha, Espacio espacio);
+    boolean save(Incidencia incidencia);
 
-    void actualizarIncidencia(Incidencia incidencia);
+    void update(Incidencia incidencia);
 
 }

@@ -1,16 +1,17 @@
 package es.unizar.campusManager.dominio.entidades;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Administrador extends Entidad {
 
+    @Id
     private String id;
     private String email;
     private String password;
 
-    public Administrador(String id, String email, String password) {
-        this.id = id;
-        this.email = email;
-        this.password = password;
-    }
+    public Administrador(){}
 
     public Administrador(String email, String password){
         super();

@@ -5,8 +5,8 @@ import es.unizar.campusManager.dominio.entidades.Trabajador;
 
 public interface TrabajadorRepository {
 
-    Trabajador encontrarTrabajador (String email);
+    Trabajador findByEmail (String email);
 
-    boolean crearTrabajador (String email, String password);
+    boolean save (Trabajador trabajador);
 
 }

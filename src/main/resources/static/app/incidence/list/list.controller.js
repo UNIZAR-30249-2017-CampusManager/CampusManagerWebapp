@@ -5,12 +5,13 @@
         .module('app.incidence.list')
         .controller('ListIncidenceController', ListIncidenceController);
 
-    ListIncidenceController.inject = ['$scope', '$http', '$filter', 'NgTableParams', 'LoginService', 'AlertService'];
+    ListIncidenceController.inject = ['$rootScope', '$scope', '$http', '$filter', 'NgTableParams', 'LoginService', 'AlertService'];
 
-    function ListIncidenceController($scope, $http, NgTableParams, LoginService, AlertService, MaintenanceModalService) {
+    function ListIncidenceController($rootScope, $scope, $http, NgTableParams, LoginService, AlertService, MaintenanceModalService) {
         var vm = this;
         var usuario = LoginService.currentLoggedUser();
-        var rol = LoginService.currentRole();
+        LoginService.currentRole();
+        var rol = $rootScope.rol;
 
         vm.usuario = usuario.email;
         vm.role = usuario.role;
@@ -25,14 +26,14 @@
 
                     for (var i = 0; i < objetoIncidencia.length; i++) {
                         var id = objetoIncidencia[i].id;
-                        var name = objetoIncidencia[i].name;
-                        var description = objetoIncidencia[i].description;
-                        var place = objetoIncidencia[i].place;
-                        var building = objetoIncidencia[i].building;
-                        var status = objetoIncidencia[i].status;
-                        var workerEmail = objetoIncidencia[i].workerEmail;
+                        var name = objetoIncidencia[i].nombre;
+                        var description = objetoIncidencia[i].descripcion;
+                        var place = objetoIncidencia[i].nombreEspacio;
+                        var building = objetoIncidencia[i].nombreEdificio;
+                        var status = objetoIncidencia[i].estado;
+                        var workerEmail = objetoIncidencia[i].emailTrabajador;
                         var fecha = objetoIncidencia[i].fecha;
-                        var requestId = objetoIncidencia[i].requestId;
+                        var requestId = objetoIncidencia[i].grupo;
 
                         if (requestId === 0) {
                             requestId = id;
@@ -60,14 +61,14 @@
 
                     for (var i = 0; i < objetoIncidencia.length; i++) {
                         var id = objetoIncidencia[i].id;
-                        var name = objetoIncidencia[i].name;
-                        var description = objetoIncidencia[i].description;
-                        var place = objetoIncidencia[i].place;
-                        var building = objetoIncidencia[i].building;
-                        var status = objetoIncidencia[i].status;
-                        var workerEmail = objetoIncidencia[i].workerEmail;
+                        var name = objetoIncidencia[i].nombre;
+                        var description = objetoIncidencia[i].descripcion;
+                        var place = objetoIncidencia[i].nombreEspacio;
+                        var building = objetoIncidencia[i].nombreEdificio;
+                        var status = objetoIncidencia[i].estado;
+                        var workerEmail = objetoIncidencia[i].emailTrabajador;
                         var fecha = objetoIncidencia[i].fecha;
-                        var requestId = objetoIncidencia[i].requestId;
+                        var requestId = objetoIncidencia[i].grupo;
 
                         if (requestId === 0) {
                             requestId = id;

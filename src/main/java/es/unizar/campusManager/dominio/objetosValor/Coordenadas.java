@@ -1,10 +1,19 @@
 package es.unizar.campusManager.dominio.objetosValor;
 
+import javax.persistence.Embeddable;
+
+@Embeddable
 public class Coordenadas {
 
     private final String x;
     private final String y;
     private final String sistemaReferenciaCoordenadas;
+
+    public Coordenadas() {
+        this.x = "";
+        this.y = "";
+        this.sistemaReferenciaCoordenadas = "";
+    }
 
     public Coordenadas(String x, String y, String sistemaReferenciaCoordenadas) {
         this.x = x;

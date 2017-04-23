@@ -1,16 +1,17 @@
 package es.unizar.campusManager.dominio.entidades;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Trabajador extends Entidad{
 
+    @Id
     private String id;
     private String email;
     private String password;
 
-    public Trabajador(String id, String email, String password) {
-        this.id = id;
-        this.email = email;
-        this.password = password;
-    }
+    public Trabajador(){}
 
     public Trabajador(String email, String password){
         super();
