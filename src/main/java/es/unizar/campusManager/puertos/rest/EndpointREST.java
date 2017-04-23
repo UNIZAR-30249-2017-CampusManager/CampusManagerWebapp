@@ -1,12 +1,12 @@
 package es.unizar.campusManager.puertos.rest;
 
-import es.unizar.campusManager.aplicacion.ServicioEdificio;
-import es.unizar.campusManager.aplicacion.ServicioReservas;
+import es.unizar.campusManager.aplicacion.servicios.ServicioEdificio;
+import es.unizar.campusManager.aplicacion.servicios.ServicioReservas;
 import es.unizar.campusManager.dominio.entidades.Edificio;
 import es.unizar.campusManager.dominio.entidades.EspacioReservable;
 import es.unizar.campusManager.dominio.entidades.Incidencia;
-import es.unizar.campusManager.aplicacion.ServicioIncidencia;
-import es.unizar.campusManager.aplicacion.ServicioUsuario;
+import es.unizar.campusManager.aplicacion.servicios.ServicioIncidencia;
+import es.unizar.campusManager.aplicacion.servicios.ServicioUsuario;
 import es.unizar.campusManager.infraestructura.DTO.*;
 import es.unizar.campusManager.infraestructura.repository.*;
 

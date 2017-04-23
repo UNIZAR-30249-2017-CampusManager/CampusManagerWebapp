@@ -1,4 +1,4 @@
-package es.unizar.campusManager.aplicacion;
+package es.unizar.campusManager.aplicacion.servicios;
 
 import es.unizar.campusManager.dominio.entidades.Incidencia;
 import es.unizar.campusManager.dominio.objetosValor.Coordenadas;
