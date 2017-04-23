@@ -18,25 +18,6 @@ public class ServicioUsuario {
         this.adminRepository = adminRepository;
         this.trabajadorRepository = trabajadorRepository;
     }
-    
-    public boolean comprobarCredenciales(String adminEmail, String adminPass){
-        Administrador administrador = this.adminRepository.findByEmail(adminEmail);
-        if(administrador == null){
-            // No existe administrador
-            logger.severe("No existe el administrador con email " + adminEmail);
-            return false;
-        } else {
-            logger.info("Existe administrador con email " +  adminEmail + ", comprobando password");
-
-            if(administrador.getPassword().equals(adminPass)){
-                logger.info("Password correcta");
-                return true;
-            } else {
-                logger.severe("Password incorrecta");
-                return false;
-            }
-        }
-    }
 
     public boolean crearAdministrador(String email, String password){
         //Comprobamos antes de crear el trabajador que no hay ningun usuario ya sea admin o trabajador

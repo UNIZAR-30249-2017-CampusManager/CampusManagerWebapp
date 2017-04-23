@@ -1,15 +1,14 @@
 package es.unizar.campusManager.puertos.rest;
 
 import es.unizar.campusManager.aplicacion.ServicioEdificio;
+import es.unizar.campusManager.aplicacion.ServicioReservas;
 import es.unizar.campusManager.dominio.entidades.Edificio;
+import es.unizar.campusManager.dominio.entidades.EspacioReservable;
 import es.unizar.campusManager.dominio.entidades.Incidencia;
 import es.unizar.campusManager.aplicacion.ServicioIncidencia;
 import es.unizar.campusManager.aplicacion.ServicioUsuario;
 import es.unizar.campusManager.infraestructura.DTO.*;
-import es.unizar.campusManager.infraestructura.repository.AdminRepositoryImp;
-import es.unizar.campusManager.infraestructura.repository.EdificioRepositoryImp;
-import es.unizar.campusManager.infraestructura.repository.IncidenciaRepositoryImp;
-import es.unizar.campusManager.infraestructura.repository.TrabajadorRepositoryImp;
+import es.unizar.campusManager.infraestructura.repository.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,14 +30,19 @@ public class EndpointREST {
     private final AdminRepositoryImp adminRepositoryImp;
     private final IncidenciaRepositoryImp incidenciaRepositoryImp;
     private final EdificioRepositoryImp edificioRepositoryImp;
+    private final EspacioReservableRepositoryImp espacioReservableRepositoryImp;
+    private final ReservaRepositoryImp reservaRepositoryImp;
 
     @Autowired
     public EndpointREST(TrabajadorRepositoryImp trabajadorRepositoryImp, AdminRepositoryImp adminRepositoryImp,
-                        IncidenciaRepositoryImp incidenciaRepositoryImp, EdificioRepositoryImp edificioRepositoryImp) {
+                        IncidenciaRepositoryImp incidenciaRepositoryImp, EdificioRepositoryImp edificioRepositoryImp,
+                        EspacioReservableRepositoryImp espacioReservableRepositoryImp, ReservaRepositoryImp reservaRepositoryImp) {
         this.trabajadorRepositoryImp = trabajadorRepositoryImp;
         this.adminRepositoryImp = adminRepositoryImp;
         this.incidenciaRepositoryImp = incidenciaRepositoryImp;
         this.edificioRepositoryImp = edificioRepositoryImp;
+        this.espacioReservableRepositoryImp = espacioReservableRepositoryImp;
+        this.reservaRepositoryImp = reservaRepositoryImp;
     }
 
     @PostMapping(value = "/login")
@@ -236,4 +240,28 @@ public class EndpointREST {
         }
     }
 
+    @GetMapping(value = "/espacios", produces = "application/json")
+    public List<EspacioReservable> obtenerEspacios(){
+        logger.info("Detectada peticion para obtener todos los espacios reservables del sistema");
+
+        ServicioReservas servicioReservas = new ServicioReservas(espacioReservableRepositoryImp,reservaRepositoryImp);
+
+        return servicioReservas.obtenerEspacios();
+    }
+
+    @PutMapping(value = "/reservas")
+    public ResponseEntity crearReserva(@RequestBody ReservaDTO reservaDTO){
+        logger.info("Detectada peticion para crear una nueva reserva");
+
+        ServicioReservas servicioReservas = new ServicioReservas(espacioReservableRepositoryImp,reservaRepositoryImp);
+
+        if(servicioReservas.crearReserva(reservaDTO.getEmailProfesor(),reservaDTO.getFecha(),reservaDTO.getHora(),
+                reservaDTO.getIdEspacioReservable())){
+            logger.info("Reserva creada con exito");
+            return new ResponseEntity(HttpStatus.OK);
+        } else {
+            logger.severe("Ha habido algun fallo al crear la reserva");
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

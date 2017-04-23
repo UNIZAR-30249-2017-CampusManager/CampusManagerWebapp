@@ -41,6 +41,6 @@ public class IncidenciaRepositoryImp implements IncidenciaRepository {
 
     @Override
     public void update(Incidencia incidencia) {
-        Incidencia incidenciaResult = incidenciaRepositorySpring.save(incidencia);
+        incidenciaRepositorySpring.save(incidencia);
     }
 }

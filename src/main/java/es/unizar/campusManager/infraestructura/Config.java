@@ -1,9 +1,6 @@
 package es.unizar.campusManager.infraestructura;
 
-import es.unizar.campusManager.infraestructura.repository.AdminRepositoryImp;
-import es.unizar.campusManager.infraestructura.repository.EdificioRepositoryImp;
-import es.unizar.campusManager.infraestructura.repository.IncidenciaRepositoryImp;
-import es.unizar.campusManager.infraestructura.repository.TrabajadorRepositoryImp;
+import es.unizar.campusManager.infraestructura.repository.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -28,5 +25,15 @@ public class Config {
     @Bean
     EdificioRepositoryImp edificioRepositoryImp() {
         return new EdificioRepositoryImp();
+    }
+
+    @Bean
+    EspacioReservableRepositoryImp espacioReservableRepositoryImp (){
+        return new EspacioReservableRepositoryImp();
+    }
+
+    @Bean
+    ReservaRepositoryImp reservaRepositoryImp(){
+        return new ReservaRepositoryImp();
     }
 }
