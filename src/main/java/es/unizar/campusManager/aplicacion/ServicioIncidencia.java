@@ -28,7 +28,7 @@ public class ServicioIncidencia {
         //TODO: Poner sistema de coordenadas por defecto
         Coordenadas coordenadas = new Coordenadas(x,y,"");
         Ubicacion ubicacion = new Ubicacion(plantaUbicacion,nombreEdificio,coordenadas);
-        Espacio espacio = new Espacio(idUtc,nombreEspacio,true,ubicacion);
+        Espacio espacio = new Espacio(idUtc,nombreEspacio,ubicacion);
 
         logger.info("Creando incidencia con nombre " + nombre + ", descripcion " + descripcion +
         ", en el espacio con nombre " + nombreEspacio + " ubicado en la planta " + plantaUbicacion +

@@ -1,10 +1,13 @@
 package es.unizar.campusManager.puertos.rest;
 
+import es.unizar.campusManager.aplicacion.ServicioEdificio;
+import es.unizar.campusManager.dominio.entidades.Edificio;
+import es.unizar.campusManager.dominio.entidades.Incidencia;
 import es.unizar.campusManager.aplicacion.ServicioIncidencia;
 import es.unizar.campusManager.aplicacion.ServicioUsuario;
-import es.unizar.campusManager.dominio.entidades.Incidencia;
 import es.unizar.campusManager.infraestructura.DTO.*;
 import es.unizar.campusManager.infraestructura.repository.AdminRepositoryImp;
+import es.unizar.campusManager.infraestructura.repository.EdificioRepositoryImp;
 import es.unizar.campusManager.infraestructura.repository.IncidenciaRepositoryImp;
 import es.unizar.campusManager.infraestructura.repository.TrabajadorRepositoryImp;
 
@@ -27,13 +30,15 @@ public class EndpointREST {
     private final TrabajadorRepositoryImp trabajadorRepositoryImp;
     private final AdminRepositoryImp adminRepositoryImp;
     private final IncidenciaRepositoryImp incidenciaRepositoryImp;
+    private final EdificioRepositoryImp edificioRepositoryImp;
 
     @Autowired
     public EndpointREST(TrabajadorRepositoryImp trabajadorRepositoryImp, AdminRepositoryImp adminRepositoryImp,
-                        IncidenciaRepositoryImp incidenciaRepositoryImp) {
+                        IncidenciaRepositoryImp incidenciaRepositoryImp, EdificioRepositoryImp edificioRepositoryImp) {
         this.trabajadorRepositoryImp = trabajadorRepositoryImp;
         this.adminRepositoryImp = adminRepositoryImp;
         this.incidenciaRepositoryImp = incidenciaRepositoryImp;
+        this.edificioRepositoryImp = edificioRepositoryImp;
     }
 
     @PostMapping(value = "/login")
@@ -181,12 +186,12 @@ public class EndpointREST {
 
     @PostMapping(value = "/incidencias/{grupoIncidencia:.*}")
     public ResponseEntity cambiarEstadoIncidencia(@PathVariable Integer grupoIncidencia,
-                                                  @RequestBody NuevoEstadoIncidenciaDTO nuevoEstadoIncidenciaDTO){
+                                                  @RequestBody NuevoEstadoIncidenciaDTO nuevoEstadoIncidenciaDTO) {
         logger.info("Peticion para cambiar el estado de las incidencias del grupo " + grupoIncidencia + " a " + nuevoEstadoIncidenciaDTO.getEstado());
 
         ServicioIncidencia servicioIncidencia = new ServicioIncidencia(incidenciaRepositoryImp);
 
-        if(servicioIncidencia.cambiarEstado(grupoIncidencia,nuevoEstadoIncidenciaDTO.getEstado())){
+        if (servicioIncidencia.cambiarEstado(grupoIncidencia, nuevoEstadoIncidenciaDTO.getEstado())) {
             //Cambio de estado satisfactorio
             logger.info("Incidencias actualizadas a " + nuevoEstadoIncidenciaDTO.getEstado() + " correctamente");
             return new ResponseEntity(HttpStatus.OK);
@@ -196,6 +201,39 @@ public class EndpointREST {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+    }
+
+    @GetMapping(value = "/edificios/{nombreEdificio:.*}", produces = "application/json")
+    public Object obtenerEdificioNombre(@PathVariable String nombreEdificio) {
+        logger.info("Detectada peticion para obtener el edificio con nombre " + nombreEdificio);
+
+        ServicioEdificio servicioEdificio = new ServicioEdificio(edificioRepositoryImp);
+
+        Edificio edificio = servicioEdificio.obtenerEdificioPorNombre(nombreEdificio);
+
+        if (edificio == null) {
+            logger.severe("No se ha encontrado el edificio con nombre " + nombreEdificio);
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        } else {
+            return edificio;
+        }
+    }
+
+    @PostMapping(value = "/edificios/{nombreEdificio:.*}")
+    public ResponseEntity actualizarInformacionEdificio(@PathVariable String nombreEdificio,
+                                                        @RequestBody EdificioDTO edificioDTO) {
+        logger.info("Detectada peticion para actualizar la informacion del edificio con nombre " + nombreEdificio);
+
+        ServicioEdificio servicioEdificio = new ServicioEdificio(edificioRepositoryImp);
+
+        if (servicioEdificio.modificarInformacionEdificio(nombreEdificio, edificioDTO.getHoraApertura(),
+                edificioDTO.getHoraCierre(), edificioDTO.getMesesCerrado(), edificioDTO.getMenuCafeteria())) {
+            logger.info("Informacion del edificio " + nombreEdificio + " actualizada");
+            return new ResponseEntity(HttpStatus.OK);
+        } else {
+            logger.severe("Error al actualizar la informacion del edificio " + nombreEdificio);
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }
