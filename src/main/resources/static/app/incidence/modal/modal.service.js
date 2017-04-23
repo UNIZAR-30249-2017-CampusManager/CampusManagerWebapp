@@ -21,7 +21,7 @@
 
         return service;
 
-        function open(ubicacion, building) {
+        function open(datos) {
             if (modalInstance !== null) return;
             modalInstance = $uibModal.open({
                 animation: true,
@@ -30,8 +30,14 @@
                 controllerAs: 'vm',
                 resolve:{
                     param: function () {
-                        return {'ubicacion':ubicacion,
-                                'building' : building};
+                        return {
+                            'x': datos.x,
+                            'y': datos.y,
+                            'nombreEdificio': datos.nombreEdificio,
+                            'planta': datos.planta,
+                            'idUtc': datos.idUtc,
+                            'nombreEspacio': datos.nombre
+                        };
                     }
                 }
             });

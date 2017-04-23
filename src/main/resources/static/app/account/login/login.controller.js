@@ -5,9 +5,9 @@
         .module('app.account.login')
         .controller('LoginController', LoginController);
 
-    LoginController.inject = ['$uibModalInstance','$http','LoginService','AlertService'];
+    LoginController.inject = ['$uibModalInstance','$http','$state', 'LoginService','AlertService'];
 
-    function LoginController($uibModalInstance,$http,LoginService,AlertService) {
+    function LoginController($uibModalInstance,$http,$state,LoginService,AlertService) {
         //console.log("Login controller called!");
         var vm = this;
 
@@ -36,24 +36,21 @@
             // console.log(vm.username);
             // console.log(vm.password);
 
+            var data ={
+                email: vm.email,
+                password: vm.password
+            };
+
             //Comprobar mediante peticion a API RESTful que son correctos los campos
-            $http.get("/api/user/" + vm.email).then(
+            $http.post("/login", data).then(
                 function (response) { //success
-                    var usuario = response.data;
+                    vm.loginError = false;
 
-                    if(usuario.password == vm.password){
-                        //Exito
-                        vm.loginError = false;
+                    AlertService.addAlert('info','¡Bienvenid@ de vuelta ' + data.email + '!');
+                    LoginService.login(data);
 
-                        AlertService.addAlert('info','¡Bienvenid@ de vuelta ' + usuario.name + '!');
-                        LoginService.login(usuario);
-
-                        $uibModalInstance.dismiss('success');
-                    } else{
-                        //Password incorrecto
-                        //console.log("Password introducida: " + vm.password + ", password valida: " + usuario.password);
-                        vm.loginError = true;
-                    }
+                    $uibModalInstance.dismiss('success');
+                    $state.go('home',{ reload: true, inherit: true, notify: true });
                 },
                 function (response) { //error
                     vm.loginError = true;

@@ -5,9 +5,9 @@
         .module('app.account.login')
         .factory('LoginService', LoginService);
 
-    LoginService.$inject = ['$uibModal','$localStorage','$sessionStorage'];
+    LoginService.$inject = ['$uibModal', '$http', '$rootScope', '$localStorage','$sessionStorage'];
 
-    function LoginService($uibModal, $scope, $localStorage, $sessionStorage) {
+    function LoginService($uibModal, $http, $rootScope, $localStorage, $sessionStorage) {
         var vm = this;
         //Objeto para guardar lo relacionado con la sesion
         vm.session = $localStorage;
@@ -17,7 +17,8 @@
             login: login,
             logout: logout,
             isLogged: isLogged,
-            currentLoggedUser: currentLoggedUser
+            currentLoggedUser: currentLoggedUser,
+            currentRole: currentRole
         };
 
         var modalInstance = null;
@@ -45,6 +46,7 @@
             vm.session.logged = {
                 usuario: usuario
             };
+            currentRole();
         }
 
         function logout() {
@@ -52,13 +54,26 @@
         }
 
         function isLogged(){
-            return vm.session.logged != undefined;
+            return vm.session.logged !== undefined;
         }
 
         function currentLoggedUser(){
             if(isLogged()){
                 return vm.session.logged.usuario;
             } else return undefined;
+        }
+
+        function currentRole(){
+            if(isLogged()){
+                $http.get("/rol/" + currentLoggedUser().email).then(
+                    function (response) { //success
+                        $rootScope.rol = response.data.rol;
+                    },
+                    function (response) { //error
+                        return '';
+                    }
+                );
+            }
         }
     }
 })();

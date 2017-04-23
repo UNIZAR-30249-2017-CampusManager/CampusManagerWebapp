@@ -11,8 +11,8 @@
         //console.log("Modal incidence controller called!: " + param.ubicacion);
         var vm = this;
 
-        vm.place = param.ubicacion;
-        vm.building = param.building;
+        vm.place = param.nombreEspacio;
+        vm.building = param.nombreEdificio;
         vm.crearError = false;
         vm.cancel = cancel;
         vm.create = create;
@@ -35,13 +35,17 @@
             event.preventDefault();
 
             var data = {
-                name: vm.name,
-                place: vm.place,
-                description: vm.description,
-                building: vm.building
+                nombre: vm.name,
+                descripcion: vm.description,
+                idUtc: param.idUtc,
+                nombreEspacio: param.nombreEspacio,
+                planta: param.planta,
+                nombreEdificio: param.nombreEdificio,
+                x: param.x,
+                y: param.y
             };
 
-            $http.post("/api/incidencia", data).then(
+            $http.put("/incidencias", data).then(
                 function (response) { //success
                     //console.log("Respuesta: " + response);
                     vm.crearError = false;
@@ -51,7 +55,7 @@
                     vm.description = null;
                     vm.building = null;
 
-                    AlertService.addAlert('success', '¡La incidencia en ' + data.place + ' ' + data.building + ' ha sido registrada con éxito!');
+                    AlertService.addAlert('success', '¡La incidencia en ' + data.nombreEspacio + ' ' + data.nombreEdificio + ' ha sido registrada con éxito!');
 
                     $uibModalInstance.dismiss('success');
                 },

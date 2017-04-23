@@ -16,8 +16,8 @@
 
         vm.report = report;
 
-        function report(ubicacion){
-            ModalService.open(ubicacion, "Ada Byron");
+        function report(datos){
+            ModalService.open(datos);
         }
 
         //Actualizando titulos del html
@@ -78,19 +78,19 @@
 
             $scope.markers = [];
 
-            if (currentFloor == - 1) {
+            if (currentFloor === - 1) {
                 var wmsFloor = 'wmsSotano';
             } else {
                 var wmsFloor = 'wms'+currentFloor;
             }
 
             var ubicacion = MapService.obtenerInfo($scope.layers.baselayers[wmsFloor].layerParams.layers,
-                latitude, longitude);
+                latitude, longitude, 'Ada Byron', currentFloor);
 
             ubicacion.then(function (result) {
                 //Si no ha encontrado ubicacion, no le dejamos crear incidencias
 
-                if(result == undefined){
+                if(result === undefined){
                     $scope.markers.push({
                         lat: latitude,
                         lng: longitude,
@@ -99,11 +99,21 @@
                         draggable: false
                     });
                 } else{
+
+                    var datos = {
+                        x: longitude,
+                        y: latitude,
+                        nombreEdificio: 'Ada Byron',
+                        planta: currentFloor,
+                        idUtc: result.idUtc,
+                        nombre: result.nombre
+                    };
+
                     $scope.markers.push({
                         lat: latitude,
                         lng: longitude,
-                        message: "<div style='text-align: center;'>" + result + ":</br> ¿Tienes alguna incidencia que reportar? </br> "
-                        + "<a href=\"\" ng-click=\"vm.report('" + result + "')\">"
+                        message: "<div style='text-align: center;'>" + result.nombre + ":</br> ¿Tienes alguna incidencia que reportar? </br> "
+                        + "<a href=\"\" ng-click=\"vm.report('" + datos + "')\">"
                         + "<span>Reportar</span>"
                         + "</a></div>",
                         getMessageScope: function() { return $scope; },

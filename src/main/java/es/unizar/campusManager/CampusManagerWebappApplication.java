@@ -10,9 +10,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class CampusManagerWebappApplication  implements CommandLineRunner {
 
-	@Autowired
-	private UserRepository u;
-
 	public static void main(String[] args) {
 		SpringApplication.run(CampusManagerWebappApplication.class, args);
 	}
