@@ -42,7 +42,7 @@
                     xyz: $scope.basicLayer['xyz']
                 },
                 overlays: {
-                    eina: MapService.crearCapa('EINA','labis:todos')
+                    eina: MapService.crearCapa('EINA','labis:todosP00')
                 }
             },
             markers: {}

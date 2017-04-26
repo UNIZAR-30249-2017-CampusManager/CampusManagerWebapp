@@ -25,8 +25,7 @@ public class ServicioIncidencia {
                                    String nombreEspacio, Integer plantaUbicacion,
                                    String nombreEdificio, String x, String y){
 
-        //TODO: Poner sistema de coordenadas por defecto
-        Coordenadas coordenadas = new Coordenadas(x,y,"");
+        Coordenadas coordenadas = new Coordenadas(x,y,"EPSG:4326");
         Ubicacion ubicacion = new Ubicacion(plantaUbicacion,nombreEdificio,coordenadas);
         Espacio espacio = new Espacio(idUtc,nombreEspacio,ubicacion);
 

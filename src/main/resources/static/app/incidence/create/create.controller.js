@@ -22,13 +22,14 @@
             event.preventDefault();
 
             var data = {
-                name: vm.name,
-                place: vm.place,
-                description: vm.description,
-                building: vm.building
+                nombre: vm.name,
+                descripcion: vm.description,
+                nombreEspacio: vm.place,
+                planta: vm.floor,
+                nombreEdificio: vm.building
             };
 
-            $http.post("/api/incidencia", data).then(
+            $http.put("/incidencias", data).then(
                 function (response) { //success
                     //console.log("Respuesta: " + response);
                     vm.crearError = false;
@@ -37,8 +38,9 @@
                     vm.place = null;
                     vm.description = null;
                     vm.building = null;
+                    vm.floor = null;
 
-                    AlertService.addAlert('success', '¡La incidencia en ' + data.place + ' ha sido registrada con éxito!')
+                    AlertService.addAlert('success', '¡La incidencia en ' + data.nombreEspacio + ' ha sido registrada con éxito!')
                 },
                 function (response) { //error
                     vm.crearError = true;

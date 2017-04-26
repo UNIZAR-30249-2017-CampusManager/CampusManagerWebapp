@@ -10,8 +10,6 @@
     function MaintenanceModalService($uibModal) {
         var vm = this;
 
-        vm.incidencias = [];
-
         var service = {
             open: open
         };

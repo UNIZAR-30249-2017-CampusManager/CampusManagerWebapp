@@ -1,8 +1,5 @@
 package es.unizar.campusManager;
 
-import es.unizar.campusManager.model.CampusUser;
-import es.unizar.campusManager.model.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
