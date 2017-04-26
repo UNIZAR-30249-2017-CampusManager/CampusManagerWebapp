@@ -16,8 +16,8 @@
 
         vm.report = report;
 
-        function report(datos){
-            ModalService.open(datos);
+        function report(){
+            ModalService.open(vm.datos);
         }
 
         //Actualizando titulos del html
@@ -100,7 +100,7 @@
                     });
                 } else{
 
-                    var datos = {
+                    vm.datos = {
                         x: longitude,
                         y: latitude,
                         nombreEdificio: 'Ada Byron',
@@ -113,7 +113,7 @@
                         lat: latitude,
                         lng: longitude,
                         message: "<div style='text-align: center;'>" + result.nombre + ":</br> ¿Tienes alguna incidencia que reportar? </br> "
-                        + "<a href=\"\" ng-click=\"vm.report('" + datos + "')\">"
+                        + "<a href=\"\" ng-click=\"vm.report()\">"
                         + "<span>Reportar</span>"
                         + "</a></div>",
                         getMessageScope: function() { return $scope; },

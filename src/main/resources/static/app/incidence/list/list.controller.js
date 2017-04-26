@@ -14,7 +14,7 @@
         var rol = $rootScope.rol;
 
         vm.usuario = usuario.email;
-        vm.role = usuario.role;
+        vm.role = rol;
         vm.incidencias = [];
         vm.inciSeleccionadas = [];
 
@@ -35,7 +35,7 @@
                         var fecha = objetoIncidencia[i].fecha;
                         var requestId = objetoIncidencia[i].grupo;
 
-                        if (requestId === 0) {
+                        if (requestId === null) {
                             requestId = id;
                         }
 
@@ -70,7 +70,7 @@
                         var fecha = objetoIncidencia[i].fecha;
                         var requestId = objetoIncidencia[i].grupo;
 
-                        if (requestId === 0) {
+                        if (requestId === null) {
                             requestId = id;
                         }
 
@@ -90,8 +90,6 @@
             );
         }
 
-        MaintenanceModalService.incidencias = vm.incidencias;
-
         vm.toggleSelection = function(row){
             if (row.isRowSelected) {
                 vm.inciSeleccionadas.splice(vm.inciSeleccionadas.indexOf(row), 1);
@@ -109,11 +107,5 @@
                 AlertService.addAlert('danger', 'Error al crear solicitud de mantenimiento: seleccione al menos una incidencia');
             }
         }
-
-        $scope.$watch(function (){
-           return MaintenanceModalService.incidencias;
-        }, function (value) {
-            vm.incidencias = value;
-        });
     }
 })();

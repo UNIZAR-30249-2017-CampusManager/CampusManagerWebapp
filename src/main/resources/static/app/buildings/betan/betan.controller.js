@@ -16,8 +16,8 @@
 
         vm.report = report;
 
-        function report(ubicacion){
-            ModalService.open(ubicacion, "Betancourt");
+        function report(){
+            ModalService.open(vm.datos);
         }
 
         //Actualizando titulos del html
@@ -98,11 +98,20 @@
                         draggable: false
                     });
                 } else{
+                    vm.datos = {
+                        x: longitude,
+                        y: latitude,
+                        nombreEdificio: 'Betancourt',
+                        planta: currentFloor,
+                        idUtc: result.idUtc,
+                        nombre: result.nombre
+                    };
+
                     $scope.markers.push({
                         lat: latitude,
                         lng: longitude,
-                        message: "<div style='text-align: center;'>" + result + ":</br> ¿Tienes alguna incidencia que reportar? </br> "
-                        + "<a href=\"\" ng-click=\"vm.report('" + result + "')\">"
+                        message: "<div style='text-align: center;'>" + result.nombre + ":</br> ¿Tienes alguna incidencia que reportar? </br> "
+                        + "<a href=\"\" ng-click=\"vm.report()\">"
                         + "<span>Reportar</span>"
                         + "</a></div>",
                         getMessageScope: function() { return $scope; },

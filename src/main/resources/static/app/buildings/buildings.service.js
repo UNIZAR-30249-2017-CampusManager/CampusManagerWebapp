@@ -28,9 +28,9 @@
         };
 
         this.obtenerInfo = function (nombreCapa, lat, long) {
-            var url = "https://ec2-54-71-10-146.us-west-2.compute.amazonaws.com:8443/geoserver/labis/ows?service" +
+            var url = "http://ec2-34-209-239-38.us-west-2.compute.amazonaws.com:8080/geoserver/labis/ows?service" +
                 "=WFS&version=1.0.0&request=GetFeature&typeName=" + nombreCapa + "&outputFormat=application%2Fjson&CQL_FILTER=" +
-                "CONTAINS(geom,%20Point(" + long + "%20" + lat + "))&propertyName=id_centro";
+                "CONTAINS(geom,%20Point(" + long + "%20" + lat + "))&propertyName=id_centro&propertyName=id_utc";
 
             return $http.get(url).then(function (response) {
                 var ubicacion = response.data.features;
@@ -38,13 +38,13 @@
                 if (ubicacion === undefined || ubicacion[0] === undefined) {
                     return undefined;
                 } else {
-                    ubicacion = ubicacion[0].properties.id_centro;
-                    if (ubicacion === "RELLANO" || ubicacion === "PASILLO" || ubicacion === "BAÑOS" || ubicacion === "AULA") {
+                    var nombre = ubicacion[0].properties.id_centro;
+                    if (nombre === "RELLANO" || nombre === "PASILLO" || nombre === "BAÑOS" || nombre === "AULA") {
                         return undefined
                     } else {
                         return {
-                            nombre: '',
-                            idUtc: ''
+                            nombre: nombre,
+                            idUtc: ubicacion[0].properties.id_utc
                         };
                     }
                 }
