@@ -29,4 +29,5 @@ public class TrabajadorRepositoryImp implements TrabajadorRepository {
 
         return trabajadorResult != null;
     }
+
 }

@@ -30,4 +30,11 @@ public class AdminRepositoryImp implements AdminRepository {
 
         return administradorResult != null;
     }
+
+
+
+
+
+
+
 }

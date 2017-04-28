@@ -9,4 +9,5 @@ public interface AdminRepository {
 
     boolean save(Administrador administrador);
 
+
 }
