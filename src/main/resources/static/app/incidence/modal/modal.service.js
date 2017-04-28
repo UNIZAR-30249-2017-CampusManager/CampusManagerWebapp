@@ -31,11 +31,8 @@
                 resolve:{
                     param: function () {
                         return {
-                            'x': datos.x,
-                            'y': datos.y,
                             'nombreEdificio': datos.nombreEdificio,
-                            'planta': datos.planta,
-                            'idUtc': datos.idUtc,
+                            'idEspacio': datos.idEspacio,
                             'nombreEspacio': datos.nombre
                         };
                     }

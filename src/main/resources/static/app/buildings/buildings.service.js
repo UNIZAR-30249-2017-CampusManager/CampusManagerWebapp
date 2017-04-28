@@ -30,7 +30,7 @@
         this.obtenerInfo = function (nombreCapa, lat, long) {
             var url = "http://ec2-34-209-239-38.us-west-2.compute.amazonaws.com:8080/geoserver/labis/ows?service" +
                 "=WFS&version=1.0.0&request=GetFeature&typeName=" + nombreCapa + "&outputFormat=application%2Fjson&CQL_FILTER=" +
-                "CONTAINS(geom,%20Point(" + long + "%20" + lat + "))&propertyName=id_centro&propertyName=id_utc";
+                "CONTAINS(geom,%20Point(" + long + "%20" + lat + "))&propertyName=id_centro&propertyName=id_espacio";
 
             return $http.get(url).then(function (response) {
                 var ubicacion = response.data.features;
@@ -39,14 +39,10 @@
                     return undefined;
                 } else {
                     var nombre = ubicacion[0].properties.id_centro;
-                    if (nombre === "RELLANO" || nombre === "PASILLO" || nombre === "BAÑOS" || nombre === "AULA") {
-                        return undefined
-                    } else {
-                        return {
-                            nombre: nombre,
-                            idUtc: ubicacion[0].properties.id_utc
-                        };
-                    }
+                    return {
+                        nombre: nombre,
+                        idEspacio: ubicacion[0].properties.id_espacio
+                    };
                 }
             }, function () {
                 return undefined;

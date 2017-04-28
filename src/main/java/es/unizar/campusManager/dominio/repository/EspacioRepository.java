@@ -10,5 +10,5 @@ public interface EspacioRepository {
 
     Espacio findById(String id);
 
-    Espacio findByIdUtc(String idUtc);
+    Espacio findByIdEspacio(String idEspacio);
 }

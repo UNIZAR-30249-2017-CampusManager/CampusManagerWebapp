@@ -22,6 +22,11 @@ public class ServicioEdificio {
         return edificioRepository.findByName(nombre);
     }
 
+    public List<Edificio> obtenerEdificios(){
+        logger.info("Obteniendo todos los edificios del sistema");
+        return edificioRepository.findAll();
+    }
+
     public boolean modificarInformacionEdificio(String nombreEdificio, String nuevoHorarioApertura,
                                                 String nuevoHorarioCierre, List<String> nuevosMesesCerrados,
                                                 MenuCafeteria nuevoMenuCafeteria){

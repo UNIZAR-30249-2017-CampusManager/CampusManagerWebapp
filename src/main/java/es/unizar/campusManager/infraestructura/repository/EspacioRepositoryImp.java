@@ -24,14 +24,14 @@ public class EspacioRepositoryImp implements EspacioRepository {
     }
 
     @Override
-    public Espacio findByIdUtc(String idUtc) {
+    public Espacio findByIdEspacio(String idEspacio) {
 
         List<Espacio> espacios = espacioRepositorySpring.findAll();
 
         Espacio result = null;
 
         for(Espacio espacio : espacios){
-            if(espacio!= null && espacio.getInformacionEspacio().getIdUtc().equals(idUtc)){
+            if(espacio!= null && espacio.getInformacionEspacio().getIdEspacio().equals(idEspacio)){
                 result = espacio;
                 break;
             }

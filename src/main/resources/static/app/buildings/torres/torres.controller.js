@@ -99,11 +99,8 @@
                     });
                 } else{
                     vm.datos = {
-                        x: longitude,
-                        y: latitude,
                         nombreEdificio: 'Torres Quevedo',
-                        planta: currentFloor,
-                        idUtc: result.idUtc,
+                        idEspacio: result.idEspacio,
                         nombre: result.nombre
                     };
 

@@ -4,18 +4,18 @@ public class NuevaIncidenciaDTO {
 
     private String nombre;
     private String descripcion;
-    private String idUtc;
+    private String idEspacio;
 
     public NuevaIncidenciaDTO(){}
 
-    public NuevaIncidenciaDTO(String nombre, String descripcion, String idUtc) {
-        this.idUtc = idUtc;
+    public NuevaIncidenciaDTO(String nombre, String descripcion, String idEspacio) {
+        this.idEspacio = idEspacio;
         this.nombre = nombre;
         this.descripcion = descripcion;
     }
 
-    public String getIdUtc() {
-        return idUtc;
+    public String getIdEspacio() {
+        return idEspacio;
     }
 
     public String getNombre() {

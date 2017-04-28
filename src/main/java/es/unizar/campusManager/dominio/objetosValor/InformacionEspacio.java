@@ -5,24 +5,24 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class InformacionEspacio {
 
-    private final String idUtc;
+    private final String idEspacio;
     private final String nombreEspacio;
     private final String edifico;
 
     public InformacionEspacio() {
-        this.idUtc = "";
+        this.idEspacio = "";
         this.nombreEspacio = "";
         this.edifico = "";
     }
 
-    public InformacionEspacio(String idUtc, String nombreEspacio, String edifico) {
-        this.idUtc = idUtc;
+    public InformacionEspacio(String idEspacio, String nombreEspacio, String edifico) {
+        this.idEspacio = idEspacio;
         this.nombreEspacio = nombreEspacio;
         this.edifico = edifico;
     }
 
-    public String getIdUtc() {
-        return idUtc;
+    public String getIdEspacio() {
+        return idEspacio;
     }
 
     public String getNombreEspacio() {
@@ -36,7 +36,7 @@ public class InformacionEspacio {
     @Override
     public String toString() {
         return "{\"_class\":\"InformacionEspacio\", " +
-                "\"idUtc\":" + (idUtc == null ? "null" : "\"" + idUtc + "\"") + ", " +
+                "\"idEspacio\":" + (idEspacio == null ? "null" : "\"" + idEspacio + "\"") + ", " +
                 "\"nombreEspacio\":" + (nombreEspacio == null ? "null" : "\"" + nombreEspacio + "\"") + ", " +
                 "\"edifico\":" + (edifico == null ? "null" : "\"" + edifico + "\"") +
                 "}";

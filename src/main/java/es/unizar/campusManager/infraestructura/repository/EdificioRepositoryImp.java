@@ -6,6 +6,8 @@ import es.unizar.campusManager.dominio.repository.EdificioRepository;
 import es.unizar.campusManager.infraestructura.springData.EdificioRepositorySpring;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 public class EdificioRepositoryImp implements EdificioRepository {
 
     @Autowired
@@ -14,6 +16,11 @@ public class EdificioRepositoryImp implements EdificioRepository {
     @Override
     public Edificio findByName(String nombre) {
         return edificioRepositorySpring.findByNombre(nombre);
+    }
+
+    @Override
+    public List<Edificio> findAll() {
+        return edificioRepositorySpring.findAll();
     }
 
     @Override

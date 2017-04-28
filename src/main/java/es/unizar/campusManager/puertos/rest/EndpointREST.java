@@ -1,12 +1,9 @@
 package es.unizar.campusManager.puertos.rest;
 
-import es.unizar.campusManager.aplicacion.servicios.ServicioEdificio;
-import es.unizar.campusManager.aplicacion.servicios.ServicioReservas;
+import es.unizar.campusManager.aplicacion.servicios.*;
 import es.unizar.campusManager.dominio.entidades.Edificio;
 import es.unizar.campusManager.dominio.entidades.Espacio;
 import es.unizar.campusManager.dominio.entidades.Incidencia;
-import es.unizar.campusManager.aplicacion.servicios.ServicioIncidencia;
-import es.unizar.campusManager.aplicacion.servicios.ServicioUsuario;
 import es.unizar.campusManager.infraestructura.DTO.*;
 import es.unizar.campusManager.infraestructura.repository.*;
 
@@ -153,7 +150,7 @@ public class EndpointREST {
         String formattedDate = formatter.format(date);
 
         if (servicioIncidencia.crearIncidencia(nuevaIncidenciaDTO.getNombre(), nuevaIncidenciaDTO.getDescripcion(),
-                formattedDate, nuevaIncidenciaDTO.getIdUtc())) {
+                formattedDate, nuevaIncidenciaDTO.getIdEspacio())) {
             //Creacion correcta
             logger.info("Incidencia con nombre " + nuevaIncidenciaDTO.getNombre() + " creada satisfactoriamente");
             return new ResponseEntity(HttpStatus.OK);
@@ -207,6 +204,15 @@ public class EndpointREST {
 
     }
 
+    @GetMapping(value = "/edificios", produces = "application/json")
+    public List<Edificio> obtenerEdificios(){
+        logger.info("Detectada peticion para obtener todos los edificios del sistema");
+
+        ServicioEdificio servicioEdificio = new ServicioEdificio(edificioRepositoryImp);
+
+        return servicioEdificio.obtenerEdificios();
+    }
+
     @GetMapping(value = "/edificios/{nombreEdificio:.*}", produces = "application/json")
     public Object obtenerEdificioNombre(@PathVariable String nombreEdificio) {
         logger.info("Detectada peticion para obtener el edificio con nombre " + nombreEdificio);
@@ -240,13 +246,13 @@ public class EndpointREST {
         }
     }
 
-    @GetMapping(value = "/espacios", produces = "application/json")
-    public List<Espacio> obtenerEspacios(){
-        logger.info("Detectada peticion para obtener todos los espacios reservables del sistema");
+    @GetMapping(value = "/espacios/{nombreEdificio:.*}", produces = "application/json")
+    public List<Espacio> obtenerEspaciosEdificio(@PathVariable String nombreEdificio){
+        logger.info("Detectada peticion para obtener los espacios del sistema del edificio " + nombreEdificio);
 
-        ServicioReservas servicioReservas = new ServicioReservas(espacioRepositoryImp,reservaRepositoryImp);
+        ServicioEspacio servicioEspacio = new ServicioEspacio(espacioRepositoryImp);
 
-        return servicioReservas.obtenerEspacios();
+        return servicioEspacio.obtenerEspaciosEdificio(nombreEdificio);
     }
 
     @PutMapping(value = "/reservas")
