@@ -1,8 +1,8 @@
 package es.unizar.campusManager.aplicacion.servicios;
 
-import es.unizar.campusManager.dominio.entidades.EspacioReservable;
+import es.unizar.campusManager.dominio.entidades.Espacio;
 import es.unizar.campusManager.dominio.entidades.Reserva;
-import es.unizar.campusManager.dominio.repository.EspacioReservableRepository;
+import es.unizar.campusManager.dominio.repository.EspacioRepository;
 import es.unizar.campusManager.dominio.repository.ReservaRepository;
 
 import java.util.ArrayList;
@@ -14,29 +14,29 @@ public class ServicioReservas {
 
     //Logging
     private final static Logger logger = Logger.getLogger(ServicioReservas.class.getName());
-    private EspacioReservableRepository espacioReservableRepository;
+    private EspacioRepository espacioRepository;
     private ReservaRepository reservaRepository;
 
-    public ServicioReservas(EspacioReservableRepository espacioReservableRepository, ReservaRepository reservaRepository){
-        this.espacioReservableRepository = espacioReservableRepository;
+    public ServicioReservas(EspacioRepository espacioRepository, ReservaRepository reservaRepository){
+        this.espacioRepository = espacioRepository;
         this.reservaRepository = reservaRepository;
     }
 
-    public List<EspacioReservable> obtenerEspacios(){
+    public List<Espacio> obtenerEspacios(){
         logger.info("Obteniendo todos los espacios reservables");
-        return espacioReservableRepository.findAll();
+        return espacioRepository.findAll();
     }
 
     public List<String> obtenerHorasLibres(String idEspacioReservable, String fecha){
         logger.info("Obteniendo las horas libres para el dia " + fecha + " del espacio con id " + idEspacioReservable);
 
-        EspacioReservable espacioReservable = espacioReservableRepository.findById(idEspacioReservable);
+        Espacio espacio = espacioRepository.findById(idEspacioReservable);
 
-        if(espacioReservable == null){
+        if(espacio == null){
             logger.severe("El espacio con id " + idEspacioReservable + " no existe, abortando");
             return null;
         } else {
-            logger.info("Obteniendo horas libres en la fecha especificada para el espacio " + espacioReservable.getNombreEspacio());
+            logger.info("Obteniendo horas libres en la fecha especificada para el espacio " + espacio.getInformacionEspacio().getNombreEspacio());
 
             ArrayList<String> todasHoras = poblarHoras();
 
@@ -44,7 +44,7 @@ public class ServicioReservas {
 
             limpiarHoras(todasHoras,idEspacioReservable, (ArrayList<Reserva>) reservasFecha);
 
-            logger.info("Las horas libres para reservar el espacio " + espacioReservable.getNombreEspacio() + " en la fecha " + fecha + " son: " + todasHoras.toString());
+            logger.info("Las horas libres para reservar el espacio " + espacio.getInformacionEspacio().getNombreEspacio() + " en la fecha " + fecha + " son: " + todasHoras.toString());
 
             return todasHoras;
         }
@@ -81,13 +81,13 @@ public class ServicioReservas {
                         logger.severe("La hora especificada no esta libre en la fecha " + fecha + " para el espacio " + idEspacioReservable);
                         return false;
                     } else {
-                        EspacioReservable espacioReservable = espacioReservableRepository.findById(idEspacioReservable);
+                        Espacio espacio = espacioRepository.findById(idEspacioReservable);
 
-                        if(espacioReservable == null){
+                        if(espacio == null){
                             logger.severe("El espacio no es valido, abortando");
                             return false;
                         } else {
-                            return reservaRepository.save(new Reserva(emailProfesor,fecha,hora,espacioReservable));
+                            return reservaRepository.save(new Reserva(emailProfesor,fecha,hora,espacio));
                         }
                     }
                 }
@@ -122,7 +122,7 @@ public class ServicioReservas {
 
     private void limpiarHoras(ArrayList<String> horas, String idEspacio, ArrayList<Reserva> reservas){
         for(Reserva reserva : reservas){
-            if(reserva.getEspacioReservable().getId().equals(idEspacio)){
+            if(reserva.getEspacio().getId().equals(idEspacio)){
                 //Encontrada reserva para el espacio, sabemos que la fecha es la misma
 
                 for(int i = 0; i < horas.size(); i++){

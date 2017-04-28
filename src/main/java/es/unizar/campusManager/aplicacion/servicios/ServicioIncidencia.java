@@ -1,9 +1,8 @@
 package es.unizar.campusManager.aplicacion.servicios;
 
+import es.unizar.campusManager.dominio.entidades.Espacio;
 import es.unizar.campusManager.dominio.entidades.Incidencia;
-import es.unizar.campusManager.dominio.objetosValor.Coordenadas;
-import es.unizar.campusManager.dominio.objetosValor.Espacio;
-import es.unizar.campusManager.dominio.objetosValor.Ubicacion;
+import es.unizar.campusManager.dominio.repository.EspacioRepository;
 import es.unizar.campusManager.dominio.repository.IncidenciaRepository;
 import es.unizar.campusManager.dominio.repository.TrabajadorRepository;
 
@@ -16,24 +15,27 @@ public class ServicioIncidencia {
     //Logging
     private final static Logger logger = Logger.getLogger(ServicioIncidencia.class.getName());
     private IncidenciaRepository incidenciaRepository;
+    private EspacioRepository espacioRepository;
 
-    public ServicioIncidencia(IncidenciaRepository incidenciaRepository){
+    public ServicioIncidencia(IncidenciaRepository incidenciaRepository, EspacioRepository espacioRepository){
         this.incidenciaRepository = incidenciaRepository;
+        this.espacioRepository = espacioRepository;
     }
 
-    public boolean crearIncidencia(String nombre, String descripcion, String fecha, String idUtc,
-                                   String nombreEspacio, Integer plantaUbicacion,
-                                   String nombreEdificio, String x, String y){
+    public boolean crearIncidencia(String nombre, String descripcion, String fecha, String idUtc){
 
-        Coordenadas coordenadas = new Coordenadas(x,y,"EPSG:4326");
-        Ubicacion ubicacion = new Ubicacion(plantaUbicacion,nombreEdificio,coordenadas);
-        Espacio espacio = new Espacio(idUtc,nombreEspacio,ubicacion);
+        Espacio espacio = espacioRepository.findByIdUtc(idUtc);
 
-        logger.info("Creando incidencia con nombre " + nombre + ", descripcion " + descripcion +
-        ", en el espacio con nombre " + nombreEspacio + " ubicado en la planta " + plantaUbicacion +
-        " del edificio " + nombreEdificio);
+        if(espacio != null){
+            logger.info("Creando incidencia con nombre " + nombre + ", descripcion " + descripcion +
+                    ", en el espacio con nombre " + espacio.getInformacionEspacio().getNombreEspacio() +
+                    " ubicado en el edificio " + espacio.getInformacionEspacio().getNombreEspacio());
 
-        return incidenciaRepository.save(new Incidencia(nombre,descripcion,fecha,espacio));
+            return incidenciaRepository.save(new Incidencia(nombre,descripcion,fecha,espacio));
+        } else {
+            logger.severe("No se ha encontrado el espacio con idUTC " + idUtc + " abortando operacion");
+            return false;
+        }
     }
 
     public List<Incidencia> obtenerTodasIncidencias(){

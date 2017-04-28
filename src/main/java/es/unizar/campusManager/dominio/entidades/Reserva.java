@@ -14,18 +14,18 @@ public class Reserva extends Entidad {
     private String hora;
 
     @OneToOne
-    private EspacioReservable espacioReservable;
+    private Espacio espacio;
 
     public Reserva() {
     }
 
-    public Reserva(String emailProfesor, String fecha, String hora, EspacioReservable espacioReservable) {
+    public Reserva(String emailProfesor, String fecha, String hora, Espacio espacio) {
         super();
         this.id = super.getId();
         this.emailProfesor = emailProfesor;
         this.fecha = fecha;
         this.hora = hora;
-        this.espacioReservable = espacioReservable;
+        this.espacio = espacio;
     }
 
     public String getId() {
@@ -44,8 +44,8 @@ public class Reserva extends Entidad {
         return hora;
     }
 
-    public EspacioReservable getEspacioReservable() {
-        return espacioReservable;
+    public Espacio getEspacio() {
+        return espacio;
     }
 
     @Override
@@ -55,7 +55,7 @@ public class Reserva extends Entidad {
                 "\"emailProfesor\":" + (emailProfesor == null ? "null" : "\"" + emailProfesor + "\"") + ", " +
                 "\"fecha\":" + (fecha == null ? "null" : "\"" + fecha + "\"") + ", " +
                 "\"hora\":" + (hora == null ? "null" : "\"" + hora + "\"") + ", " +
-                "\"espacioReservable\":" + (espacioReservable == null ? "null" : espacioReservable) +
+                "\"espacio\":" + (espacio == null ? "null" : espacio) +
                 "}";
     }
 }

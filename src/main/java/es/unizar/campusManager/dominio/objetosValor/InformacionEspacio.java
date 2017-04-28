@@ -3,22 +3,22 @@ package es.unizar.campusManager.dominio.objetosValor;
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class Espacio {
+public class InformacionEspacio {
 
     private final String idUtc;
     private final String nombreEspacio;
-    private final Ubicacion ubicacion;
+    private final String edifico;
 
-    public Espacio(){
+    public InformacionEspacio() {
         this.idUtc = "";
         this.nombreEspacio = "";
-        this.ubicacion = new Ubicacion();
+        this.edifico = "";
     }
 
-    public Espacio(String idUtc, String nombreEspacio, Ubicacion ubicacion) {
+    public InformacionEspacio(String idUtc, String nombreEspacio, String edifico) {
         this.idUtc = idUtc;
         this.nombreEspacio = nombreEspacio;
-        this.ubicacion = ubicacion;
+        this.edifico = edifico;
     }
 
     public String getIdUtc() {
@@ -29,16 +29,16 @@ public class Espacio {
         return nombreEspacio;
     }
 
-    public Ubicacion getUbicacion() {
-        return ubicacion;
+    public String getEdifico() {
+        return edifico;
     }
 
     @Override
     public String toString() {
-        return "{\"_class\":\"Espacio\", " +
+        return "{\"_class\":\"InformacionEspacio\", " +
                 "\"idUtc\":" + (idUtc == null ? "null" : "\"" + idUtc + "\"") + ", " +
                 "\"nombreEspacio\":" + (nombreEspacio == null ? "null" : "\"" + nombreEspacio + "\"") + ", " +
-                "\"ubicacion\":" + (ubicacion == null ? "null" : ubicacion) +
+                "\"edifico\":" + (edifico == null ? "null" : "\"" + edifico + "\"") +
                 "}";
     }
 }
