@@ -9,8 +9,4 @@ public interface TrabajadorRepository {
 
     boolean save (Trabajador trabajador);
 
-    long count();
-
-    void delete(String email);
-
 }

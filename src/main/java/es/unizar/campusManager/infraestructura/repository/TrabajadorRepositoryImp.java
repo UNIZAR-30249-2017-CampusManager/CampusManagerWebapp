@@ -30,16 +30,4 @@ public class TrabajadorRepositoryImp implements TrabajadorRepository {
         return trabajadorResult != null;
     }
 
-    @Override
-    public long count() {
-        return trabajadorRepositorySpring.count();
-    }
-
-    @Override
-    public void delete(String email) {
-        Trabajador admin = findByEmail(email);
-        if(admin != null){
-            trabajadorRepositorySpring.delete(admin);
-        }
-    }
 }

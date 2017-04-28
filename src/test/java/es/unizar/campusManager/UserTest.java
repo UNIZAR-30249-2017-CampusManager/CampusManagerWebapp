@@ -2,11 +2,14 @@ package es.unizar.campusManager;
 
 import es.unizar.campusManager.aplicacion.servicios.ServicioUsuario;
 import es.unizar.campusManager.dominio.entidades.Administrador;
+import es.unizar.campusManager.dominio.entidades.Trabajador;
 import es.unizar.campusManager.dominio.repository.AdminRepository;
 import es.unizar.campusManager.dominio.repository.TrabajadorRepository;
 import es.unizar.campusManager.infraestructura.DTO.AdministradorDTO;
 import es.unizar.campusManager.infraestructura.DTO.TrabajadorDTO;
 import es.unizar.campusManager.infraestructura.DTO.UserDTO;
+import es.unizar.campusManager.infraestructura.springData.AdminRepositorySpring;
+import es.unizar.campusManager.infraestructura.springData.TrabajadorRepositorySpring;
 import es.unizar.campusManager.puertos.rest.EndpointREST;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -29,10 +32,10 @@ public class UserTest {
 
 
     @Autowired
-    private AdminRepository adminRep;
+    private AdminRepositorySpring adminRep;
 
     @Autowired
-    private TrabajadorRepository trabRep;
+    private TrabajadorRepositorySpring trabRep;
 
 
     @Autowired
@@ -41,9 +44,22 @@ public class UserTest {
 
     @Before
     public void init() {
-        adminRep.delete("pepe@gmail.com");
-        trabRep.delete("pepe@gmail.com");
-        adminRep.delete("admin@gmail.com");
+        Administrador admin = adminRep.findByEmail("pepe@gmail.com");
+
+        if(admin!=null){
+            adminRep.delete(admin);
+        }
+        Trabajador trab = trabRep.findByEmail("pepe@gmail.com");
+
+        if(trab!=null){
+            trabRep.delete(trab);
+        }
+        admin = adminRep.findByEmail("admin@gmail.com");
+
+        if(admin!=null){
+            adminRep.delete(admin);
+        }
+
     }
 
 

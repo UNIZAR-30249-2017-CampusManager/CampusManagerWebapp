@@ -9,9 +9,5 @@ public interface AdminRepository {
 
     boolean save(Administrador administrador);
 
-    long count();
-
-    void delete(String email);
-
 
 }

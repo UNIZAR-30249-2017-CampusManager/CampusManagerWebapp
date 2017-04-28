@@ -31,19 +31,6 @@ public class AdminRepositoryImp implements AdminRepository {
         return administradorResult != null;
     }
 
-    @Override
-    public long count() {
-        return adminRepositorySpring.count();
-    }
-
-    @Override
-    public void delete(String email) {
-        Administrador admin = findByEmail(email);
-        if(admin != null){
-            adminRepositorySpring.delete(admin);
-        }
-    }
-
 
 
 
