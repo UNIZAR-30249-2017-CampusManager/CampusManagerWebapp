@@ -8,7 +8,7 @@
     <div data-ng-init="getInfo()">
         <hr/>
         <p>
-            Abierto de {{edificio.horaApertura}} a {{edificio.horaCierre}} todos los meses salvo {{edificio.mesesCerrado}}.
+            Abierto de {{infoEdificio.horaApertura}} a {{infoEdificio.horaCierre}} todos los meses salvo {{infoEdificio.mesesCerrado}}.
         </p>
         <hr/>
         <p>
@@ -26,11 +26,11 @@
             </thead>
             <tbody>
             <tr>
-                <td>{{edificio.menuCafeteria.lunes}}</td>
-                <td>{{edificio.menuCafeteria.martes}}</td>
-                <td>{{edificio.menuCafeteria.miercoles}}</td>
-                <td>{{edificio.menuCafeteria.jueves}}</td>
-                <td>{{edificio.menuCafeteria.viernes}}</td>
+                <td>{{infoEdificio.menuCafeteria.lunes}}</td>
+                <td>{{infoEdificio.menuCafeteria.martes}}</td>
+                <td>{{infoEdificio.menuCafeteria.miercoles}}</td>
+                <td>{{infoEdificio.menuCafeteria.jueves}}</td>
+                <td>{{infoEdificio.menuCafeteria.viernes}}</td>
             </tr>
             </tbody>
         </table>

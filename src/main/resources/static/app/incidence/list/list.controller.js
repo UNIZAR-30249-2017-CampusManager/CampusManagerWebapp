@@ -107,5 +107,26 @@
                 AlertService.addAlert('danger', 'Error al crear solicitud de mantenimiento: seleccione al menos una incidencia');
             }
         }
+
+        vm.cambiarEstado = function(row, estado) {
+            var grupo = row.requestId;
+
+            var data = {
+                estado: estado
+            };
+
+            $http.post("/incidencias/" + grupo, data).then(
+                function (response) { //success
+                    var i = 0;
+                    while(grupo != vm.incidencias[i].requestId){
+                        i++;
+                    }
+                    vm.incidencias[i].estadoIncidencia = estado;
+                },
+                function (response) { //error
+                    AlertService.addAlert('danger', 'Error al marcar como invalido');
+                }
+            );
+        }
     }
 })();
