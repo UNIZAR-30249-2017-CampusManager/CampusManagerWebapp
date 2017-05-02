@@ -5,9 +5,9 @@
         .module('app.buildings.torres')
         .controller('TorresController', TorresController);
 
-    TorresController.inject = ['$scope','leafletData','$compile','MapService','ModalService', 'AlertService'];
+    TorresController.inject = ['$scope','leafletData','$compile','MapService','ModalService', 'AlertService','$http'];
 
-    function TorresController($scope,leafletData,$compile,MapService,ModalService, AlertService) {
+    function TorresController($scope,leafletData,$compile,MapService,ModalService, AlertService, $http) {
         //console.log("Invocado controlador del Torres");
         var vm = this;
         var currentFloor = 0;
@@ -24,8 +24,44 @@
         $scope.vista={
             nombre : 'Edificio Torres Quevedo'
         };
-        $scope.edificio={
-            nombre : 'Planta ' + currentFloor
+        $scope.edificio = {
+            nombre: 'Planta ' + currentFloor,
+            horaApertura: '',
+            horaCierre: '',
+            mesesCerrado: '',
+            menuCafeteria: ''
+        };
+
+        $scope.getInfo = function (){
+            $http.get("/edificios/Torres Quevedo").then(
+                function (response) { //success
+                    var objetoEdificio = response.data;
+
+                    $scope.edificio.horaApertura = objetoEdificio.horaApertura;
+                    $scope.edificio.horaCierre = objetoEdificio.horaCierre;
+
+                    var array = objetoEdificio.mesesCerrado;
+                    var texto = '';
+                    var len = array.length;
+
+                    for (var i = 0;i < len; i++){
+                        if(i < len - 2){
+                            texto += array[i] + ', ';
+                        }else if(i < len - 1){
+                            texto += array[i] +  ' y ';
+                        }else{
+                            texto += array[i];
+                        }
+                    }
+                    $scope.edificio.mesesCerrado = texto;
+
+                    $scope.edificio.menuCafeteria = objetoEdificio.menuCafeteria;
+
+                },
+                function (response) { //error
+                    AlertService.addAlert('danger', 'Error al obtener la información del edificio;');
+                }
+            );
         };
 
         //Arrays de capas
