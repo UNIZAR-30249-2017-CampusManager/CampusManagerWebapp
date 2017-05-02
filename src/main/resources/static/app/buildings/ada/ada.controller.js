@@ -5,9 +5,9 @@
         .module('app.buildings.ada')
         .controller('AdaController', AdaController);
 
-    AdaController.inject=['$scope','leafletData','$compile','MapService','ModalService','AlertService'];
+    AdaController.inject=['$scope','leafletData','$compile','MapService','ModalService','AlertService','$http'];
 
-    function AdaController($scope, leafletData, $compile, MapService, ModalService, AlertService) {
+    function AdaController($scope, leafletData, $compile, MapService, ModalService, AlertService, $http) {
         //console.log("Invocado controlador del Ada");
         var vm = this;
         var currentFloor = 0;
@@ -25,8 +25,47 @@
             nombre: 'Edificio Ada Byron'
         };
         $scope.edificio = {
-            nombre: 'Planta ' + currentFloor
-        };
+                    nombre: 'Planta ' + currentFloor,
+                    horaApertura: '',
+                    horaCierre: '',
+                    mesesCerrado: '',
+                    menuCafeteria: ''
+                };
+
+        $scope.getInfo = function (){
+                    console.log($scope.edificio.nombre);
+                    console.log("asdf");
+
+                    $http.get("/edificios/Ada Byron").then(
+                                function (response) { //success
+                                    var objetoEdificio = response.data;
+
+                                    $scope.edificio.horaApertura = objetoEdificio.horaApertura;
+                                    $scope.edificio.horaCierre = objetoEdificio.horaCierre;
+
+                                    var array = objetoEdificio.mesesCerrado;
+                                    var texto = '';
+                                    var len = array.length;
+
+                                    for (var i = 0;i < len; i++){
+                                        if(i < len - 2){
+                                            texto += array[i] + ', ';
+                                        }else if(i < len - 1){
+                                            texto += array[i] +  ' y ';
+                                        }else{
+                                            texto += array[i];
+                                        }
+                                    }
+                                    $scope.edificio.mesesCerrado = texto;
+
+                                    $scope.edificio.menuCafeteria = objetoEdificio.menuCafeteria;
+
+                                },
+                                function (response) { //error
+                                    AlertService.addAlert('danger', 'Error al obtener la información del edificio;');
+                                }
+                            );
+                };
 
         //Arrays de capas
         $scope.definedLayers = {

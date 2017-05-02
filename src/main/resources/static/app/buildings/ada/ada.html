@@ -5,4 +5,37 @@
         </h1>
     </div>
     <leaflet lf-center="ada" controls="controls" markers="markers" layers="layers" width="100%" height="480px"></leaflet>
+    <div data-ng-init="getInfo()">
+        <hr/>
+        <p>
+            Abierto de {{edificio.horaApertura}} a {{edificio.horaCierre}} todos los meses salvo {{edificio.mesesCerrado}}.
+        </p>
+        <hr/>
+        <p>
+            <h3>Menú para esta semana:</h3>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Lunes</th>
+                        <th>Martes</th>
+                        <th>Miercoles</th>
+                        <th>Jueves</th>
+                        <th>Viernes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{edificio.menuCafeteria.lunes}}</td>
+                        <td>{{edificio.menuCafeteria.martes}}</td>
+                        <td>{{edificio.menuCafeteria.miercoles}}</td>
+                        <td>{{edificio.menuCafeteria.jueves}}</td>
+                        <td>{{edificio.menuCafeteria.viernes}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </p>
+
+
+    </div>
 </div>
