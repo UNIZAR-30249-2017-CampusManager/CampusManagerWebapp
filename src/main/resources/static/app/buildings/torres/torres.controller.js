@@ -25,20 +25,23 @@
             nombre : 'Edificio Torres Quevedo'
         };
         $scope.edificio = {
-            nombre: 'Planta ' + currentFloor,
-            horaApertura: '',
-            horaCierre: '',
-            mesesCerrado: '',
-            menuCafeteria: ''
+            nombre: 'Planta ' + currentFloor
         };
+
+        $scope.infoEdificio = {
+                horaApertura: '',
+                horaCierre: '',
+                mesesCerrado: '',
+                menuCafeteria: ''
+        }
 
         $scope.getInfo = function (){
             $http.get("/edificios/Torres Quevedo").then(
                 function (response) { //success
                     var objetoEdificio = response.data;
 
-                    $scope.edificio.horaApertura = objetoEdificio.horaApertura;
-                    $scope.edificio.horaCierre = objetoEdificio.horaCierre;
+                    $scope.infoEdificio.horaApertura = objetoEdificio.horaApertura;
+                    $scope.infoEdificio.horaCierre = objetoEdificio.horaCierre;
 
                     var array = objetoEdificio.mesesCerrado;
                     var texto = '';
@@ -53,9 +56,9 @@
                             texto += array[i];
                         }
                     }
-                    $scope.edificio.mesesCerrado = texto;
+                    $scope.infoEdificio.mesesCerrado = texto;
 
-                    $scope.edificio.menuCafeteria = objetoEdificio.menuCafeteria;
+                    $scope.infoEdificio.menuCafeteria = objetoEdificio.menuCafeteria;
 
                 },
                 function (response) { //error
