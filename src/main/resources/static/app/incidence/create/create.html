@@ -20,19 +20,26 @@
                                            placeholder="Nombre" required="required" ng-model="vm.name"/>
                                 </div>
                                 <div class="form-group">
-                                    <label for="lugar">Lugar:</label>
-                                    <input type="text" name="lugar" id="lugar" class="form-control"
-                                           placeholder="Lugar" required="required" ng-model="vm.place"/>
+                                    <label class="control-label" for="edificios">Edificio:</label>
+                                    <br>
+                                    <ol id="edificios" class="nya-bs-select" ng-model="vm.edificioSeleccionado" ng-disabled="vm.edificios.length === 0">
+                                        <li nya-bs-option="edificio in vm.edificios">
+                                            <a>
+                                                {{edificio.nombre}}
+                                            </a>
+                                        </li>
+                                    </ol>
                                 </div>
                                 <div class="form-group">
-                                    <label for="edificio">Edificio:</label>
-                                    <input type="text" name="edificio" id="edificio" class="form-control"
-                                           placeholder="Edificio" required="required" ng-model="vm.building"/>
-                                </div>
-                                <div class="form-group">
-                                    <label for="edificio">Planta:</label>
-                                    <input type="number" name="planta" id="planta" class="form-control"
-                                           placeholder="Planta" required="required" ng-model="vm.floor"/>
+                                    <label class="control-label" for="espacios">Espacio:</label>
+                                    <br>
+                                    <ol id="espacios" class="nya-bs-select" ng-model="vm.espacioSeleccionado">
+                                        <li nya-bs-option="espacio in vm.espacios">
+                                            <a>
+                                                {{espacio.informacionEspacio.nombreEspacio}}
+                                            </a>
+                                        </li>
+                                    </ol>
                                 </div>
                                 <div class="form-group">
                                     <label for="description">Descripción:</label>

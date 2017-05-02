@@ -1,12 +1,9 @@
 package es.unizar.campusManager.puertos.rest;
 
-import es.unizar.campusManager.aplicacion.servicios.ServicioEdificio;
-import es.unizar.campusManager.aplicacion.servicios.ServicioReservas;
+import es.unizar.campusManager.aplicacion.servicios.*;
 import es.unizar.campusManager.dominio.entidades.Edificio;
-import es.unizar.campusManager.dominio.entidades.EspacioReservable;
+import es.unizar.campusManager.dominio.entidades.Espacio;
 import es.unizar.campusManager.dominio.entidades.Incidencia;
-import es.unizar.campusManager.aplicacion.servicios.ServicioIncidencia;
-import es.unizar.campusManager.aplicacion.servicios.ServicioUsuario;
 import es.unizar.campusManager.infraestructura.DTO.*;
 import es.unizar.campusManager.infraestructura.repository.*;
 
@@ -30,18 +27,18 @@ public class EndpointREST {
     private final AdminRepositoryImp adminRepositoryImp;
     private final IncidenciaRepositoryImp incidenciaRepositoryImp;
     private final EdificioRepositoryImp edificioRepositoryImp;
-    private final EspacioReservableRepositoryImp espacioReservableRepositoryImp;
+    private final EspacioRepositoryImp espacioRepositoryImp;
     private final ReservaRepositoryImp reservaRepositoryImp;
 
     @Autowired
     public EndpointREST(TrabajadorRepositoryImp trabajadorRepositoryImp, AdminRepositoryImp adminRepositoryImp,
                         IncidenciaRepositoryImp incidenciaRepositoryImp, EdificioRepositoryImp edificioRepositoryImp,
-                        EspacioReservableRepositoryImp espacioReservableRepositoryImp, ReservaRepositoryImp reservaRepositoryImp) {
+                        EspacioRepositoryImp espacioRepositoryImp, ReservaRepositoryImp reservaRepositoryImp) {
         this.trabajadorRepositoryImp = trabajadorRepositoryImp;
         this.adminRepositoryImp = adminRepositoryImp;
         this.incidenciaRepositoryImp = incidenciaRepositoryImp;
         this.edificioRepositoryImp = edificioRepositoryImp;
-        this.espacioReservableRepositoryImp = espacioReservableRepositoryImp;
+        this.espacioRepositoryImp = espacioRepositoryImp;
         this.reservaRepositoryImp = reservaRepositoryImp;
     }
 
@@ -107,14 +104,15 @@ public class EndpointREST {
     List<IncidenciaDTO> obtenerTodasIncidencias() {
         logger.info("Detectada peticion para obtener todas las incidencias del sistema");
 
-        ServicioIncidencia servicioIncidencia = new ServicioIncidencia(incidenciaRepositoryImp);
+        ServicioIncidencia servicioIncidencia = new ServicioIncidencia(incidenciaRepositoryImp, espacioRepositoryImp);
 
         ArrayList<Incidencia> incidencias = (ArrayList<Incidencia>) servicioIncidencia.obtenerTodasIncidencias();
         ArrayList<IncidenciaDTO> incidenciaDTOS = new ArrayList<>();
 
         for (Incidencia incidencia : incidencias) {
             incidenciaDTOS.add(new IncidenciaDTO(incidencia.getId(), incidencia.getNombre(), incidencia.getDescripcion(),
-                    incidencia.getEspacio().getNombreEspacio(), incidencia.getEspacio().getUbicacion().getNombreEdificio(),
+                    incidencia.getEspacio().getInformacionEspacio().getNombreEspacio(),
+                    incidencia.getEspacio().getInformacionEspacio().getEdifico(),
                     incidencia.getEstado(), incidencia.getEmailTrabajador(), incidencia.getFecha(), incidencia.getGrupo()));
         }
 
@@ -126,14 +124,15 @@ public class EndpointREST {
     List<IncidenciaDTO> obtenerIncidenciasTrabajador(@PathVariable String email) {
         logger.info("Detectada peticion para obtener las incidencias del trabajador con email " + email);
 
-        ServicioIncidencia servicioIncidencia = new ServicioIncidencia(incidenciaRepositoryImp);
+        ServicioIncidencia servicioIncidencia = new ServicioIncidencia(incidenciaRepositoryImp, espacioRepositoryImp);
 
         ArrayList<Incidencia> incidencias = (ArrayList<Incidencia>) servicioIncidencia.obtenerIncidenciasTrabajador(email);
         ArrayList<IncidenciaDTO> incidenciaDTOS = new ArrayList<>();
 
         for (Incidencia incidencia : incidencias) {
             incidenciaDTOS.add(new IncidenciaDTO(incidencia.getId(), incidencia.getNombre(), incidencia.getDescripcion(),
-                    incidencia.getEspacio().getNombreEspacio(), incidencia.getEspacio().getUbicacion().getNombreEdificio(),
+                    incidencia.getEspacio().getInformacionEspacio().getNombreEspacio(),
+                    incidencia.getEspacio().getInformacionEspacio().getEdifico(),
                     incidencia.getEstado(), incidencia.getEmailTrabajador(), incidencia.getFecha(), incidencia.getGrupo()));
         }
 
@@ -144,16 +143,14 @@ public class EndpointREST {
     public ResponseEntity crearNuevaIncidencia(@RequestBody NuevaIncidenciaDTO nuevaIncidenciaDTO) {
         logger.info("Detectada peticion para crear una nueva incidencia");
 
-        ServicioIncidencia servicioIncidencia = new ServicioIncidencia(incidenciaRepositoryImp);
+        ServicioIncidencia servicioIncidencia = new ServicioIncidencia(incidenciaRepositoryImp, espacioRepositoryImp);
 
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         String formattedDate = formatter.format(date);
 
         if (servicioIncidencia.crearIncidencia(nuevaIncidenciaDTO.getNombre(), nuevaIncidenciaDTO.getDescripcion(),
-                formattedDate, nuevaIncidenciaDTO.getIdUtc(), nuevaIncidenciaDTO.getNombreEspacio(),
-                nuevaIncidenciaDTO.getPlanta(), nuevaIncidenciaDTO.getNombreEdificio(),
-                nuevaIncidenciaDTO.getX(), nuevaIncidenciaDTO.getY())) {
+                formattedDate, nuevaIncidenciaDTO.getIdEspacio())) {
             //Creacion correcta
             logger.info("Incidencia con nombre " + nuevaIncidenciaDTO.getNombre() + " creada satisfactoriamente");
             return new ResponseEntity(HttpStatus.OK);
@@ -168,7 +165,7 @@ public class EndpointREST {
     public ResponseEntity asignarIncidencia(@RequestBody AsignarIncidenciasDTO asignarIncidenciasDTO) {
         logger.info("Detectada peticion para asignar una incidencia a un trabajador");
 
-        ServicioIncidencia servicioIncidencia = new ServicioIncidencia(incidenciaRepositoryImp);
+        ServicioIncidencia servicioIncidencia = new ServicioIncidencia(incidenciaRepositoryImp, espacioRepositoryImp);
 
         ArrayList<Incidencia> incidencias = new ArrayList<>();
 
@@ -193,7 +190,7 @@ public class EndpointREST {
                                                   @RequestBody NuevoEstadoIncidenciaDTO nuevoEstadoIncidenciaDTO) {
         logger.info("Peticion para cambiar el estado de las incidencias del grupo " + grupoIncidencia + " a " + nuevoEstadoIncidenciaDTO.getEstado());
 
-        ServicioIncidencia servicioIncidencia = new ServicioIncidencia(incidenciaRepositoryImp);
+        ServicioIncidencia servicioIncidencia = new ServicioIncidencia(incidenciaRepositoryImp, espacioRepositoryImp);
 
         if (servicioIncidencia.cambiarEstado(grupoIncidencia, nuevoEstadoIncidenciaDTO.getEstado())) {
             //Cambio de estado satisfactorio
@@ -205,6 +202,15 @@ public class EndpointREST {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+    }
+
+    @GetMapping(value = "/edificios", produces = "application/json")
+    public List<Edificio> obtenerEdificios(){
+        logger.info("Detectada peticion para obtener todos los edificios del sistema");
+
+        ServicioEdificio servicioEdificio = new ServicioEdificio(edificioRepositoryImp);
+
+        return servicioEdificio.obtenerEdificios();
     }
 
     @GetMapping(value = "/edificios/{nombreEdificio:.*}", produces = "application/json")
@@ -240,20 +246,20 @@ public class EndpointREST {
         }
     }
 
-    @GetMapping(value = "/espacios", produces = "application/json")
-    public List<EspacioReservable> obtenerEspacios(){
-        logger.info("Detectada peticion para obtener todos los espacios reservables del sistema");
+    @GetMapping(value = "/espacios/{nombreEdificio:.*}", produces = "application/json")
+    public List<Espacio> obtenerEspaciosEdificio(@PathVariable String nombreEdificio){
+        logger.info("Detectada peticion para obtener los espacios del sistema del edificio " + nombreEdificio);
 
-        ServicioReservas servicioReservas = new ServicioReservas(espacioReservableRepositoryImp,reservaRepositoryImp);
+        ServicioEspacio servicioEspacio = new ServicioEspacio(espacioRepositoryImp);
 
-        return servicioReservas.obtenerEspacios();
+        return servicioEspacio.obtenerEspaciosEdificio(nombreEdificio);
     }
 
     @PutMapping(value = "/reservas")
     public ResponseEntity crearReserva(@RequestBody ReservaDTO reservaDTO){
         logger.info("Detectada peticion para crear una nueva reserva");
 
-        ServicioReservas servicioReservas = new ServicioReservas(espacioReservableRepositoryImp,reservaRepositoryImp);
+        ServicioReservas servicioReservas = new ServicioReservas(espacioRepositoryImp,reservaRepositoryImp);
 
         if(servicioReservas.crearReserva(reservaDTO.getEmailProfesor(),reservaDTO.getFecha(),reservaDTO.getHora(),
                 reservaDTO.getIdEspacioReservable())){

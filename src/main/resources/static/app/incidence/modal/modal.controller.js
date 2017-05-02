@@ -37,12 +37,7 @@
             var data = {
                 nombre: vm.name,
                 descripcion: vm.description,
-                idUtc: param.idUtc,
-                nombreEspacio: param.nombreEspacio,
-                planta: param.planta,
-                nombreEdificio: param.nombreEdificio,
-                x: param.x,
-                y: param.y
+                idEspacio: param.idEspacio
             };
 
             $http.put("/incidencias", data).then(
@@ -55,7 +50,7 @@
                     vm.description = null;
                     vm.building = null;
 
-                    AlertService.addAlert('success', '¡La incidencia en ' + data.nombreEspacio + ' ' + data.nombreEdificio + ' ha sido registrada con éxito!');
+                    AlertService.addAlert('success', '¡La incidencia en ' + param.nombreEspacio + ' ' + param.nombreEdificio + ' ha sido registrada con éxito!');
 
                     $uibModalInstance.dismiss('success');
                 },

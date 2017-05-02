@@ -2,6 +2,7 @@
     'use strict';
 
     angular.module('app.incidence.create', [
-            'ui.bootstrap'
+            'ui.bootstrap',
+            'nya.bootstrap.select'
         ])
 })();

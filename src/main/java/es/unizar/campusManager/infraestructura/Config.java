@@ -28,8 +28,8 @@ public class Config {
     }
 
     @Bean
-    EspacioReservableRepositoryImp espacioReservableRepositoryImp (){
-        return new EspacioReservableRepositoryImp();
+    EspacioRepositoryImp espacioReservableRepositoryImp (){
+        return new EspacioRepositoryImp();
     }
 
     @Bean
