@@ -32,7 +32,7 @@
                             <input type="checkbox" ng-checked="row.isRowSelected" ng-click="vm.toggleSelection(row)"/>
                         </td>
                         <td ng-if="vm.role=='trabajador'" data-title="'Invalidar'">
-                            <input ng-show="row.estadoIncidencia != 'Invalido'" type="button" class="btn btn-danger" value="Invalidar" ng-click="vm.cambiarEstado(row,'Invalido')"/>
+                            <input ng-show="row.estadoIncidencia !== 'Invalido' && row.estadoIncidencia !== 'Finalizado'" type="button" class="btn btn-danger" value="Invalidar" ng-click="vm.cambiarEstado(row,'Invalido')"/>
                         </td>
                         <td ng-if="vm.role=='trabajador'" data-title="'Aceptar'">
                             <input ng-show="row.estadoIncidencia == 'Asignada'" type="button" class="btn btn-primary" value="Aceptar" ng-click="vm.cambiarEstado(row,'En curso')"/>

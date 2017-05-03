@@ -122,7 +122,7 @@ public class ServicioIncidencia {
                 }
             }
 
-            if(error){
+            if(error || incidencias.size() == 0){
                 logger.severe("Error, no se han encontrado incidencias en el grupo " + grupo);
                 return false;
             } else {
