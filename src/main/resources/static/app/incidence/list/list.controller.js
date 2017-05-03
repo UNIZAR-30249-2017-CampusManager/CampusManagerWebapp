@@ -79,6 +79,7 @@
                             descripcionIncidencia: description, estadoIncidencia: status,
                             fechaIncidencia: fecha, requestId: requestId
                         });
+
                     }
 
                     vm.tabla = new NgTableParams({count: 5}, {dataset: vm.incidencias, counts: [5, 10, 20]});
@@ -117,14 +118,18 @@
 
             $http.post("/incidencias/" + grupo, data).then(
                 function (response) { //success
-                    var i = 0;
-                    while(grupo != vm.incidencias[i].requestId){
-                        i++;
+
+                    for(var i = 0;i<vm.incidencias.length;i++){
+                        if(grupo == vm.incidencias[i].requestId){
+                            vm.incidencias[i].estadoIncidencia = estado;
+                        }
                     }
-                    vm.incidencias[i].estadoIncidencia = estado;
+
+                    AlertService.addAlert('success', 'Se ha marcado como ' + estado + ' correctamente');
+
                 },
                 function (response) { //error
-                    AlertService.addAlert('danger', 'Error al marcar como invalido');
+                    AlertService.addAlert('danger', 'Error al marcar como ' + estado);
                 }
             );
         }
