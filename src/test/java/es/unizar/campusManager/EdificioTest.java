@@ -2,6 +2,7 @@ package es.unizar.campusManager;
 
 import es.unizar.campusManager.dominio.entidades.Edificio;
 import es.unizar.campusManager.dominio.objetosValor.MenuCafeteria;
+import es.unizar.campusManager.infraestructura.DTO.EdificioDTO;
 import es.unizar.campusManager.infraestructura.springData.EdificioRepositorySpring;
 import es.unizar.campusManager.puertos.rest.EndpointREST;
 import org.junit.After;
@@ -93,4 +94,36 @@ public class EdificioTest {
 
     }
 
+    @Test
+    public void modInfoEdificioTest () throws Exception {
+        List<String> list = new ArrayList<>();
+        list.add("Diciembre");
+
+        MenuCafeteria menu = new MenuCafeteria("Paella","Albóndigas","Judías","Sopa","Cerveza");
+
+        EdificioDTO nuevo = new EdificioDTO("10:00", "19:00", list, menu);
+        ResponseEntity response = endpoint.actualizarInformacionEdificio("Ada Byron", nuevo);
+
+        Edificio edificio = (Edificio) endpoint.obtenerEdificioNombre("Ada Byron");
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Ada Byron", edificio.getNombre());
+        assertEquals("10:00", edificio.getHoraApertura());
+        assertEquals("19:00", edificio.getHoraCierre());
+        assertEquals("Diciembre", edificio.getMesesCerrado().get(0));
+        assertEquals("Cerveza", edificio.getMenuCafeteria().getViernes());
+    }
+
+    @Test
+    public void modInfoEdificioErrTest () throws Exception {
+        List<String> list = new ArrayList<>();
+        list.add("Diciembre");
+
+        MenuCafeteria menu = new MenuCafeteria("Paella","Albóndigas","Judías","Sopa","Cerveza");
+
+        EdificioDTO nuevo = new EdificioDTO("10:00", "19:00", list, menu);
+        ResponseEntity response = endpoint.actualizarInformacionEdificio("Byron", nuevo);
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
 }

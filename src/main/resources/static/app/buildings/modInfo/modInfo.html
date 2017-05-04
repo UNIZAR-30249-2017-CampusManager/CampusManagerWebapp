@@ -1,0 +1,152 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1" id="panelMod">
+            <h1>
+                Modificar información de los edificios
+            </h1>
+            <br/>
+            <div class="panel panel-modify">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="alert alert-danger" ng-show="vm.crearError">
+                                <a href="#" class="close" aria-label="close" ng-click="vm.toggleCrear()">&times;</a>
+                                <strong>¡Error al modificar la información!</strong> Algo raro ha pasado en el servidor.
+                            </div>
+                            <form class="form" role="form" name="formCrear" ng-submit="vm.modificar($event)">
+                                <div class="form-group">
+                                    <label class="control-label" for="edificios">Edificio:</label>
+                                    <br>
+                                    <ol id="edificios" class="nya-bs-select" ng-model="vm.edificioSeleccionado" ng-disabled="vm.edificios.length === 0">
+                                        <li nya-bs-option="edificio in vm.edificios">
+                                            <a>
+                                                {{edificio.nombre}}
+                                            </a>
+                                        </li>
+                                    </ol>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                            <label for="horaApertura">Hora Apertura:</label>
+                                            <input type="text" name="horaApertura" id="horaApertura" class="form-control"
+                                                   placeholder="8:00" required="required" ng-model="vm.horaApertura"/>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                            <label for="horaCierre">Hora Cierre:</label>
+                                            <input type="text" name="horaCierre" id="horaCierre" class="form-control"
+                                                   placeholder="22:00" required="required" ng-model="vm.horaCierre"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <h3>Menú de la cafetería:</h3>
+                                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                            <label for="lunes">Lunes:</label>
+                                            <input type="text" name="lunes" id="lunes" class="form-control"
+                                                   placeholder="Comida" required="required" ng-model="vm.menuCafeteria.lunes"/>
+                                        </div>
+                                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                            <label for="martes">Martes:</label>
+                                            <input type="text" name="martes" id="martes" class="form-control"
+                                                   placeholder="Comida" required="required" ng-model="vm.menuCafeteria.martes"/>
+                                        </div>
+                                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                            <label for="miercoles">Miércoles:</label>
+                                            <input type="text" name="miercoles" id="miercoles" class="form-control"
+                                                   placeholder="Comida" required="required" ng-model="vm.menuCafeteria.miercoles"/>
+                                        </div>
+                                    </div>
+                                    <br/>
+                                    <div class="row">
+                                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                            <label for="jueves">Jueves:</label>
+                                            <input type="text" name="jueves" id="jueves" class="form-control"
+                                                   placeholder="Comida" required="required" ng-model="vm.menuCafeteria.jueves"/>
+                                        </div>
+                                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                            <label for="viernes">Viernes:</label>
+                                            <input type="text" name="viernes" id="viernes" class="form-control"
+                                                   placeholder="Comida" required="required" ng-model="vm.menuCafeteria.viernes"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <h3>Meses cerrado (seleccionar los meses):</h3>
+                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                            <label for="enero">Enero</label>
+                                            <input type="checkbox" name="enero" id="enero" class="form-control"
+                                                   ng-click="vm.toggleSelection('enero')" ng-checked="vm.enero"/>
+                                        </div>
+                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                            <label for="febrero">Febrero</label>
+                                            <input type="checkbox" name="febrero" id="febrero" class="form-control"
+                                                   ng-click="vm.toggleSelection('febrero')" ng-checked="vm.febrero"/>
+                                        </div>
+                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                            <label for="marzo">Marzo</label>
+                                            <input type="checkbox" name="marzo" id="marzo" class="form-control"
+                                                   ng-click="vm.toggleSelection('marzo')" ng-checked="vm.marzo"/>
+                                        </div>
+                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                            <label for="abril">Abril</label>
+                                            <input type="checkbox" name="abril" id="abril" class="form-control"
+                                                   ng-click="vm.toggleSelection('abril')" ng-checked="vm.abril"/>
+                                        </div>
+                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                            <label for="mayo">Mayo</label>
+                                            <input type="checkbox" name="mayo" id="mayo" class="form-control"
+                                                   ng-click="vm.toggleSelection('mayo')" ng-checked="vm.mayo"/>
+                                        </div>
+                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                            <label for="junio">Junio</label>
+                                            <input type="checkbox" name="junio" id="junio" class="form-control"
+                                                   ng-click="vm.toggleSelection('junio')" ng-checked="vm.junio"/>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                            <label for="julio">Julio</label>
+                                            <input type="checkbox" name="julio" id="julio" class="form-control"
+                                                   ng-click="vm.toggleSelection('julio')" ng-checked="vm.julio"/>
+                                        </div>
+                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                            <label for="agosto">Agosto</label>
+                                            <input type="checkbox" name="agosto" id="agosto" class="form-control"
+                                                   ng-click="vm.toggleSelection('agosto')" ng-checked="vm.agosto"/>
+                                        </div>
+                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                            <label for="septiembre">Septiembre</label>
+                                            <input type="checkbox" name="septiembre" id="septiembre" class="form-control"
+                                                   ng-click="vm.toggleSelection('septiembre')" ng-checked="vm.septiembre"/>
+                                        </div>
+                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                            <label for="octubre">Octubre</label>
+                                            <input type="checkbox" name="octubre" id="octubre" class="form-control"
+                                                   ng-click="vm.toggleSelection('octubre')" ng-checked="vm.octubre"/>
+                                        </div>
+                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                            <label for="noviembre">Noviembre</label>
+                                            <input type="checkbox" name="noviembre" id="noviembre" class="form-control"
+                                                   ng-click="vm.toggleSelection('noviembre')" ng-checked="vm.noviembre"/>
+                                        </div>
+                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                            <label for="diciembre">Diciembre</label>
+                                            <input type="checkbox" name="diciembre" id="diciembre" class="form-control"
+                                                   ng-click="vm.toggleSelection('diciembre')" ng-checked="vm.diciembre"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <input type="submit" class="form-control btn btn-primary" value="Modificar datos"/>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
