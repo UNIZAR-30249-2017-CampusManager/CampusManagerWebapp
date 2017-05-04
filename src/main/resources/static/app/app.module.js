@@ -53,6 +53,11 @@
                     url: '/listarIncidencia',
                     templateUrl: 'app/incidence/list/list.html',
                     controller: 'ListIncidenceController as vm'
+                })
+                .state('modificarInfoEdificio', {
+                    url: '/modificarInfoEdificio',
+                    templateUrl: 'app/buildings/modInfo/modInfo.html',
+                    controller: 'ModInfoEdificioController as vm'
                 });
         });
 

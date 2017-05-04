@@ -6,6 +6,7 @@
             'app.buildings.general',
             'app.buildings.ada',
             'app.buildings.torres',
-            'app.buildings.betan'
+            'app.buildings.betan',
+            'app.buildings.modInfo'
         ]);
 })();

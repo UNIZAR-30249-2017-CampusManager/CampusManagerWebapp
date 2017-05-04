@@ -21,6 +21,10 @@
                             <a ui-sref="crearUsuario" ng-click="isCollapsed=true"
                             ng-show="vm.currentRole()==='administrador'">Crear usuario</a>
                         </li>
+                        <li role="menuitem">
+                            <a ui-sref="modificarInfoEdificio" ng-click="isCollapsed=true"
+                               ng-show="vm.currentRole()==='administrador'">Modificar info edificios</a>
+                        </li>
                     </ul>
                 </li>
                 <li>
