@@ -11,7 +11,8 @@
             'app.account',
             'app.layout',
             'app.incidence',
-            'app.buildings'])
+            'app.buildings',
+            'app.booking'])
         .config(function ($stateProvider, $urlRouterProvider,$logProvider,$locationProvider) {
             $logProvider.debugEnabled(false);
             $locationProvider.html5Mode(true);
@@ -58,6 +59,11 @@
                     url: '/modificarInfoEdificio',
                     templateUrl: 'app/buildings/modInfo/modInfo.html',
                     controller: 'ModInfoEdificioController as vm'
+                })
+                .state('reservarEspacio', {
+                    url: '/reservarEspacio',
+                    templateUrl: 'app/booking/booking.html',
+                    controller: 'BookingController as vm'
                 });
         });
 

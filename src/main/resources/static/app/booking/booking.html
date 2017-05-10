@@ -1,0 +1,73 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3" id="panelMod">
+            <h1>
+                Reservar un espacio
+            </h1>
+            <div class="panel panel-modify">
+                <div class="panel-body">
+                    <div class="row">
+                        <p class="col-lg-12">
+                            <form class="form" role="form" name="formCrear" ng-submit="vm.create($event)">
+                                <div class="form-group">
+                                    <label for="email">Email:</label>
+                                    <input type="text" name="email" id="email" class="form-control"
+                                           placeholder="email" required="required" ng-model="vm.email"/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="edificios">Edificio:</label>
+                                    <br>
+                                    <ol id="edificios" class="nya-bs-select" ng-model="vm.edificioSeleccionado" ng-disabled="vm.edificios.length === 0">
+                                        <li nya-bs-option="edificio in vm.edificios">
+                                            <a>
+                                                {{edificio.nombre}}
+                                            </a>
+                                        </li>
+                                    </ol>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="espacios">Espacio:</label>
+                                    <br>
+                                    <ol id="espacios" class="nya-bs-select" ng-model="vm.espacioSeleccionado">
+                                        <li nya-bs-option="espacio in vm.espacios">
+                                            <a ng-if="espacio.reservable">
+                                                {{espacio.informacionEspacio.nombreEspacio}}
+                                            </a>
+                                        </li>
+                                    </ol>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label" for="hora">Hora:</label>
+                                    <br>
+                                    <ol id="hora" class="nya-bs-select" ng-model="vm.hora">
+                                        <li nya-bs-option="h in vm.horas">
+                                            <a>
+                                                {{h}}
+                                            </a>
+                                        </li>
+                                    </ol>
+                                </div>
+
+                                <div>
+                                    <label class="control-label" for="fecha">Fecha:</label>
+
+                                    <p class="input-group">
+                                        <input type="text" id="fecha" class="form-control" uib-datepicker-popup ng-model="vm.fecha"
+                                               is-open="vm.popup.opened" ng-required="true" close-text="Close" />
+                                                  <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default" ng-click="vm.open()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                  </span>
+                                    </p>
+                                </div>
+                                <div>
+                                    <input type="submit" class="form-control btn btn-primary" value="Reservar"/>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
