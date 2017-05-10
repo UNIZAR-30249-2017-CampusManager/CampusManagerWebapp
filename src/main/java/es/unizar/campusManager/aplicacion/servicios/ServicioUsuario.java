@@ -19,36 +19,49 @@ public class ServicioUsuario {
         this.trabajadorRepository = trabajadorRepository;
     }
 
-    public boolean crearAdministrador(String email, String password){
+    public boolean crearAdministrador(String email, String password, String adminEmail, String adminPassword){
         //Comprobamos antes de crear el trabajador que no hay ningun usuario ya sea admin o trabajador
-        if(obtenerRol(email).equals("")){
-            if(this.adminRepository.findByEmail(email) == null){
-                // No existe trabajador, creo uno nuevo
-                logger.info("Creando nuevo administrador, no existe uno con email " + email);
-                return this.adminRepository.save(new Administrador(email,password));
+        Administrador administrador = adminRepository.findByEmail(adminEmail);
+
+        if(administrador != null && administrador.getPassword().equals(adminPassword)){
+            if(obtenerRol(email).equals("")){
+                if(this.adminRepository.findByEmail(email) == null){
+                    // No existe trabajador, creo uno nuevo
+                    logger.info("Creando nuevo administrador, no existe uno con email " + email);
+                    return this.adminRepository.save(new Administrador(email,password));
+                } else {
+                    logger.severe("El administrador con email " + email + " ya existe");
+                    return false;
+                }
             } else {
-                logger.severe("El administrador con email " + email + " ya existe");
+                logger.severe("No se puede crear el administrador, ya existe un " + obtenerRol(email) + " con ese email");
                 return false;
             }
-        } else {
-            logger.severe("No se puede crear el administrador, ya existe un " + obtenerRol(email) + " con ese email");
+        }else{
+            logger.severe("Solo los administradores pueden crear usuarios");
             return false;
         }
     }
 
-    public boolean crearTrabajador(String email, String password){
+    public boolean crearTrabajador(String email, String password, String adminEmail, String adminPassword){
         //Comprobamos antes de crear el trabajador que no hay ningun usuario ya sea admin o trabajador
-        if(obtenerRol(email).equals("")){
-            if(this.trabajadorRepository.findByEmail(email) == null){
-                // No existe trabajador, creo uno nuevo
-                logger.info("Creando nuevo trabajador, no existe uno con email " + email);
-                return this.trabajadorRepository.save(new Trabajador(email,password));
+        Administrador administrador = adminRepository.findByEmail(adminEmail);
+        if(administrador != null && administrador.getPassword().equals(adminPassword)){
+            if(obtenerRol(email).equals("")){
+                if(this.trabajadorRepository.findByEmail(email) == null){
+                    // No existe trabajador, creo uno nuevo
+                    logger.info("Creando nuevo trabajador, no existe uno con email " + email);
+                    return this.trabajadorRepository.save(new Trabajador(email,password));
+                } else {
+                    logger.severe("El trabajador con email " + email + " ya existe");
+                    return false;
+                }
             } else {
-                logger.severe("El trabajador con email " + email + " ya existe");
+                logger.severe("No se puede crear el trabajador, ya existe un " + obtenerRol(email) + " con ese email");
                 return false;
             }
-        } else {
-            logger.severe("No se puede crear el trabajador, ya existe un " + obtenerRol(email) + " con ese email");
+        }else{
+            logger.severe("Solo los administradores pueden crear usuarios");
             return false;
         }
     }

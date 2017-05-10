@@ -71,7 +71,8 @@ public class EndpointREST {
 
         ServicioUsuario servicioUsuario = new ServicioUsuario(adminRepositoryImp, trabajadorRepositoryImp);
 
-        if (servicioUsuario.crearTrabajador(trabajadorDTO.getEmailTrabajador(), trabajadorDTO.getPasswordTrabajador())) {
+        if (servicioUsuario.crearTrabajador(trabajadorDTO.getEmailTrabajador(), trabajadorDTO.getPasswordTrabajador(),
+                        trabajadorDTO.getEmailAdmin(),trabajadorDTO.getPasswordAdmin())) {
             //Creacion correcta
             logger.info("Trabajador con email " + trabajadorDTO.getEmailTrabajador() + " creado satisfactoriamente");
             return new ResponseEntity(HttpStatus.OK);
@@ -88,7 +89,8 @@ public class EndpointREST {
 
         ServicioUsuario servicioUsuario = new ServicioUsuario(adminRepositoryImp, trabajadorRepositoryImp);
 
-        if (servicioUsuario.crearAdministrador(administradorDTO.getEmailAdministrador(), administradorDTO.getPasswordAdministrador())) {
+        if (servicioUsuario.crearAdministrador(administradorDTO.getEmailAdministrador(),
+                administradorDTO.getPasswordAdministrador(), administradorDTO.getEmailAdmin(),administradorDTO.getPasswordAdmin())) {
             //Creacion correcta
             logger.info("Administrador con email " + administradorDTO.getEmailAdministrador() + " creado satisfactoriamente");
             return new ResponseEntity(HttpStatus.OK);
