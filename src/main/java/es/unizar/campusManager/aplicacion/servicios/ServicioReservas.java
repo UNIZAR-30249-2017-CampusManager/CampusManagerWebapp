@@ -76,14 +76,13 @@ public class ServicioReservas {
                             break;
                         }
                     }
-
                     if(!estaLibre){
                         logger.severe("La hora especificada no esta libre en la fecha " + fecha + " para el espacio " + idEspacioReservable);
                         return false;
                     } else {
                         Espacio espacio = espacioRepository.findById(idEspacioReservable);
 
-                        if(espacio == null){
+                        if(espacio == null || !espacio.isReservable()){
                             logger.severe("El espacio no es valido, abortando");
                             return false;
                         } else {
