@@ -13,6 +13,7 @@ import es.unizar.campusManager.infraestructura.springData.EspacioRepositorySprin
 import es.unizar.campusManager.infraestructura.springData.IncidenciaRepositorySpring;
 import es.unizar.campusManager.infraestructura.springData.TrabajadorRepositorySpring;
 import es.unizar.campusManager.puertos.rest.EndpointREST;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -74,6 +75,13 @@ public class IncidenciaTest {
         inc.setEstado("Asignada");
         inc.setEmailTrabajador(trabajador.getEmail());
         incidenciaRep.save(inc);
+    }
+
+    @After
+    public void finalizar() {
+        incidenciaRep.deleteAll();
+        espacioRep.deleteAll();
+        trabajadorRep.deleteAll();
     }
 
     @Test
