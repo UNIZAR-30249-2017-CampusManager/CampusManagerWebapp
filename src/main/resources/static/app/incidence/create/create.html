@@ -33,7 +33,7 @@
                                 <div class="form-group">
                                     <label class="control-label" for="espacios">Espacio:</label>
                                     <br>
-                                    <ol id="espacios" class="nya-bs-select" ng-model="vm.espacioSeleccionado">
+                                    <ol id="espacios" class="nya-bs-select" ng-model="vm.espacioSeleccionado" ng-disabled="vm.espacios.length === 0">
                                         <li nya-bs-option="espacio in vm.espacios">
                                             <a>
                                                 {{espacio.informacionEspacio.nombreEspacio}}

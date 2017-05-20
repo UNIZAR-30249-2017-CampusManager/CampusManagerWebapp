@@ -257,6 +257,30 @@ public class EndpointREST {
         return servicioEspacio.obtenerEspaciosEdificio(nombreEdificio);
     }
 
+    @PutMapping(value = "/espacios/{idEspacio:.*}")
+    public ResponseEntity crearEspacioReservable(@PathVariable String idEspacio) {
+        logger.info("Detectada petición para hacer al espacio con id " + idEspacio + " reservable.");
+
+        ServicioEspacio servicioEspacio = new ServicioEspacio(espacioRepositoryImp);
+
+        Espacio espacio = servicioEspacio.obtenerEspacioById(idEspacio);
+
+        if(!espacio.isReservable()) {
+            if (servicioEspacio.hacerReservable(espacio)) {
+                logger.info("Espacio " + espacio.getInformacionEspacio().getNombreEspacio() + " actualizado");
+                return new ResponseEntity(HttpStatus.OK);
+            } else {
+                logger.severe("Error al actualizar la condición de reservable del espacio " +
+                        espacio.getInformacionEspacio().getNombreEspacio());
+                return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } else {
+            logger.severe("Error: el espacio " + espacio.getInformacionEspacio().getNombreEspacio() + " ya es " +
+                    "reservable.");
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PutMapping(value = "/reservas")
     public ResponseEntity crearReserva(@RequestBody ReservaDTO reservaDTO){
         logger.info("Detectada peticion para crear una nueva reserva");

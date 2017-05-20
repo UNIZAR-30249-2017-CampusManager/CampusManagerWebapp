@@ -11,4 +11,6 @@ public interface EspacioRepository {
     Espacio findById(String id);
 
     Espacio findByIdEspacio(String idEspacio);
+
+    void update(Espacio espacio);
 }

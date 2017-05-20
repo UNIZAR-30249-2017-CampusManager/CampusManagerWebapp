@@ -39,4 +39,9 @@ public class EspacioRepositoryImp implements EspacioRepository {
 
         return result;
     }
+
+    @Override
+    public void update(Espacio espacio) {
+        espacioRepositorySpring.save(espacio);
+    }
 }

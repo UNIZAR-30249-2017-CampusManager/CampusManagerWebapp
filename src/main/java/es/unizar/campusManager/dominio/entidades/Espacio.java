@@ -34,6 +34,10 @@ public class Espacio extends Entidad {
         return esReservable;
     }
 
+    public void setReservable(boolean nuevo) {
+        this.esReservable = nuevo;
+    }
+
     @Override
     public String toString() {
         return "{\"_class\":\"Espacio\", " +
