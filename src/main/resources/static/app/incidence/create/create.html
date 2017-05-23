@@ -48,6 +48,17 @@
                                     </textarea>
                                 </div>
                                 <div>
+                                    <label class="control-label" for="fecha">Fecha límite:</label>
+
+                                    <p class="input-group">
+                                        <input type="text" id="fecha" class="form-control" uib-datepicker-popup ng-model="vm.fechaLimite"
+                                               is-open="vm.popup.opened" ng-required="true" close-text="Close" />
+                                        <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default" ng-click="vm.open()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                  </span>
+                                    </p>
+                                </div>
+                                <div>
                                     <input type="submit" class="form-control btn btn-primary" value="Crear"/>
                                 </div>
                             </form>

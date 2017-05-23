@@ -115,7 +115,8 @@ public class EndpointREST {
             incidenciaDTOS.add(new IncidenciaDTO(incidencia.getId(), incidencia.getNombre(), incidencia.getDescripcion(),
                     incidencia.getEspacio().getInformacionEspacio().getNombreEspacio(),
                     incidencia.getEspacio().getInformacionEspacio().getEdifico(),
-                    incidencia.getEstado(), incidencia.getEmailTrabajador(), incidencia.getFecha(), incidencia.getGrupo()));
+                    incidencia.getEstado(), incidencia.getEmailTrabajador(), incidencia.getFecha(),
+                    incidencia.getGrupo(), incidencia.getFechaLimite()));
         }
 
         return incidenciaDTOS;
@@ -135,7 +136,8 @@ public class EndpointREST {
             incidenciaDTOS.add(new IncidenciaDTO(incidencia.getId(), incidencia.getNombre(), incidencia.getDescripcion(),
                     incidencia.getEspacio().getInformacionEspacio().getNombreEspacio(),
                     incidencia.getEspacio().getInformacionEspacio().getEdifico(),
-                    incidencia.getEstado(), incidencia.getEmailTrabajador(), incidencia.getFecha(), incidencia.getGrupo()));
+                    incidencia.getEstado(), incidencia.getEmailTrabajador(), incidencia.getFecha(),
+                    incidencia.getGrupo(), incidencia.getFechaLimite()));
         }
 
         return incidenciaDTOS;
@@ -152,7 +154,7 @@ public class EndpointREST {
         String formattedDate = formatter.format(date);
 
         if (servicioIncidencia.crearIncidencia(nuevaIncidenciaDTO.getNombre(), nuevaIncidenciaDTO.getDescripcion(),
-                formattedDate, nuevaIncidenciaDTO.getIdEspacio())) {
+                formattedDate, nuevaIncidenciaDTO.getIdEspacio(), nuevaIncidenciaDTO.getFechaLimite())) {
             //Creacion correcta
             logger.info("Incidencia con nombre " + nuevaIncidenciaDTO.getNombre() + " creada satisfactoriamente");
             return new ResponseEntity(HttpStatus.OK);

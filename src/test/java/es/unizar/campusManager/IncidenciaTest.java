@@ -59,18 +59,18 @@ public class IncidenciaTest {
         Trabajador trabajador = new Trabajador("test@trabajador.com", "1234");
         trabajadorRep.save(trabajador);
 
-        Incidencia inc = new Incidencia("Incidencia1","No funciona","03/04/2017",espacio);
+        Incidencia inc = new Incidencia("Incidencia1","No funciona","03/04/2017",espacio, "05/04/2017");
         inc.setGrupo(grupo);
         inc.setEstado("Asignada");
         incidenciaRep.save(inc);
 
-        inc = new Incidencia("Incidencia2","No va","03/04/2017",espacio);
+        inc = new Incidencia("Incidencia2","No va","03/04/2017",espacio, "05/04/2017");
         inc.setGrupo(grupo);
         inc.setEstado("Asignada");
         incidenciaRep.save(inc);
         idIncidencia2 = inc.getId();
 
-        inc = new Incidencia("Incidencia3","No va","03/04/2017", espacio);
+        inc = new Incidencia("Incidencia3","No va","03/04/2017", espacio, "05/04/2017");
         inc.setGrupo(2);
         inc.setEstado("Asignada");
         inc.setEmailTrabajador(trabajador.getEmail());
@@ -89,7 +89,7 @@ public class IncidenciaTest {
         int cantidad = incidenciaRep.findAll().size();
 
         NuevaIncidenciaDTO incidenciaDTO = new NuevaIncidenciaDTO("ProblemaTest", "Esto es una " +
-                "incidencia test", espacio.getInformacionEspacio().getIdEspacio());
+                "incidencia test", espacio.getInformacionEspacio().getIdEspacio(), "05/04/2017");
         ResponseEntity response = endpoint.crearNuevaIncidencia(incidenciaDTO);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -99,7 +99,7 @@ public class IncidenciaTest {
     @Test
     public void addIncidenciaTestErr () throws Exception {
         NuevaIncidenciaDTO incidenciaDTO = new NuevaIncidenciaDTO("ProblemaTest", "Esto es una " +
-                "incidencia test", "ID no valido");
+                "incidencia test", "ID no valido", "05/04/2017");
         ResponseEntity response = endpoint.crearNuevaIncidencia(incidenciaDTO);
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
@@ -122,7 +122,7 @@ public class IncidenciaTest {
 
     @Test
     public void asigIncidenciaTest () throws Exception {
-        Incidencia inc = new Incidencia("Incidencia4","No va","03/04/2017", espacio);
+        Incidencia inc = new Incidencia("Incidencia4","No va","03/04/2017", espacio, "05/04/2017");
         incidenciaRep.save(inc);
 
         int cantidad = incidenciaRep.findByEmailTrabajador("test@trabajador.com").size();

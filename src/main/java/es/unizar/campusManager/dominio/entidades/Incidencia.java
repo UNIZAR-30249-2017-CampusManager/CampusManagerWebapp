@@ -15,13 +15,14 @@ public class Incidencia extends Entidad {
     private String fecha;
     private String estado;
     private Integer grupo;
+    private String fechaLimite;
 
     @OneToOne
     private Espacio espacio;
 
     public Incidencia(){}
 
-    public Incidencia(String nombre, String descripcion, String fecha, Espacio espacio) {
+    public Incidencia(String nombre, String descripcion, String fecha, Espacio espacio, String fechaLimite) {
         super();
         this.id = super.getId();
         this.nombre = nombre;
@@ -31,6 +32,7 @@ public class Incidencia extends Entidad {
         this.grupo = null;
         this.emailTrabajador = null;
         this.estado = "Sin asignar";
+        this.fechaLimite = fechaLimite;
     }
 
     public String getId() {
@@ -65,6 +67,10 @@ public class Incidencia extends Entidad {
         return espacio;
     }
 
+    public String getFechaLimite() {
+        return fechaLimite;
+    }
+
     public void setEmailTrabajador(String emailTrabajador) {
         this.emailTrabajador = emailTrabajador;
     }
@@ -75,5 +81,9 @@ public class Incidencia extends Entidad {
 
     public void setGrupo(Integer grupo) {
         this.grupo = grupo;
+    }
+
+    public void setFechaLimite(String fechaLimite) {
+        this.fechaLimite = fechaLimite;
     }
 }

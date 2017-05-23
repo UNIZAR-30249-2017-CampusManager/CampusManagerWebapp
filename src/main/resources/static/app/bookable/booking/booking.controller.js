@@ -41,6 +41,8 @@
 
         $scope.$watch('vm.edificioSeleccionado', function() {
             if(vm.edificioSeleccionado !== null && vm.edificioSeleccionado !== undefined){
+                vm.espacios = [];
+                vm.espacioSeleccionado = null;
                 $http.get("/espacios/" + vm.edificioSeleccionado.nombre).then(
                     function (response) { //success
                         var objetoEspacio = response.data;

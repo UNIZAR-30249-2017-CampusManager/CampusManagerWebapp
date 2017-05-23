@@ -18,6 +18,10 @@
         vm.create = create;
         vm.toggleCrear = toggleCrear;
 
+        vm.popup = {
+            opened: false
+        };
+
         function toggleCrear() {
             vm.crearError = false;
         }
@@ -37,7 +41,8 @@
             var data = {
                 nombre: vm.name,
                 descripcion: vm.description,
-                idEspacio: param.idEspacio
+                idEspacio: param.idEspacio,
+                fechaLimite: convertDate(vm.fechaLimite)
             };
 
             $http.put("/incidencias", data).then(
@@ -49,6 +54,7 @@
                     vm.place = null;
                     vm.description = null;
                     vm.building = null;
+                    vm.fechaLimite = null;
 
                     AlertService.addAlert('success', '¡La incidencia en ' + param.nombreEspacio + ' ' + param.nombreEdificio + ' ha sido registrada con éxito!');
 
@@ -58,6 +64,17 @@
                     vm.crearError = true;
                 }
             );
+        }
+
+        vm.open = function() {
+            vm.popup.opened = true;
+        };
+
+
+        function convertDate(inputFormat) {
+            function pad(s) { return (s < 10) ? '0' + s : s; }
+            var d = new Date(inputFormat);
+            return [pad(d.getDate()), pad(d.getMonth()+1), d.getFullYear()].join('/');
         }
     }
 })();
