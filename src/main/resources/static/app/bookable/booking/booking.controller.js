@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('app.booking')
+        .module('app.bookable.booking')
         .controller('BookingController', BookingController);
 
     BookingController.inject = ['$scope', '$http', 'AlertService'];
@@ -72,7 +72,7 @@
             event.preventDefault();
 
             if(vm.espacioSeleccionado === null || vm.espacioSeleccionado === undefined){
-                //console.log("Selecciona ROL loco");
+
             } else {
 
                 var data = {
@@ -81,7 +81,6 @@
                     fecha: convertDate(vm.fecha),
                     hora: vm.hora
                 };
-                console.log(data);
 
 
                 $http.put("/reservas", data).then(

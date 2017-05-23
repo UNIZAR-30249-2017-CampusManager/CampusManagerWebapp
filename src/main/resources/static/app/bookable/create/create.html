@@ -1,0 +1,45 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3" id="panelMod">
+            <h1>
+                Crear espacio reservable
+            </h1>
+            <div class="panel panel-modify">
+                <div class="panel-body">
+                    <div class="row">
+                        <p class="col-lg-12">
+                            <form class="form" role="form" name="formCrear" ng-submit="vm.create($event)">
+                                <div class="form-group">
+                                    <label class="control-label" for="edificios">Edificio:</label>
+                                    <br>
+                                    <ol id="edificios" class="nya-bs-select" ng-model="vm.edificioSeleccionado" ng-disabled="vm.edificios.length === 0">
+                                        <li nya-bs-option="edificio in vm.edificios">
+                                            <a>
+                                                {{edificio.nombre}}
+                                            </a>
+                                        </li>
+                                    </ol>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="espacios">Espacio:</label>
+                                    <br>
+                                    <ol id="espacios" class="nya-bs-select" ng-model="vm.espacioSeleccionado">
+                                        <li nya-bs-option="espacio in vm.espacios">
+                                            <a ng-if="!espacio.reservable">
+                                                {{espacio.informacionEspacio.nombreEspacio}}
+                                            </a>
+                                        </li>
+                                    </ol>
+                                </div>
+
+                                <div>
+                                    <input type="submit" class="form-control btn btn-primary" value="Reservar"/>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
