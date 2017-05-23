@@ -32,5 +32,26 @@ public class ServicioEspacio {
         return result;
     }
 
+    public Espacio obtenerEspacioById(String id) {
+        logger.info("Obteniendo espacio by Id");
 
+        return espacioRepository.findById(id);
+    }
+
+    public boolean hacerReservable(Espacio espacio) {
+        logger.info("Haciendo reservable espacio.");
+
+        if (espacio.isReservable()) {
+            logger.severe("El espacio con nombre " + espacio.getInformacionEspacio().getNombreEspacio() +
+                    " ya es reservable, abortando.");
+            return false;
+        } else {
+            espacio.setReservable(true);
+            espacioRepository.update(espacio);
+
+            logger.info("Espacio " + espacio.getInformacionEspacio().getNombreEspacio() + " hecho reservable " +
+                    "correctamemte.");
+            return true;
+        }
+    }
 }
