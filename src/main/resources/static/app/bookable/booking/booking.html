@@ -17,7 +17,8 @@
                                 <div class="form-group">
                                     <label class="control-label" for="edificios">Edificio:</label>
                                     <br>
-                                    <ol id="edificios" class="nya-bs-select" ng-model="vm.edificioSeleccionado" ng-disabled="vm.edificios.length === 0">
+                                    <ol id="edificios" class="nya-bs-select" ng-model="vm.edificioSeleccionado"
+                                        ng-disabled="vm.edificios.length === 0">
                                         <li nya-bs-option="edificio in vm.edificios">
                                             <a>
                                                 {{edificio.nombre}}
@@ -28,7 +29,8 @@
                                 <div class="form-group">
                                     <label class="control-label" for="espacios">Espacio:</label>
                                     <br>
-                                    <ol id="espacios" class="nya-bs-select" ng-model="vm.espacioSeleccionado">
+                                    <ol id="espacios" class="nya-bs-select" ng-model="vm.espacioSeleccionado"
+                                        ng-disabled="vm.edificioSeleccionado === null || vm.espacios.length === 0">
                                         <li nya-bs-option="espacio in vm.espacios">
                                             <a ng-if="espacio.reservable">
                                                 {{espacio.informacionEspacio.nombreEspacio}}
@@ -40,7 +42,8 @@
                                 <div class="form-group">
                                     <label class="control-label" for="hora">Hora:</label>
                                     <br>
-                                    <ol id="hora" class="nya-bs-select" ng-model="vm.hora">
+                                    <ol id="hora" class="nya-bs-select" ng-model="vm.hora"
+                                        ng-disabled="vm.espacioSeleccionado === null || vm.horas.length === 0">
                                         <li nya-bs-option="h in vm.horas">
                                             <a>
                                                 {{h}}

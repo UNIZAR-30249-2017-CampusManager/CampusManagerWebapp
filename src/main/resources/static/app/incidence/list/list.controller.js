@@ -33,6 +33,7 @@
                         var status = objetoIncidencia[i].estado;
                         var workerEmail = objetoIncidencia[i].emailTrabajador;
                         var fecha = objetoIncidencia[i].fecha;
+                        var fechaLimite = objetoIncidencia[i].fechaLimite;
                         var requestId = objetoIncidencia[i].grupo;
 
                         if (requestId === null) {
@@ -42,7 +43,7 @@
                         vm.incidencias.push({
                             nombreIncidencia: name, lugarIncidencia: place, edificioIncidencia: building,
                             descripcionIncidencia: description, estadoIncidencia: status,
-                            fechaIncidencia: fecha, idIncidencia: id, requestId: requestId
+                            fechaIncidencia: fecha, idIncidencia: id, requestId: requestId, fechaLimite: fechaLimite
                         });
                     }
 
@@ -68,6 +69,7 @@
                         var status = objetoIncidencia[i].estado;
                         var workerEmail = objetoIncidencia[i].emailTrabajador;
                         var fecha = objetoIncidencia[i].fecha;
+                        var fechaLimite = objetoIncidencia[i].fechaLimite;
                         var requestId = objetoIncidencia[i].grupo;
 
                         if (requestId === null) {
@@ -77,7 +79,7 @@
                         vm.incidencias.push({
                             nombreIncidencia: name, lugarIncidencia: place, edificioIncidencia: building,
                             descripcionIncidencia: description, estadoIncidencia: status,
-                            fechaIncidencia: fecha, requestId: requestId
+                            fechaIncidencia: fecha, requestId: requestId, fechaLimite: fechaLimite
                         });
 
                     }

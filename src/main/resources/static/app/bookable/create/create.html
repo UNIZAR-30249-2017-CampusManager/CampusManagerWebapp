@@ -12,7 +12,8 @@
                                 <div class="form-group">
                                     <label class="control-label" for="edificios">Edificio:</label>
                                     <br>
-                                    <ol id="edificios" class="nya-bs-select" ng-model="vm.edificioSeleccionado" ng-disabled="vm.edificios.length === 0">
+                                    <ol id="edificios" class="nya-bs-select" ng-model="vm.edificioSeleccionado"
+                                        ng-disabled="vm.edificios.length === 0">
                                         <li nya-bs-option="edificio in vm.edificios">
                                             <a>
                                                 {{edificio.nombre}}
@@ -23,7 +24,8 @@
                                 <div class="form-group">
                                     <label class="control-label" for="espacios">Espacio:</label>
                                     <br>
-                                    <ol id="espacios" class="nya-bs-select" ng-model="vm.espacioSeleccionado">
+                                    <ol id="espacios" class="nya-bs-select" ng-model="vm.espacioSeleccionado"
+                                        ng-disabled="vm.edificioSeleccionado === null || vm.espacios.length === 0">
                                         <li nya-bs-option="espacio in vm.espacios">
                                             <a ng-if="!espacio.reservable">
                                                 {{espacio.informacionEspacio.nombreEspacio}}
@@ -33,7 +35,7 @@
                                 </div>
 
                                 <div>
-                                    <input type="submit" class="form-control btn btn-primary" value="Reservar"/>
+                                    <input type="submit" class="form-control btn btn-primary" value="Crear espacio reservable"/>
                                 </div>
                             </form>
                         </div>

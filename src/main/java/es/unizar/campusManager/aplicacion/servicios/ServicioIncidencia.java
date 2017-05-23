@@ -22,7 +22,7 @@ public class ServicioIncidencia {
         this.espacioRepository = espacioRepository;
     }
 
-    public boolean crearIncidencia(String nombre, String descripcion, String fecha, String idEspacio){
+    public boolean crearIncidencia(String nombre, String descripcion, String fecha, String idEspacio, String fechaLimite){
 
         Espacio espacio = espacioRepository.findByIdEspacio(idEspacio);
 
@@ -31,7 +31,7 @@ public class ServicioIncidencia {
                     ", en el espacio con nombre " + espacio.getInformacionEspacio().getNombreEspacio() +
                     " ubicado en el edificio " + espacio.getInformacionEspacio().getEdifico());
 
-            return incidenciaRepository.save(new Incidencia(nombre,descripcion,fecha,espacio));
+            return incidenciaRepository.save(new Incidencia(nombre,descripcion,fecha,espacio, fechaLimite));
         } else {
             logger.severe("No se ha encontrado el espacio con idEspacio " + idEspacio + " abortando operacion");
             return false;

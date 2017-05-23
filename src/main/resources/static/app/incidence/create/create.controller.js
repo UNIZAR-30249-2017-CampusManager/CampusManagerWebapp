@@ -15,6 +15,10 @@
         vm.edificioSeleccionado = null;
         vm.espacioSeleccionado = null;
 
+        vm.popup = {
+            opened: false
+        };
+
         $http.get("/edificios").then(
             function (response) { //success
                 var objetoEdificio = response.data;
@@ -68,7 +72,8 @@
                 var data = {
                     nombre: vm.name,
                     descripcion: vm.description,
-                    idEspacio: vm.espacioSeleccionado.informacionEspacio.idEspacio
+                    idEspacio: vm.espacioSeleccionado.informacionEspacio.idEspacio,
+                    fechaLimite: convertDate(vm.fechaLimite)
                 };
 
                 //console.log('Creando incidencia: ' + data.nombre + ' ' + data.descripcion + ' ' + data.idEspacio);
@@ -82,6 +87,7 @@
                         vm.place = null;
                         vm.description = null;
                         vm.edificioSeleccionado = null;
+                        vm.fechaLimite = null;
 
                         AlertService.addAlert('success', '¡La incidencia en ' + vm.espacioSeleccionado.informacionEspacio.nombreEspacio + ' ha sido registrada con éxito!');
 
@@ -93,6 +99,17 @@
                     }
                 );
             }
+        }
+
+        vm.open = function() {
+            vm.popup.opened = true;
+        };
+
+
+        function convertDate(inputFormat) {
+            function pad(s) { return (s < 10) ? '0' + s : s; }
+            var d = new Date(inputFormat);
+            return [pad(d.getDate()), pad(d.getMonth()+1), d.getFullYear()].join('/');
         }
     }
 })();
