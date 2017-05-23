@@ -12,7 +12,7 @@
             'app.layout',
             'app.incidence',
             'app.buildings',
-            'app.booking'])
+            'app.bookable'])
         .config(function ($stateProvider, $urlRouterProvider,$logProvider,$locationProvider) {
             $logProvider.debugEnabled(false);
             $locationProvider.html5Mode(true);
@@ -62,8 +62,13 @@
                 })
                 .state('reservarEspacio', {
                     url: '/reservarEspacio',
-                    templateUrl: 'app/booking/booking.html',
+                    templateUrl: 'app/bookable/booking/booking.html',
                     controller: 'BookingController as vm'
+                })
+                .state('crearEspacioReservable', {
+                    url: '/crearEspacioReservable',
+                    templateUrl: 'app/bookable/create/create.html',
+                    controller: 'CreateBookableController as vm'
                 });
         });
 
